@@ -13,13 +13,16 @@ jobs:
         run: |
           curl -sSL https://get.rvm.io | bash
 
+      - name: Install Curl libraries
+        run: |
+          sudo apt-get -yqq install libcurl-dev
+
       - name: Set up Ruby from .ruby-version
         run: |
           source $HOME/.rvm/scripts/rvm
           rvm install $(cat .ruby-version) 
           rvm --default use $(cat .ruby-version)
           rvm use --create $(cat .ruby-version)@$(cat .ruby-gemset)
-
 
       - name: Build App
         run: |
