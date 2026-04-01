@@ -23,8 +23,6 @@ test/ft_m_r1.2_original_source. This can be run by posting the relevant ID to th
 POST /test/ft_m_r1.2_original_source { "resource_identifier": "id_goes_here" }
 ```
 
-TODO: Indicate whether this is a GET or POST request.
-
 ## Setup
 
 First, install rvm: https://rvm.io/rvm/install
