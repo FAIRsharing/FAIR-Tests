@@ -15,7 +15,7 @@ jobs:
 
       - name: Install Curl libraries
         run: |
-          sudo apt-get -yqq install libcurl-dev
+          sudo apt-get -yqq install libcurl4-openssl-dev build-essential
 
       - name: Set up Ruby from .ruby-version
         run: |
