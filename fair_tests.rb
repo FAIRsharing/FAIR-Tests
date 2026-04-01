@@ -19,7 +19,9 @@ class FairTests < Sinatra::Base
   get '/list_tests' do
     content_type :json
     json message: 'List of available tests. Prepend /test/ to run a test and access with POST.',
-         tests: Dir.entries('./lib/fair_tests').reject { |f| f.start_with?('.') }.sort
+         tests: Dir.entries('./lib/fair_tests')
+                   .reject { |f| f.start_with?('.') }
+                   .map { |f| f.split('.').first }
 
   end
 
