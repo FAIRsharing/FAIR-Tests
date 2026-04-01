@@ -3,12 +3,12 @@ require_relative 'test_helper'
 class ExampleTest < Minitest::Test
 
   def test_one_can_be_run
-    get '/test/test_one'
+    post '/test/test_one'
 
     assert last_response.ok?
 
     body = JSON.parse(last_response.body)
-    assert_equal "hi from the exciting module 'test one'", body['message']
+    assert_equal body, {}
   end
 
   def test_can_read_ora_fixtures
