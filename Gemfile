@@ -11,3 +11,8 @@ gem 'rack-test'
 gem 'minitest'
 gem 'rerun'
 gem 'httparty'
+gem 'rake'
+
+# Somewhat old, but should do the trick...
+gem 'simple_doi', github: 'UMNLibraries/simpledoi-ruby'
+gem 'curb'

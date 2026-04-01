@@ -1,4 +1,7 @@
 require 'httparty'
+require 'simple_doi'
+require 'json'
+require 'nokogiri'
 
 # Utility functions common to all FAIR tests.
 module TestUtils
@@ -80,6 +83,70 @@ module TestUtils
     #message = response.message
 
     body
+  end
+
+  # Convert XML to a hash.
+  # This is used by get_doi_metadata, below.
+  def xml_node_to_hash(node)
+    children = node.element_children
+
+    if children.empty?
+      node.text.strip
+    else
+      hash = {}
+
+      children.each do |child|
+        value = xml_node_to_hash(child)
+
+        if hash.key?(child.name)
+          hash[child.name] = [hash[child.name]] unless hash[child.name].is_a?(Array)
+          hash[child.name] << value
+        else
+          hash[child.name] = value
+        end
+      end
+
+      hash
+    end
+  end
+
+  # TODO:
+  # This should be able to get JSON-formatted data from a DOI.
+  # It may be that we replace this at a later date with Mark's system, or
+  # incorporate code from that system instead (SimpleDOI is old...)
+  def get_doi_metadata(url)
+    json_data = {}
+    doi = SimpleDOI::DOI.new(url)
+
+    # Call lookup() and prefer JSON, but fallback to XML if unavailable
+    response = doi.lookup [SimpleDOI::CITEPROC_JSON, SimpleDOI::UNIXREF_XML]
+
+    # Check the response_content_type for parsing.
+    begin
+      if doi.response_content_type == SimpleDOI::CITEPROC_JSON
+        json_data JSON.parse(response)
+      else
+        # Convert to JSON for easier processing.
+        doc = Nokogiri::XML(response)
+        json_data = xml_node_to_hash(doc.root)
+      end
+    rescue => e
+      puts "Error parsing DOI metadata: #{e.message}"
+    end
+    json_data
+  end
+
+  # A simple means of resolving a DOI without having to use the simple_doi gem.
+  def resolve_doi(url)
+    response = HTTParty.get(url, timeout: 5)
+
+    if response.success?
+      response.request.last_uri.to_s
+    else
+      nil
+    end
+  rescue Net::OpenTimeout, Net::ReadTimeout
+    nil
   end
 
 end

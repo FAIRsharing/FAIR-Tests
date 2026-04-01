@@ -11,7 +11,7 @@ See also: https://champion.fairsharing.org
 
 * fair_tests.rb - the main application file. Run with `rackup`.
 * lib/ - contains the FAIR tests, one file per test.
-* test/ - contains unit tests for the application. Run these with `rake test`.
+* test/ - contains unit tests for the application. Run these with `bundle exec rake test`.
 * test/fixtures - contains test data, e.g. example JSON files from ORA.
 
 ### Adding tests
@@ -33,6 +33,17 @@ There are .ruby-version and .ruby-gemset files in the root directory, so
 Run `gem install bundler` and `bundle install` to install the required gems.
 
 Run the application with `rerun 'rackup'`.
+
+### Development
+
+Normal Rails tools are not available, so irb could be used during development work. Example:
+
+```irb
+bundle exec irb
+> require_relative 'lib/test_utils'
+> include TestUtils
+> get_doi_metadata('https://doi.org/10.25504/FAIRsharing.7g1bzj')
+```
 
 ## Deployment
 
