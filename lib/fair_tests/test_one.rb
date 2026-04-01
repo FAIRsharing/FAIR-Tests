@@ -19,7 +19,7 @@ module TestOne
 the database being evaluated.',
       endpointDescription: 'https://api.fairsharing.org/test_descriptions/ft_ark_f1/api',
       endpointURL: 'https://api.fairsharing.org/fair_tests/ft_ark_f1',
-      url_record: response['response']['document']['abstract'].split(' ')[0]
+      url_record: response['response']['document']['abstract']
     }
 
     test_response_basics(test_data)

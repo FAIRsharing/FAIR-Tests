@@ -53,14 +53,29 @@ module TestUtils
 
   def post_to_test(url)
     # TODO: This assumes that there's JSON data available.
-    # TODO: Content negotation needed (Mark's tool?)
-    headers = {
+    # TODO: Better content negotation needed (Mark's tool?)
+    json_headers = {
       'Accept' => 'application/json',
       'Content-Type' => 'application/json'
     }
+    jsonld_headers = {
+      'Accept' => 'application/ld+json',
+      'Content-Type' => 'application/ld+json'
+    }
 
-    response = HTTParty.get(url, headers: headers)
+    # TODO: Check if a DOI first and get metadata
+    if url.include?('doi.org')
+      # Get metadata from DOI. How?
+    end
+
+    # Try LD+JSON first
+    response = HTTParty.get(url, headers: jsonld_headers)
     body = JSON.parse(response.body)
+
+    unless body && body['@context'] == 'https://schema.org'
+      response = HTTParty.get(url, headers: json_headers)
+      body = JSON.parse(response.body)
+    end
     #status = response.code,
     #message = response.message
 

@@ -17,10 +17,10 @@ See also: https://champion.fairsharing.org
 ### Adding tests
 
 These should go in test/ and be named after the relevant FAIR test, e.g. 
-test/ft_m_r1.2_original_source. This can be run by calling:
+test/ft_m_r1.2_original_source. This can be run by posting the relevant ID to the test route:
 
 ```
-/test/ft_m_r1.2_original_source
+POST /test/ft_m_r1.2_original_source { "resource_identifier": "id_goes_here" }
 ```
 
 TODO: Indicate whether this is a GET or POST request.
