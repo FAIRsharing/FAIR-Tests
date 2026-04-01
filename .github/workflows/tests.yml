@@ -1,0 +1,39 @@
+name: Rails Tests
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Set up RVM
+        run: |
+          curl -sSL https://get.rvm.io | bash
+
+      - name: Set up Ruby from .ruby-version
+        run: |
+          source $HOME/.rvm/scripts/rvm
+          rvm install $(cat .ruby-version) 
+          rvm --default use $(cat .ruby-version)
+          rvm use --create $(cat .ruby-version)@$(cat .ruby-gemset)
+
+
+      - name: Build App
+        run: |
+          source $HOME/.rvm/scripts/rvm
+          rvm use $(cat .ruby-version)@$(cat .ruby-gemset)
+          gem install bundler
+          bundle install --jobs 4 --retry 3
+
+      - name: Run Tests
+        run: |
+          source $HOME/.rvm/scripts/rvm
+          rvm use $(cat .ruby-version)@$(cat .ruby-gemset)
+          bundle exec rake test
+
+      - name: Dump docker logs on failure
+        if: failure()
+        uses: jwalton/gh-docker-logs@v2
