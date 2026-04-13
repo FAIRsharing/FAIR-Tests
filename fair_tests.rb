@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'sinatra/json'
+require 'dotenv/load'
 
 class FairTests < Sinatra::Base
 
