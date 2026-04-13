@@ -16,6 +16,15 @@ class FairTests < Sinatra::Base
     json message: 'Welcome to the FAIR Tests API'
   end
 
+  get '/list_tests' do
+    content_type :json
+    json message: 'List of available tests. Prepend /test/ to run a test and access with POST.',
+         tests: Dir.entries('./lib/fair_tests')
+                   .reject { |f| f.start_with?('.') }
+                   .map { |f| f.split('.').first }
+
+  end
+
   # Get a specific test:
   post '/test/:test_name' do
     # This parses the body for additional JSON parameters.
