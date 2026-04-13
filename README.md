@@ -32,6 +32,10 @@ There are .ruby-version and .ruby-gemset files in the root directory, so
 
 Run `gem install bundler` and `bundle install` to install the required gems.
 
+`cp .env.example .env` and edit the value for your API key. You probably won't need
+to change the value for the FAIRsharing API URL unless you're running a local instance 
+of FAIRsharing.
+
 Run the application with `rerun 'rackup'`.
 
 ### Development
@@ -45,6 +49,11 @@ bundle exec irb
 > get_doi_metadata('https://doi.org/10.25504/FAIRsharing.7g1bzj')
 ```
 
+### Unit Tests
+
+These can be run with `bundle exec rake test`.
+
 ## Deployment
+
 
 Probably a Systemd service for fair_tests.rb, with an Nginx proxy (TODO).
