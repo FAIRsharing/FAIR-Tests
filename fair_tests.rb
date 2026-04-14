@@ -4,6 +4,8 @@ require 'dotenv/load'
 
 class FairTests < Sinatra::Base
 
+  set :public_folder, 'public'
+
   # Modules containing the FAIR Tests:
   Dir[File.join(__dir__, 'lib', 'fair_tests', '*.rb')].sort.each do |file|
     require file
