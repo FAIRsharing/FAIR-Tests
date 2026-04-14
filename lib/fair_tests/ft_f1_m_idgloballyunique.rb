@@ -22,10 +22,9 @@ module FtF1MIdgloballyunique
       pass = false
 
       records.each do |r|
-        next unless r['metadata']['globally_unique']
+        next unless r['metadata']['globally_unique'] && !pass
 
         pass = true
-        break
       end
 
       if pass
