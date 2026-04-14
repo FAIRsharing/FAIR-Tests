@@ -1,5 +1,5 @@
 require 'sinatra'
-require 'sinatra/json'
+require 'json'
 require 'dotenv/load'
 
 class FairTests < Sinatra::Base
@@ -48,6 +48,13 @@ class FairTests < Sinatra::Base
   not_found do
     status 404
     json error: 'Not Found'
+  end
+
+  helpers do
+    def json(payload)
+      content_type :json
+      JSON.generate(payload)
+    end
   end
 
 end
