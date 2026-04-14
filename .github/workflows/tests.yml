@@ -26,6 +26,7 @@ jobs:
 
       - name: Build App
         run: |
+          cp .env.github-actions .env
           source $HOME/.rvm/scripts/rvm
           rvm use $(cat .ruby-version)@$(cat .ruby-gemset)
           gem install bundler
