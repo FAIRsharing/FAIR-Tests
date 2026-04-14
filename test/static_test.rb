@@ -1,6 +1,7 @@
-require_relative 'test_helper'
+require_relative './test_helper'
 
 class StaticTest < Minitest::Test
+  include TestHelper
   def test_root_returns_welcome_message
     get '/'
 

@@ -4,10 +4,17 @@ require 'minitest/autorun'
 require 'rack/test'
 require_relative '../fair_tests'
 
-class Minitest::Test
+module TestHelper
   include Rack::Test::Methods
 
   def app
     FairTests
+  end
+
+  def headers
+    {
+      'Content-Type' => 'application/json',
+      'Accept' => 'application/json'
+    }
   end
 end

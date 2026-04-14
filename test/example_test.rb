@@ -1,6 +1,7 @@
 require_relative 'test_helper'
 
 class ExampleTest < Minitest::Test
+  include TestHelper
 
   def test_one_can_be_run
     post '/test/test_one'

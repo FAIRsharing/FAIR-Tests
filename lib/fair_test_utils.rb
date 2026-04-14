@@ -5,9 +5,9 @@ require 'nokogiri'
 require 'dotenv/load'
 
 # Utility functions common to all FAIR tests.
-module TestUtils
+module FairTestUtils
 
-  def test_response_basics(test_data)
+  def fair_test_response_basics(test_data)
     response = {
       value: 'indeterminate',
       description: 'No record was found matching the provided GUID.'

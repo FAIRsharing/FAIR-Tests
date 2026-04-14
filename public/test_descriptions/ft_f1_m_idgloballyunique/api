@@ -1,0 +1,38 @@
+openapi: 3.0.0
+info:
+  version: "1.0"
+  title: "FAIR Test - F1 - Metadata - evaluate identifier global uniqueness"
+  x-tests_metric: "https://fairsharing.org/7820"
+  description: >-
+    "The 'FAIR Test - F1 - Metadata - evaluate identifier global uniqueness' is a database-level test that requires the presence of globally unique identifiers for at least some of the content within the database being evaluated. FT_F1_M_IdGloballyUnique expects a FAIRsharing URL or DOI as its input and evaluates the database described by the FAIRsharing record for the guaranteed global uniqueness of the linked identifier schemas as defined by the identifier schema record type in FAIRsharing. As described by the GFF, global uniqueness guarantees the unambiguous referencing of the described resource; it is insufficient for it to be unique only locally. This feature is key to the Findability of the database being evaluated. The test will return as follows: Pass: URL/DOI must point to an existing FAIRsharing database record; the record must have an 'implements' to an id_schema record; that id_schema record must have the globally unique field set to 'true'. Indeterminate: URL/DOI is non-existent or malformed. Fail: if any of the conditions in 'pass' fail; specifically, if the URL/DOI is not a database record, OR if there is no 'implements' relationship to an id_schema, OR if any globally unique fields are set to 'false'. "
+  x-applies_to_principle: "https://fairsharing.org/10.25504/FAIRsharing.a2cea7"
+  contact:
+    x-organization: "FAIRsharing, Oxford University"
+    url: "https://fairsharing.org"
+    name: "FAIRsharing Support"
+    email: "contact@fairsharing.org"
+paths:
+  "/ft_f1_m_idgloballyunique":
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/schemas"
+        required: true
+      responses:
+        "200":
+          description:  >-
+            The response is "pass", "fail" or "indeterminate"
+servers:
+  - url: "https://fair-tests.fairsharing.org/test"
+components:
+  schemas:
+    schemas:
+      required:
+        - resource_identifier
+      properties:
+      - resource_identifier:
+          type: string
+          description: the GUID being tested
+
