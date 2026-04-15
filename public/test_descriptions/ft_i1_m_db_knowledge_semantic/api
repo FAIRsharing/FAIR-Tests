@@ -1,0 +1,38 @@
+openapi: 3.0.0
+info:
+  version: "1.0"
+  title: "FAIR Test - I1 - Metadata - Database-level knowledge representation languages (semantic)"
+  x-tests_metric: "https://fairsharing.org/7837"
+  description: >-
+    "The 'FAIR Test - I1 - Metadata - Database-level knowledge representation languages (semantic)' is a database-level test that checks for relationships between the FAIRSharing metadata record and any model/format records with a semantic format."
+  x-applies_to_principle: "https://fairsharing.org/10.25504/FAIRsharing.ec5648"
+  contact:
+    x-organization: "FAIRsharing, Oxford University"
+    url: "https://fairsharing.org"
+    name: "FAIRsharing Support"
+    email: "contact@fairsharing.org"
+paths:
+  "/ft_i1_m_db_knowledge_semantic":
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/schemas"
+        required: true
+      responses:
+        "200":
+          description:  >-
+            The response is "pass", "fail" or "indeterminate"
+servers:
+  - url: "https://api.fairsharing.org/fair_tests"
+components:
+  schemas:
+    schemas:
+      required:
+        - resource_identifier
+      properties:
+      - resource_identifier:
+          type: string
+          description: the GUID being tested
+

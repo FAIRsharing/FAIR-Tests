@@ -1,0 +1,40 @@
+
+openapi: 3.0.0
+info:
+  version: "1.0"
+  title: "FAIR Test - ARK T-A2 - Database has a preservation policy"
+  x-tests_metric: "https://fairsharing.org/FAIRsharing.lEZbPK"
+  description: >-
+    "The 'FAIR Test - ARK T-A2 - Database has a preservation policy' is a database-level test that requires the presence of a data preservation policy for the database being evaluated. FM ARK A2-Preservation expects a FAIRsharing URL or DOI as its input and evaluates the database described by the FAIRsharing record: the record must have a URL in the data preservation policy field and may optionally also have a non-empty value in the name field. As described by the GFF, there should at least be access to high quality and machine actionable metadata that describes those resources sufficiently to minimally understand their nature and their provenance, even when the relevant data are not available anymore. There are a number of ways to implement this, however this metric deals with preservation of information relating to an identifier by determining if there is a preservation policy in place with the database being evaluated. The test will return as follows: Pass: URL/DOI must point to an existing FAIRsharing database record; the record must have a value in the URL section of the data preservation policy field that resolves (i.e. does not give an error code). Indeterminate: URL/DOI is non-existent, returns an error code of some kind, or is malformed. Fail: if any of the conditions in 'pass' fail; specifically, if the URL/DOI is not a database record, OR if there is an empty URL value for the data preservation policy field. "
+  x-applies_to_principle: "https://doi.org/10.25504/FAIRsharing.7c4d7f"
+  contact:
+    x-organization: "FAIRsharing, Oxford University"
+    url: "https://fairsharing.org"
+    name: "Ramon Granell"
+    x-role: developer
+    email: "ramon.granell@oerc.ox.ac.uk"
+    x-id: "https://orcid.org/0000-0001-9572-0972"
+paths:
+  "/ft_ark_a2preservation":
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/schemas"
+        required: true
+      responses:
+        "200":
+          description:  >-
+            The response is "pass", "fail" or "indeterminate"
+servers:
+  - url: "https://api.fairsharing.org/fair_tests"
+components:
+  schemas:
+    schemas:
+      required:
+        - resource_identifier
+      properties:
+      - resource_identifier:
+          type: string
+          description: the GUID being tested

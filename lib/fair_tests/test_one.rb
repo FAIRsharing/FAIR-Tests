@@ -1,8 +1,7 @@
 module TestOne
 
-  require_relative '../test_utils'
-
-  include TestUtils
+  require_relative '../fair_test_utils'
+  include FairTestUtils
 
   def test_one(identifier=nil)
 
@@ -22,8 +21,7 @@ the database being evaluated.',
       url_record: response['response']['document']['abstract']
     }
 
-    test_response_basics(test_data)
+    fair_test_response_basics(test_data)
   end
 
 end
-
