@@ -49,6 +49,20 @@ bundle exec irb
 > get_doi_metadata('https://doi.org/10.25504/FAIRsharing.7g1bzj')
 ```
 
+### Creating FAIR tests
+
+1. Create a new test file in lib/fair_tests to contain the test logic. This file should be named after the
+abbreviation for the FAIR test. For example, ft_f1_m_idgloballyunique.rb. Existing files may be used as 
+a template.
+2. Create a unit test file in test/. Name this file after the test, but adding _test at the end.
+For example, ft_f1_m_idgloballyunique_test.rb.
+3. Create a directory in public/test_descriptions/ named after the test (see 1 and 2). Create a single
+file in this directory called "api", which should contain the OpenAPI 3.0.0 specification for the test (see 
+existing examples).
+4. Check that the test works using IRB, and that the unit tests all pass, and create a PR.
+5. ...
+6. Profit!
+
 ### Unit Tests
 
 These can be run with `bundle exec rake test`.
