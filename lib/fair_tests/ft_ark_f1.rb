@@ -16,6 +16,8 @@ module FtArkF1
     }
 
     response = fair_test_response_basics(data_test)
+    response[:value] = 'indeterminate'
+    response[:description] = 'No record was found matching the provided identifier.'
 
     if record && !record.empty?
       if record['registry'] == 'Database'
@@ -33,8 +35,6 @@ module FtArkF1
         response[:value] = 'fail'
         response[:description] = 'The record exists in FAIRsharing but it is not a database.'
       end
-    else
-
     end
     response[:log] = response[:description]
     response

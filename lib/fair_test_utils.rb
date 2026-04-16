@@ -8,10 +8,7 @@ require 'dotenv/load'
 module FairTestUtils
 
   def fair_test_response_basics(test_data)
-    response = {
-      value: 'indeterminate',
-      description: 'No record was found matching the provided GUID.'
-    }
+    response = {}
     response['@context'] = "https://w3id.org/ftr/context"
     response['@id'] = "urn:fairsharing:#{SecureRandom.uuid}"
     response['@type'] = "https://w3id.org/ftr#TestResult"

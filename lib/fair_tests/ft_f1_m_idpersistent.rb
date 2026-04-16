@@ -36,7 +36,7 @@ module FtF1MIdpersistent
       end
     else
       response[:value] = 'indeterminate'
-      response[:description] = 'No matching records were found in FAIRsharing.'
+      response[:description] = 'No FAIRsharing identifier schema record found that matches the provided identifier.'
     end
 
     response[:log] = response[:description]
