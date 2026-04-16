@@ -17,7 +17,7 @@ module FtArkF1
 
     response = fair_test_response_basics(data_test)
 
-    if record
+    if record && !record.empty?
       if record['registry'] == 'Database'
         identified_rel = record['recordAssociations'].collect { |r| r if r['recordAssocLabel'] == 'implements' && r['linkedRecord']['type'] == 'identifier_schema' }.compact
         response[:value] = 'fail'

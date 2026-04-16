@@ -251,7 +251,11 @@ module FairTestUtils
 
 
     if response.code == 200
-       JSON.parse(response.body)['data']['fairsharingRecord']
+      begin
+        JSON.parse(response.body)['data']['fairsharingRecord']
+      rescue
+        {}
+      end
     else
       {
         message: "Error getting record from FAIRsharing API: #{response.code}, #{response.message}",
