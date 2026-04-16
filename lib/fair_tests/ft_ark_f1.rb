@@ -16,6 +16,8 @@ module FtArkF1
     }
 
     response = fair_test_response_basics(data_test)
+    resonse[:value] = 'indeterminate'
+    response[:description] = 'No record was found matching the provided identifier.'
 
     if record && !record.empty?
       if record['registry'] == 'Database'
