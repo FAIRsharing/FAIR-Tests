@@ -35,8 +35,6 @@ module FtArkF1
         response[:value] = 'fail'
         response[:description] = 'The record exists in FAIRsharing but it is not a database.'
       end
-    else
-
     end
     response[:log] = response[:description]
     response
