@@ -154,9 +154,10 @@ module FairTestUtils
   # This method will prepare a text string for getting a record from FAIRsharing, then fetch the record.
   def obtain_record_from_text(text_record)
     # Only accept FAIRsharing URLs
-    if text_record.blank? || !(text_record.include?('https://doi.org/10.25504') ||
-      text_record.include?('https://fairsharing.org/10.25504') ||
-      text_record.include?('fairsharing.org'))
+    if text_record.nil? || text_record.empty? ||
+       !(text_record.include?('https://doi.org/10.25504') ||
+         text_record.include?('https://fairsharing.org/10.25504') ||
+         text_record.include?('fairsharing.org'))
       return nil
     end
 
@@ -221,6 +222,7 @@ module FairTestUtils
               id
               registry
               type
+              metadata
             }
           }
           reverseRecordAssociations {
@@ -231,6 +233,7 @@ module FairTestUtils
               id
               registry
               type
+              metadata
             }
           }
          objectTypes {
@@ -248,7 +251,11 @@ module FairTestUtils
 
 
     if response.code == 200
-      JSON.parse(response.body)['data']['fairsharingRecord']
+      begin
+        JSON.parse(response.body)['data']['fairsharingRecord']
+      rescue
+        {}
+      end
     else
       {
         message: "Error getting record from FAIRsharing API: #{response.code}, #{response.message}",

@@ -34,7 +34,24 @@ class FairTests < Sinatra::Base
     # Test name is in the URL, identifier to check is in the additional JSON.
     raw_body = request.body.read
     json_params = raw_body.empty? ? {} : JSON.parse(raw_body)
+    # Rack::Test can wrap payload under a top-level "params" key when called
+    # with keyword arguments. Normalize that shape for test compatibility.
+    if json_params.is_a?(Hash) && json_params['params'].is_a?(String)
+      begin
+        json_params = JSON.parse(json_params['params'])
+      rescue JSON::ParserError
+        # Keep original json_params if nested payload is not valid JSON.
+      end
+    end
     all_params = params.merge(json_params)
+    if all_params['resource_identifier'].nil? && all_params['params'].is_a?(String)
+      begin
+        nested_params = JSON.parse(all_params['params'])
+        all_params = all_params.merge(nested_params) if nested_params.is_a?(Hash)
+      rescue JSON::ParserError
+        # Ignore malformed nested test payloads.
+      end
+    end
 
     # If the test exists, call it, passing the resource identifier.
     if respond_to?(params[:test_name])
