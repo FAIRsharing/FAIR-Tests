@@ -52,7 +52,7 @@ module FairTestUtils
     response
   end
 
-  def post_to_test(url)
+  def content_negotiation(url)
     # TODO: This assumes that there's JSON data available.
     # TODO: Better content negotation needed (Mark's tool?)
     json_headers = {
@@ -63,11 +63,6 @@ module FairTestUtils
       'Accept' => 'application/ld+json',
       'Content-Type' => 'application/ld+json'
     }
-
-    # TODO: Check if a DOI first and get metadata
-    if url.include?('doi.org')
-      # Get metadata from DOI. How?
-    end
 
     # Try LD+JSON first
     response = HTTParty.get(url, headers: jsonld_headers)
@@ -83,31 +78,6 @@ module FairTestUtils
     body
   end
 
-  # Convert XML to a hash.
-  # This is used by get_doi_metadata, below.
-  def xml_node_to_hash(node)
-    children = node.element_children
-
-    if children.empty?
-      node.text.strip
-    else
-      hash = {}
-
-      children.each do |child|
-        value = xml_node_to_hash(child)
-
-        if hash.key?(child.name)
-          hash[child.name] = [hash[child.name]] unless hash[child.name].is_a?(Array)
-          hash[child.name] << value
-        else
-          hash[child.name] = value
-        end
-      end
-
-      hash
-    end
-  end
-
   # TODO:
   # This should be able to get JSON-formatted data from a DOI.
   # It may be that we replace this at a later date with Mark's system, or
@@ -116,22 +86,26 @@ module FairTestUtils
     json_data = {}
     doi = SimpleDOI::DOI.new(url)
 
-    # Call lookup() and prefer JSON, but fallback to XML if unavailable
-    response = doi.lookup [SimpleDOI::CITEPROC_JSON, SimpleDOI::UNIXREF_XML]
+    # Call lookup() and prefer JSON
+    response = doi.lookup [SimpleDOI::CITEPROC_JSON]
 
     # Check the response_content_type for parsing.
     begin
-      if doi.response_content_type == SimpleDOI::CITEPROC_JSON
-        json_data JSON.parse(response)
-      else
-        # Convert to JSON for easier processing.
-        doc = Nokogiri::XML(response)
-        json_data = xml_node_to_hash(doc.root)
-      end
+      json_data = JSON.parse(response)
     rescue => e
       puts "Error parsing DOI metadata: #{e.message}"
     end
     json_data
+  end
+
+  # Check if a string is actually a DOI.
+  def is_doi?(url)
+    begin
+      SimpleDOI::DOI.new(url)
+    rescue ArgumentError
+      return false
+    end
+    true
   end
 
   # A simple means of resolving a DOI without having to use the simple_doi gem.
