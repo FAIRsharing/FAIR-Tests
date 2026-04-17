@@ -3,9 +3,9 @@ require_relative './test_helper'
 require 'webmock/minitest'
 require_relative '../lib/fair_tests/ft_ark_a2preservation'
 
-class FtArkF1Test < Minitest::Test
+class FtArkA2preservationTest < Minitest::Test
   include ::TestHelper
-  include ::FtArkF1
+  include ::FtArkA2preservation
 
   def test_pass_ft_ark_a2preservation
     stub_request(:post, "#{ENV['FAIRSHARING_API_URL']}").
