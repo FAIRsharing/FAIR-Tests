@@ -1,6 +1,6 @@
 # frozen_string_literal: true
-require 'webmock/minitest'
 require_relative './test_helper'
+require 'webmock/minitest'
 require_relative '../lib/fair_tests/ft_ark_a2preservation'
 
 class FtArkF1Test < Minitest::Test

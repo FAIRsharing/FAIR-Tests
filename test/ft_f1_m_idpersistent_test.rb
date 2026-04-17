@@ -1,6 +1,6 @@
 # frozen_string_literal: true
-require 'webmock/minitest'
 require_relative './test_helper'
+require 'webmock/minitest'
 require_relative '../lib/fair_tests/ft_f1_m_idpersistent'
 
 class FtF1MIdpersistentTest < Minitest::Test
