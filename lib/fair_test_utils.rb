@@ -3,6 +3,8 @@ require 'simple_doi'
 require 'json'
 require 'nokogiri'
 require 'dotenv/load'
+require 'cgi'
+require 'uri'
 
 # Utility functions common to all FAIR tests.
 module FairTestUtils
@@ -53,6 +55,8 @@ module FairTestUtils
   end
 
   def content_negotiation(url)
+    return {} if url.nil? || url.empty?
+
     # TODO: This assumes that there's JSON data available.
     # TODO: Better content negotation needed (Mark's tool?)
     json_headers = {
@@ -110,14 +114,72 @@ module FairTestUtils
 
   # A simple means of resolving a DOI without having to use the simple_doi gem.
   def resolve_doi(url)
-    response = HTTParty.get(url, timeout: 5)
+    doi_url = normalize_doi_url(url)
+    return nil if doi_url.nil? || doi_url.empty?
+
+    response = HTTParty.get(doi_url, timeout: 5, follow_redirects: true)
 
     if response.success?
-      response.request.last_uri.to_s
+      body_url = extract_url_from_response_body(response.body)
+      resolved = begin
+        response.request.last_uri.to_s
+      rescue Addressable::URI::InvalidURIError
+        nil
+      end
+
+      if !resolved.nil? && !resolved.empty?
+        resolved_host = begin
+          URI.parse(resolved).host.to_s.downcase
+        rescue URI::InvalidURIError
+          ''
+        end
+        return body_url if resolved_host == 'doi.org' && !body_url.nil?
+        return nil if resolved_host == 'doi.org'
+        return resolved
+      end
+
+      return body_url unless body_url.nil?
+
+      nil
     else
       nil
     end
   rescue Net::OpenTimeout, Net::ReadTimeout
+    nil
+  end
+
+  def normalize_doi_url(url)
+    return nil if url.nil?
+
+    value = url.to_s.strip
+    return nil if value.empty?
+
+    doi = case value
+          when %r{\Ahttps?://doi\.org/(.+)\z}i
+            Regexp.last_match(1)
+          when %r{\Adoi:(.+)\z}i
+            Regexp.last_match(1)
+          when %r{\A10\.\d{4,9}/\S+\z}i
+            value
+          else
+            return value
+          end
+
+    "https://doi.org/#{CGI.escape(CGI.unescape(doi))}"
+  end
+
+  def extract_url_from_response_body(body)
+    value = body.to_s.strip
+    begin
+      parsed_value = JSON.parse(value)
+      value = parsed_value if parsed_value.is_a?(String)
+    rescue JSON::ParserError
+      # Keep raw body when it is not JSON.
+    end
+
+    value = value.to_s.strip
+    return value if value.match?(%r{\Ahttps?://}i)
+
     nil
   end
 

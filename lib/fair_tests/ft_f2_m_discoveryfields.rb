@@ -2,6 +2,7 @@ module FtF2MDiscoveryfields
   require_relative '../fair_test_utils'
   include FairTestUtils
 
+  # TODO: These may not be sufficient fields; check ORA records for output.
   @@required_fields = %w(title contributors contributor_names summary abstract description)
   def ft_f2_m_discoveryfields(url_record)
     # 1. If a DOI, get metadata from Datacite.
@@ -10,8 +11,8 @@ module FtF2MDiscoveryfields
     # 4. Run tests again.
     # 5. If not DOI, try content negotation.
 
-    puts "Got record: #{url_record}"
-    original_url = url_record
+    # SimpleDOI may mutate the passed string, so keep an immutable copy.
+    original_url = url_record&.dup
 
     data_test = {
       test_title_short: 'FAIR Test - F2 - Metadata - Discovery-Oriented Metadata Fields',
@@ -31,22 +32,22 @@ module FtF2MDiscoveryfields
     if is_doi?(url_record)
       # Attempt to get metadata from Datacite.
       record = get_doi_metadata(url_record)
-      if record && !record.empty?
+      if record && !record.empty? && !record.is_a?(String)
         response = perform_test(record, response)
         # Datacite data passed test.
         if response[:value] == 'pass'
           return response
         else
-          # Content negotiation, try test again.
-          record = content_negotiation(url_record)
+          # If DOI metadata fails, resolve DOI and test the resolved target.
+          real_url = resolve_doi(original_url)
+          record = content_negotiation(real_url)
           if record && !record.empty?
             return perform_test(record, response)
           end
         end
+        return response
       else # Try content negotiation
-        puts "Resolving DOI #{original_url}"
         real_url = resolve_doi(original_url)
-        puts "Content negotiation for #{real_url}"
         record = content_negotiation(real_url)
         if record && !record.empty?
           return perform_test(record, response)
