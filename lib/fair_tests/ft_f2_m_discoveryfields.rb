@@ -66,7 +66,6 @@ module FtF2MDiscoveryfields
 
   # This method will perform the actual tests to avoid repetition above.
   def perform_test(record, response)
-    # TODO: Perform the various tests here.
     pass = false
     record.keys.each do |key|
       if @@required_fields.include?(key)
