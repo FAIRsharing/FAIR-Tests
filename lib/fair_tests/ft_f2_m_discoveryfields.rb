@@ -18,7 +18,7 @@ module FtF2MDiscoveryfields
       test_title_short: 'FAIR Test - F2 - Metadata - Discovery-Oriented Metadata Fields',
       test_title: 'Output from running test: FM:F2:M:DiscoveryFields (https://doi.org/10.25504/FAIRsharing.82c497)',
       test_id: 'https://ostrails.github.io/assessment-component-metadata-records/test/FT_F2_M_Discoveryfields.ttl',
-      description: 'TODO: Please provide a suitable description.',
+      description: 'FAIR Test - F2 - Metadata - Discovery-Oriented Metadata Fields evaluates whether a metadata record includes a core set of mandatory descriptive elements that are essential for basic discovery. Specifically, it checks the resolved metadata for the presence of the following four fields: title, contributor names, summary/abstract/description, and publication date (defined as the date the record was first made publicly available). To pass, all of these fields must be present and populated within a structured, common format such as schema.org JSON-LD, DataCite XML, or Dublin Core XML. If any of these fields are empty, the evaluation is expected to fail.',
       endpointDescription: 'https://fair-tests.fairsharing.org/test_descriptions/ft_f2_m_discover_oriented_metadata_fields/api',
       endpointURL: 'https://fair-tests.fairsharing.org/test/ft_f2_m_discover_oriented_metadata_fields',
       url_record: url_record
