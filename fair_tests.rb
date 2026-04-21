@@ -6,6 +6,15 @@ class FairTests < Sinatra::Base
 
   set :public_folder, 'public'
 
+  configure :test do
+    # Disable host checks for Rack::Test default host (example.org) and test flexibility.
+    set :host_authorization, {}
+  end
+
+  configure :production do
+    set :host_authorization, permitted_hosts: ["fair-tests.fairsharing.org", "localhost"]
+  end
+
   # Modules containing the FAIR Tests:
   Dir[File.join(__dir__, 'lib', 'fair_tests', '*.rb')].sort.each do |file|
     require file
