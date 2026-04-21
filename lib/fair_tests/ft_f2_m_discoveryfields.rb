@@ -17,8 +17,8 @@ module FtF2MDiscoveryfields
     data_test = {
       test_title_short: 'FAIR Test - F2 - Metadata - Discovery-Oriented Metadata Fields',
       test_title: 'Output from running test: FM:F2:M:DiscoveryFields (https://doi.org/10.25504/FAIRsharing.82c497)',
-      test_id: 'TBC', # TODO
-      description: '',
+      test_id: 'https://ostrails.github.io/assessment-component-metadata-records/test/FT_F2_M_Discoveryfields.ttl',
+      description: 'TODO: Please provide a suitable description.',
       endpointDescription: 'https://fair-tests.fairsharing.org/test_descriptions/ft_f2_m_discover_oriented_metadata_fields/api',
       endpointURL: 'https://fair-tests.fairsharing.org/test/ft_f2_m_discover_oriented_metadata_fields',
       url_record: url_record
