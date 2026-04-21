@@ -12,7 +12,7 @@ class FairTests < Sinatra::Base
   end
 
   configure :production do
-    set :host_authorization, permitted_hosts: ["fair-tests.fairsharing.org", "localhost"]
+    set :host_authorization, permitted_hosts: %w[fair-tests.fairsharing.org localhost]
   end
 
   # Modules containing the FAIR Tests:
