@@ -67,12 +67,18 @@ module FtF2MDiscoveryfields
   # This method will perform the actual tests to avoid repetition above.
   def perform_test(record, response)
     pass = false
-    record.keys.each do |key|
+    keys = find_keys_with_non_empty_values(record)
+    keys.each do |key|
       if @@required_fields.include?(key)
-        if record[key]
-          response[:value] = 'pass'
-          response[:description] = "The record contains at least one of the required fields: #{@@required_fields.join(', ')}."
-          pass = true
+        response[:value] = 'pass'
+        response[:description] = "The record contains at least one of the required fields: #{@@required_fields.join(', ')}."
+        pass = true
+      else
+        @@required_fields.each do |field|
+          if field.include?(key) || key.include?(field)
+            response[:value] = 'pass'
+            response[:description] = "The record contains at least one of the required fields: #{@@required_fields.join(', ')}."
+          end
         end
       end
     end

@@ -12,8 +12,7 @@ class FtF2MDiscoveryfieldsTest < Minitest::Test
   #################
   def test_is_doi_and_passes
 
-    stub_request(:get, "https://doi.org/10.1234%2FFAIRsharing.123456").
-      with(headers: datacite_headers).to_return(
+    stub_request(:get, "https://doi.org/10.1234%2FFAIRsharing.123456").to_return(
       status: 200,
       body: {
         title: "This record passes"

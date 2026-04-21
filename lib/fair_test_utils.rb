@@ -332,4 +332,36 @@ module FairTestUtils
     end
   end
 
+  # The purpose of this function is to flip out and recursively traverse a hash in order to find any keys where
+  # the value is a non-empty array.
+  def find_keys_with_non_empty_values(obj, results = [], path = [])
+    case obj
+    when Hash
+      obj.each do |key, value|
+        current_path = path + [key]
+
+        # Check if the value is a non-empty array
+        if value.is_a?(Array) && !value.empty?
+          results << current_path
+        end
+
+        if value.is_a?(String) && !value.empty?
+          results << current_path
+        end
+
+        # Recurse into nested structures
+        find_keys_with_non_empty_values(value, results, current_path)
+      end
+
+    when Array
+      obj.each_with_index do |item, index|
+        find_keys_with_non_empty_values(item, results, path + [index])
+      end
+    else
+      return []
+    end
+
+    results.flatten
+  end
+
 end
