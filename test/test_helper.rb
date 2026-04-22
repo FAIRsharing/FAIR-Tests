@@ -1,5 +1,12 @@
 ENV['RACK_ENV'] = 'test'
 
+require 'simplecov'
+
+SimpleCov.start do
+  add_filter '/test/'
+  add_filter '/config/'
+end
+
 require 'minitest/autorun'
 require 'rack/test'
 require_relative '../fair_tests'

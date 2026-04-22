@@ -14,6 +14,8 @@ gem 'rake'
 gem 'dotenv'
 gem 'webmock'
 
+gem 'simplecov', require: false
+
 # Somewhat old, but should do the trick...
 gem 'simple_doi', github: 'UMNLibraries/simpledoi-ruby'
 gem 'curb'
