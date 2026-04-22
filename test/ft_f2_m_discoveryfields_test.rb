@@ -189,4 +189,45 @@ class FtF2MDiscoveryfieldsTest < Minitest::Test
     body = JSON.parse(last_response.body)
     assert_equal body['value'], 'indeterminate'
   end
+
+  #######################
+  # Tests with ORA data #
+  #######################
+  def test_ora_data_passes
+    json_file = JSON.load_file('test/fixtures/example_pass_fixture.json')
+    stub_request(:get, "https://example.org/records/abc123").
+      to_return(
+        status: 200,
+        body: json_file.to_json,
+        headers: headers
+      )
+
+    post '/test/ft_f2_m_discoveryfields',
+         params: { resource_identifier: 'https://example.org/records/abc123' }.to_json,
+         headers: headers
+
+    assert last_response.ok?
+
+    body = JSON.parse(last_response.body)
+    assert_equal body['value'], 'pass'
+  end
+
+  def test_ora_data_fails
+    json_file = JSON.load_file('test/fixtures/example_fail_fixture.json')
+    stub_request(:get, "https://example.org/records/abc123").
+      to_return(
+        status: 200,
+        body: json_file.to_json,
+        headers: headers
+      )
+
+    post '/test/ft_f2_m_discoveryfields',
+         params: { resource_identifier: 'https://example.org/records/abc123' }.to_json,
+         headers: headers
+
+    assert last_response.ok?
+
+    body = JSON.parse(last_response.body)
+    assert_equal body['value'], 'fail'
+  end
 end
