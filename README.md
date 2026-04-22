@@ -1,5 +1,10 @@
 # FAIR Tests API 
 
+![Tests](https://github.com/FAIRsharing/FAIR-Tests/workflows/Unit%20Tests/badge.svg?branch=main)
+
+[![Coverage Status](https://coveralls.io/repos/github/FAIRsharing/FAIR-Tests/badge.svg?branch=maain)](https://coveralls.io/github/FAIRsharing/FAIR-Tests?branch=main)
+
+
 ## About
 
 This is a simple Sinatra application which provies a REST API (only, no GUI) for running
