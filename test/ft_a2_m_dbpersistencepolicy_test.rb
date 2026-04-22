@@ -1,35 +1,34 @@
 # frozen_string_literal: true
 require_relative './test_helper'
 require 'webmock/minitest'
-require_relative '../lib/fair_tests/ft_f1_m_idgloballyunique'
+require_relative '../lib/fair_tests/ft_a2_m_dbpersistencepolicy'
 
-class FtF1MIdgloballyuniqueTest < Minitest::Test
+class FtA2MDbpersistencepolicyTest < Minitest::Test
   include ::TestHelper
-  include ::FtF1MIdgloballyunique
+  include ::FtA2MDbpersistencepolicy
 
-  def test_is_globally_unique
+  def test_ft_a2_m_dbpersistencepolicy_passes
     stub_request(:post, "#{ENV['FAIRSHARING_API_URL']}").
       with(headers: headers).to_return(
       status: 200,
       body: {
         "data": {
-          "regex": {
-            "records": [
-              {
-                "id": "123456",
-                "metadata": {
-                  "globally_unique": true
-                }
+          "fairsharingRecord": {
+            "id": "123456",
+            "registry": "Database",
+            "metadata": {
+              "data_preservation_policy": {
+                "url": "https://www.what_an_url.klo"
               }
-            ]
+            }
           }
         }
       }.to_json,
       headers: headers
     )
 
-    post '/test/ft_f1_m_idgloballyunique',
-         params: { resource_identifier: '10.1234/FAIRsharing.123456' }.to_json,
+    post '/test/ft_a2_m_dbpersistencepolicy',
+         params: { resource_identifier: 'https://fairsharing.org/1234' }.to_json,
          headers: headers
 
     assert last_response.ok?
@@ -38,27 +37,28 @@ class FtF1MIdgloballyuniqueTest < Minitest::Test
     assert_equal body['value'], 'pass'
   end
 
-  def test_is_not_globally_unique
+  def test_ft_a2_m_dbpersistencepolicy_fails
     stub_request(:post, "#{ENV['FAIRSHARING_API_URL']}").
       with(headers: headers).to_return(
       status: 200,
       body: {
         "data": {
-          "regex": {
-            "records": [
-              {
-                "id": "123456",
-                "metadata": {}
+          "fairsharingRecord": {
+            "id": "123456",
+            "registry": "Database",
+            "metadata": {
+              "data_preservation_policy": {
+                "url": ""
               }
-            ]
+            }
           }
         }
       }.to_json,
       headers: headers
     )
 
-    post '/test/ft_f1_m_idgloballyunique',
-         params: { resource_identifier: '10.1234/FAIRsharing.123456' }.to_json,
+    post '/test/ft_a2_m_dbpersistencepolicy',
+         params: { resource_identifier: 'https://fairsharing.org/1234' }.to_json,
          headers: headers
 
     assert last_response.ok?
@@ -67,7 +67,7 @@ class FtF1MIdgloballyuniqueTest < Minitest::Test
     assert_equal body['value'], 'fail'
   end
 
-  def test_is_not_found
+  def test_ft_a2_m_dbpersistencepolicy_is_indeterminate
     stub_request(:post, "#{ENV['FAIRSHARING_API_URL']}").
       with(headers: headers).to_return(
       status: 200,
@@ -81,8 +81,8 @@ class FtF1MIdgloballyuniqueTest < Minitest::Test
       headers: headers
     )
 
-    post '/test/ft_f1_m_idgloballyunique',
-         params: { resource_identifier: '10.1234/FAIRsharing.123456' }.to_json,
+    post '/test/ft_a2_m_dbpersistencepolicy',
+         params: { resource_identifier: 'https://fairsharing.org/1234' }.to_json,
          headers: headers
 
     assert last_response.ok?
@@ -90,5 +90,4 @@ class FtF1MIdgloballyuniqueTest < Minitest::Test
     body = JSON.parse(last_response.body)
     assert_equal body['value'], 'indeterminate'
   end
-
 end
