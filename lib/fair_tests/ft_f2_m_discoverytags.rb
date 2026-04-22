@@ -1,11 +1,11 @@
-module FtF2MDiscoveryfields
+module FtF2MDiscoverytags
   require_relative '../fair_test_utils'
   include FairTestUtils
 
-  # Fields matching or similar to these will be selected.
-  @@required_fields = %w(title contributors contributor_names summary abstract description)
+  # Tags matching or similar to these will be selected.
+  @@required_fields = %w(tag keyword subject domain)
 
-  def ft_f2_m_discoveryfields(url_record)
+  def ft_f2_m_discoverytags(url_record)
     # 1. If a DOI, get metadata from Datacite.
     # 2. Run tests.
     # 3. If fail, try content negotation.
@@ -17,11 +17,11 @@ module FtF2MDiscoveryfields
 
     data_test = {
       test_title_short: 'FAIR Test - F2 - Metadata - Discovery-Oriented Metadata Fields',
-      test_title: 'Output from running test: FM:F2:M:DiscoveryFields (https://doi.org/10.25504/FAIRsharing.82c497)',
-      test_id: 'https://ostrails.github.io/assessment-component-metadata-records/test/FT_F2_M_Discoveryfields.ttl',
-      description: 'FAIR Test - F2 - Metadata - Discovery-Oriented Metadata Fields evaluates whether a metadata record includes a core set of mandatory descriptive elements that are essential for basic discovery. Specifically, it checks the resolved metadata for the presence of the following four fields: title, contributor names, summary/abstract/description, and publication date (defined as the date the record was first made publicly available). To pass, all of these fields must be present and populated within a structured, common format such as schema.org JSON-LD, DataCite XML, or Dublin Core XML. If any of these fields are empty, the evaluation is expected to fail.',
-      endpointDescription: 'https://fair-tests.fairsharing.org/test_descriptions/ft_f2_m_discover_oriented_metadata_fields/api',
-      endpointURL: 'https://fair-tests.fairsharing.org/test/ft_f2_m_discover_oriented_metadata_fields',
+      test_title: 'Output from running test: FM:F2:M:DiscoveryFields (https://fairsharing.org/8021)',
+      test_id: 'https://ostrails.github.io/assessment-component-metadata-records/test/FT_F2_M_Discoverytags.ttl',
+      description: 'FAIR Test - F2 - Metadata - Tagging To Aid Discovery evaluates the metadata for the presence of at least one keyword or tag of any kind (free-text or controlled). With regards to Findability (as opposed to e.g., Interoperability), the presence of any type of tag (irrespective of whether that tag is part of a controlled vocabulary) is the key feature for this metric. The metric expects the identifier to point to structured metadata (e.g., schema.org, DataCite, or DC) and verifies that the keyword/subject property is not empty. The metric passes if at least one tag is identified and fails if the keyword attribute is missing or null.',
+      endpointDescription: 'https://fair-tests.fairsharing.org/test_descriptions/ft_f2_m_discoverytags/api',
+      endpointURL: 'https://fair-tests.fairsharing.org/test/ft_f2_m_discoverytags',
       url_record: url_record
     }
 
@@ -34,7 +34,7 @@ module FtF2MDiscoveryfields
       # Attempt to get metadata from Datacite.
       record = get_doi_metadata(url_record)
       if record && !record.empty? && !record.is_a?(String)
-        response = perform_ft_f2_m_discoveryfields(record, response)
+        response = perform_ft_f2_m_discoverytags(record, response)
         # Datacite data passed test.
         if response[:value] == 'pass'
           return response
@@ -43,7 +43,7 @@ module FtF2MDiscoveryfields
           real_url = resolve_doi(original_url)
           record = content_negotiation(real_url)
           if record && !record.empty?
-            return perform_ft_f2_m_discoveryfields(record, response)
+            return perform_ft_f2_m_discoverytags(record, response)
           end
         end
         return response
@@ -51,14 +51,14 @@ module FtF2MDiscoveryfields
         real_url = resolve_doi(original_url)
         record = content_negotiation(real_url)
         if record && !record.empty?
-          return perform_ft_f2_m_discoveryfields(record, response)
+          return perform_ft_f2_m_discoverytags(record, response)
         end
       end
     else # Try content negotiation
       real_url = resolve_doi(url_record)
       record = content_negotiation(real_url)
       if record && !record.empty?
-        return perform_ft_f2_m_discoveryfields(record, response)
+        return perform_ft_f2_m_discoverytags(record, response)
       end
     end
 
@@ -66,17 +66,17 @@ module FtF2MDiscoveryfields
   end
 
   # This method will perform the actual tests to avoid repetition above.
-  def perform_ft_f2_m_discoveryfields(record, response)
+  def perform_ft_f2_m_discoverytags(record, response)
     pass = false
     keys = find_keys_with_non_empty_values(record)
     keys.each do |key|
-      if @@required_fields.to_s.include?(key)
+      if @@required_fields.include?(key)
         response[:value] = 'pass'
         response[:description] = "The record contains at least one of the required fields: #{@@required_fields.join(', ')}."
         pass = true
       else
         @@required_fields.each do |field|
-          if field.to_s.include?(key) || key.include?(field)
+          if field.include?(key) || key.include?(field)
             response[:value] = 'pass'
             response[:description] = "The record contains at least one of the required fields: #{@@required_fields.join(', ')}."
             pass = true

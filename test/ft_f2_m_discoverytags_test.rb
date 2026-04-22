@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 require_relative './test_helper'
 require 'webmock/minitest'
-require_relative '../lib/fair_tests/ft_f2_m_discoveryfields'
+require_relative '../lib/fair_tests/ft_f2_m_discoverytags'
 
-class FtF2MDiscoveryfieldsTest < Minitest::Test
+class FtF2MDiscoverytagsTest < Minitest::Test
   include ::TestHelper
-  include ::FtF2MDiscoveryfields
+  include ::FtF2MDiscoverytags
 
   #################
   # passing tests #
@@ -15,12 +15,12 @@ class FtF2MDiscoveryfieldsTest < Minitest::Test
     stub_request(:get, "https://doi.org/10.1234%2FFAIRsharing.123456").to_return(
       status: 200,
       body: {
-        title: "This record passes"
+        keywords: %w[This record passes]
       }.to_json,
       headers: headers
     )
 
-    post '/test/ft_f2_m_discoveryfields',
+    post '/test/ft_f2_m_discoverytags',
          params: { resource_identifier: 'https://doi.org/10.1234/FAIRsharing.123456' }.to_json,
          headers: headers
 
@@ -33,20 +33,20 @@ class FtF2MDiscoveryfieldsTest < Minitest::Test
   def test_resolve_doi_then_passes
     stub_request(:get, "https://doi.org/10.25504%2FFAIRsharing.9kahy4").
       to_return(
-      status: 200,
-      body: "https://example.org/records/abc123".to_json,
-      headers: headers
-    )
+        status: 200,
+        body: "https://example.org/records/abc123".to_json,
+        headers: headers
+      )
     stub_request(:get, "https://example.org/records/abc123").
       to_return(
-      status: 200,
-      body: {
-        title: "This record passes"
-      }.to_json,
-      headers: headers
-    )
+        status: 200,
+        body: {
+          keywords: %w[This record passes]
+        }.to_json,
+        headers: headers
+      )
 
-    post '/test/ft_f2_m_discoveryfields',
+    post '/test/ft_f2_m_discoverytags',
          params: { resource_identifier: 'https://doi.org/10.25504/FAIRsharing.9kahy4'}.to_json,
          headers: headers
 
@@ -61,12 +61,12 @@ class FtF2MDiscoveryfieldsTest < Minitest::Test
       to_return(
         status: 200,
         body: {
-          title: "This record passes"
+          keywords: %w[This record passes]
         }.to_json,
         headers: headers
       )
 
-    post '/test/ft_f2_m_discoveryfields',
+    post '/test/ft_f2_m_discoverytags',
          params: { resource_identifier: 'https://example.org/records/abc123'}.to_json,
          headers: headers
 
@@ -92,10 +92,10 @@ class FtF2MDiscoveryfieldsTest < Minitest::Test
     # resolve_doi performs a second GET without Datacite headers.
     stub_request(:get, "https://doi.org/10.1234%2FFAIRsharing.123456").
       to_return(
-      status: 200,
-      body: "https://example.org/records/abc123".to_json,
-      headers: headers
-    )
+        status: 200,
+        body: "https://example.org/records/abc123".to_json,
+        headers: headers
+      )
     stub_request(:get, "https://example.org/records/abc123").
       to_return(
         status: 200,
@@ -105,7 +105,7 @@ class FtF2MDiscoveryfieldsTest < Minitest::Test
         headers: headers
       )
 
-    post '/test/ft_f2_m_discoveryfields',
+    post '/test/ft_f2_m_discoverytags',
          params: { resource_identifier: 'https://doi.org/10.1234/FAIRsharing.123456' }.to_json,
          headers: headers
 
@@ -126,7 +126,7 @@ class FtF2MDiscoveryfieldsTest < Minitest::Test
         headers: headers
       )
 
-    post '/test/ft_f2_m_discoveryfields',
+    post '/test/ft_f2_m_discoverytags',
          params: { resource_identifier: 'https://example.org/records/abc123' }.to_json,
          headers: headers
 
@@ -161,7 +161,7 @@ class FtF2MDiscoveryfieldsTest < Minitest::Test
         headers: headers
       )
 
-    post '/test/ft_f2_m_discoveryfields',
+    post '/test/ft_f2_m_discoverytags',
          params: { resource_identifier: 'https://doi.org/10.1234/FAIRsharing.123456' }.to_json,
          headers: headers
 
@@ -180,7 +180,7 @@ class FtF2MDiscoveryfieldsTest < Minitest::Test
         headers: headers
       )
 
-    post '/test/ft_f2_m_discoveryfields',
+    post '/test/ft_f2_m_discoverytags',
          params: { resource_identifier: 'https://example.org/records/abc123' }.to_json,
          headers: headers
 
@@ -202,7 +202,7 @@ class FtF2MDiscoveryfieldsTest < Minitest::Test
         headers: headers
       )
 
-    post '/test/ft_f2_m_discoveryfields',
+    post '/test/ft_f2_m_discoverytags',
          params: { resource_identifier: 'https://example.org/records/abc123' }.to_json,
          headers: headers
 
@@ -213,7 +213,7 @@ class FtF2MDiscoveryfieldsTest < Minitest::Test
   end
 
   def test_ora_data_fails
-    json_file = JSON.load_file('test/fixtures/example_fail_discoveryfields_fixture.json')
+    json_file = JSON.load_file('test/fixtures/example_fail_discoverytags_fixture.json')
     stub_request(:get, "https://example.org/records/abc123").
       to_return(
         status: 200,
@@ -221,7 +221,7 @@ class FtF2MDiscoveryfieldsTest < Minitest::Test
         headers: headers
       )
 
-    post '/test/ft_f2_m_discoveryfields',
+    post '/test/ft_f2_m_discoverytags',
          params: { resource_identifier: 'https://example.org/records/abc123' }.to_json,
          headers: headers
 
@@ -230,4 +230,5 @@ class FtF2MDiscoveryfieldsTest < Minitest::Test
     body = JSON.parse(last_response.body)
     assert_equal body['value'], 'fail'
   end
+
 end
