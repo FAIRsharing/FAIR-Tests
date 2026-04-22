@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 require_relative './test_helper'
 require 'webmock/minitest'
-require_relative '../lib/fair_tests/ft_ark_f1gupr'
+require_relative '../lib/fair_tests/ft_ark_f1gupri'
 
 class FtArkf1guprTest < Minitest::Test
   include ::TestHelper
