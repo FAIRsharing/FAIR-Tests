@@ -35,7 +35,7 @@ class FtArkf1gupriTest < Minitest::Test
       headers: headers
     )
 
-    post '/test/ft_ark_f1gupr',
+    post '/test/ft_ark_f1gupri',
          params: { resource_identifier: 'https://fairsharing.org/1234' }.to_json,
          headers: headers
 
@@ -72,7 +72,7 @@ class FtArkf1gupriTest < Minitest::Test
       headers: headers
     )
 
-    post '/test/ft_ark_f1gupr',
+    post '/test/ft_ark_f1gupri',
          params: { resource_identifier: 'https://fairsharing.org/1234' }.to_json,
          headers: headers
 
@@ -96,7 +96,7 @@ class FtArkf1gupriTest < Minitest::Test
       headers: headers
     )
 
-    post '/test/ft_ark_f1gupr',
+    post '/test/ft_ark_f1gupri',
          params: { resource_identifier: 'https://fairsharing.org/1234' }.to_json,
          headers: headers
 
