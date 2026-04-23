@@ -90,4 +90,29 @@ class FtArkA2preservationTest < Minitest::Test
     body = JSON.parse(last_response.body)
     assert_equal body['value'], 'indeterminate'
   end
+
+  def test_fail_not_a_database
+    stub_request(:post, "#{ENV['FAIRSHARING_API_URL']}").
+      with(headers: headers).to_return(
+      status: 200,
+      body: {
+        "data": {
+          "fairsharingRecord": {
+            "id": "123456",
+            "registry": "Standard"
+          }
+        }
+      }.to_json,
+      headers: headers
+    )
+
+    post '/test/ft_ark_a2preservation',
+         params: { resource_identifier: 'https://fairsharing.org/1234' }.to_json,
+         headers: headers
+
+    assert last_response.ok?
+
+    body = JSON.parse(last_response.body)
+    assert_equal body['value'], 'fail'
+  end
 end
