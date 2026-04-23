@@ -24,4 +24,9 @@ module TestHelper
       'Accept' => 'application/json'
     }
   end
+  def datacite_headers
+    {
+      'Accept'=>'application/vnd.citationstyles.csl+json'
+    }
+  end
 end
