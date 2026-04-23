@@ -20,4 +20,9 @@ class StaticTest < Minitest::Test
     assert_equal 'List of available tests. Prepend /test/ to run a test and access with POST.', body['message']
     assert_equal body['tests'].count, Dir.entries('./lib/fair_tests').reject { |f| f.start_with?('.') }.count
   end
+
+  def test_404
+    get '/not_found'
+    assert last_response.not_found?
+  end
 end
