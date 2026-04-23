@@ -82,6 +82,31 @@ class FtArkf1gupriTest < Minitest::Test
     assert_equal body['value'], 'fail'
   end
 
+  def test_fail_not_database_ft_ark_f1gupri
+    stub_request(:post, "#{ENV['FAIRSHARING_API_URL']}").
+      with(headers: headers).to_return(
+      status: 200,
+      body: {
+        "data": {
+          "fairsharingRecord": {
+            "id": "1234567",
+            "registry": "Standard",
+          }
+        }
+      }.to_json,
+      headers: headers
+    )
+
+    post '/test/ft_ark_f1gupri',
+         params: { resource_identifier: 'https://fairsharing.org/1234' }.to_json,
+         headers: headers
+
+    assert last_response.ok?
+
+    body = JSON.parse(last_response.body)
+    assert_equal body['value'], 'fail'
+  end
+
   def test_indeterminate_ft_ark_f1gupri
     stub_request(:post, "#{ENV['FAIRSHARING_API_URL']}").
       with(headers: headers).to_return(

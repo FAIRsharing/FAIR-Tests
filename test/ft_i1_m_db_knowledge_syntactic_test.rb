@@ -109,7 +109,7 @@ class FtI1MDbKnowledgeSyntacticTest < Minitest::Test
   end
 
   def test_is_not_a_database_via_doi
-    stub_request(:get, 'https://doi.org/10.1234/5678').to_return(
+    stub_request(:get, 'https://doi.org/10.1234%2F5678').to_return(
       status: 200,
       body: "https://fairsharing.org/5678".to_json,
       headers: headers
