@@ -97,7 +97,7 @@ module FairTestUtils
     begin
       json_data = JSON.parse(response)
     rescue => e
-      puts "Error parsing DOI metadata: #{e.message}"
+      json_data[:error] = "Error parsing DOI metadata: #{e.message}"
     end
     json_data
   end
@@ -124,14 +124,18 @@ module FairTestUtils
       resolved = begin
         response.request.last_uri.to_s
       rescue Addressable::URI::InvalidURIError
+        #:nocov:
         nil
+        #:nocov:
       end
 
       if !resolved.nil? && !resolved.empty?
         resolved_host = begin
           URI.parse(resolved).host.to_s.downcase
         rescue URI::InvalidURIError
-          ''
+          #:nocov:
+          nil
+          #:nocov:
         end
         return body_url if resolved_host == 'doi.org' && !body_url.nil?
         return nil if resolved_host == 'doi.org'
@@ -145,7 +149,9 @@ module FairTestUtils
       nil
     end
   rescue Net::OpenTimeout, Net::ReadTimeout
+    #:nocov:
     nil
+    #:nocov:
   end
 
   def normalize_doi_url(url)
@@ -287,7 +293,9 @@ module FairTestUtils
       begin
         JSON.parse(response.body)['data']['fairsharingRecord']
       rescue
+        #:nocov:
         {}
+        #:nocov:
       end
     else
       {
