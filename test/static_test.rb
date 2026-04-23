@@ -25,4 +25,15 @@ class StaticTest < Minitest::Test
     get '/not_found'
     assert last_response.not_found?
   end
+
+  def test_not_found
+    post '/test/no_such_test',
+         { params: { resource_identifier: 'https://example.org/x' }.to_json }.to_json,
+         {
+           'CONTENT_TYPE' => 'application/json',
+           'HTTP_ACCEPT' => 'application/json'
+         }
+    res = JSON.parse(last_response.body)
+    assert_equal 'Test no_such_test not found.', res['message']
+  end
 end
