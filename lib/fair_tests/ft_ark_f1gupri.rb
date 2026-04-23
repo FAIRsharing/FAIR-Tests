@@ -1,8 +1,8 @@
-module FtArkF1gupr
+module FtArkF1gupri
   require_relative '../fair_test_utils'
   include FairTestUtils
 
-  def ft_ark_f1gupr(url_record)
+  def ft_ark_f1gupri(url_record)
     record = obtain_record_from_text(url_record)
 
     data_test = {

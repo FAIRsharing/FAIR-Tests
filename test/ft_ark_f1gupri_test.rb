@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 require_relative './test_helper'
 require 'webmock/minitest'
-require_relative '../lib/fair_tests/ft_ark_f1gupr'
+require_relative '../lib/fair_tests/ft_ark_f1gupri'
 
-class FtArkf1guprTest < Minitest::Test
+class FtArkf1gupriTest < Minitest::Test
   include ::TestHelper
-  include ::FtArkF1gupr
+  include ::FtArkF1gupri
 
-  def test_pass_ft_ark_f1gupr
+  def test_pass_ft_ark_f1gupri
     stub_request(:post, "#{ENV['FAIRSHARING_API_URL']}").
       with(headers: headers).to_return(
       status: 200,
@@ -35,7 +35,7 @@ class FtArkf1guprTest < Minitest::Test
       headers: headers
     )
 
-    post '/test/ft_ark_f1gupr',
+    post '/test/ft_ark_f1gupri',
          params: { resource_identifier: 'https://fairsharing.org/1234' }.to_json,
          headers: headers
 
@@ -45,7 +45,7 @@ class FtArkf1guprTest < Minitest::Test
     assert_equal body['value'], 'pass'
   end
 
-  def test_fail_ft_ark_f1gupr
+  def test_fail_ft_ark_f1gupri
     stub_request(:post, "#{ENV['FAIRSHARING_API_URL']}").
       with(headers: headers).to_return(
       status: 200,
@@ -72,7 +72,7 @@ class FtArkf1guprTest < Minitest::Test
       headers: headers
     )
 
-    post '/test/ft_ark_f1gupr',
+    post '/test/ft_ark_f1gupri',
          params: { resource_identifier: 'https://fairsharing.org/1234' }.to_json,
          headers: headers
 
@@ -82,7 +82,7 @@ class FtArkf1guprTest < Minitest::Test
     assert_equal body['value'], 'fail'
   end
 
-  def test_indeterminate_ft_ark_f1gupr
+  def test_indeterminate_ft_ark_f1gupri
     stub_request(:post, "#{ENV['FAIRSHARING_API_URL']}").
       with(headers: headers).to_return(
       status: 200,
@@ -96,7 +96,7 @@ class FtArkf1guprTest < Minitest::Test
       headers: headers
     )
 
-    post '/test/ft_ark_f1gupr',
+    post '/test/ft_ark_f1gupri',
          params: { resource_identifier: 'https://fairsharing.org/1234' }.to_json,
          headers: headers
 
