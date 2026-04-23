@@ -56,6 +56,76 @@ class FtF2MDiscoverytagsTest < Minitest::Test
     assert_equal body['value'], 'pass'
   end
 
+  def test_is_doi_and_fails_then_resolution_passes
+
+    stub_request(:get, "https://doi.org/10.1234%2FFAIRsharing.123456").
+      with(headers: datacite_headers).to_return(
+      status: 200,
+      body: {
+        gibberish: %w[This record fails]
+      }.to_json,
+      headers: headers
+    )
+    stub_request(:get, "https://doi.org/10.1234%2FFAIRsharing.123456").
+      with { |request| request.headers['Accept'] != datacite_headers['Accept'] }.
+      to_return(
+        status: 200,
+        body: "https://example.org/records/abc123".to_json,
+        headers: headers
+      )
+    stub_request(:get, "https://example.org/records/abc123").
+      to_return(
+        status: 200,
+        body: {
+          keywords: %w[This record passes]
+        }.to_json,
+        headers: headers
+      )
+
+    post '/test/ft_f2_m_discoverytags',
+         params: { resource_identifier: 'https://doi.org/10.1234/FAIRsharing.123456' }.to_json,
+         headers: headers
+
+    assert last_response.ok?
+
+    body = JSON.parse(last_response.body)
+    assert_equal body['value'], 'pass'
+  end
+
+  def test_is_doi_and_fails_then_resolution_fails
+
+    stub_request(:get, "https://doi.org/10.1234%2FFAIRsharing.123456").
+      with(headers: datacite_headers).to_return(
+      status: 200,
+      body: {
+        gibberish: %w[This record fails]
+      }.to_json,
+      headers: headers
+    )
+    stub_request(:get, "https://doi.org/10.1234%2FFAIRsharing.123456").
+      with { |request| request.headers['Accept'] != datacite_headers['Accept'] }.
+      to_return(
+        status: 200,
+        body: "https://example.org/records/abc123".to_json,
+        headers: headers
+      )
+    stub_request(:get, "https://example.org/records/abc123").
+      to_return(
+        status: 200,
+        body: {}.to_json,
+        headers: headers
+      )
+
+    post '/test/ft_f2_m_discoverytags',
+         params: { resource_identifier: 'https://doi.org/10.1234/FAIRsharing.123456' }.to_json,
+         headers: headers
+
+    assert last_response.ok?
+
+    body = JSON.parse(last_response.body)
+    assert_equal body['value'], 'fail'
+  end
+
   def test_non_doi_passes
     stub_request(:get, "https://example.org/records/abc123").
       to_return(

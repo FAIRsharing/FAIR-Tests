@@ -1,6 +1,6 @@
-name: Rails Tests
+name: Unit Tests
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
   build:
@@ -37,6 +37,13 @@ jobs:
           source $HOME/.rvm/scripts/rvm
           rvm use $(cat .ruby-version)@$(cat .ruby-gemset)
           bundle exec rake test
+
+      - name: Upload coverage to Coveralls
+        uses: coverallsapp/github-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          file: coverage/.resultset.json
+          format: simplecov
 
       - name: Dump docker logs on failure
         if: failure()

@@ -43,4 +43,86 @@ class FtArkF1Test < Minitest::Test
     assert_equal body['value'], 'pass'
   end
 
+  def test_does_not_mint_persistent_identifiers
+    stub_request(:post, "#{ENV['FAIRSHARING_API_URL']}").
+      with(headers: headers).to_return(
+      status: 200,
+      body: {
+        "data": {
+          "fairsharingRecord": {
+            "id": "123456",
+            "registry": "Database",
+            "recordAssociations": [
+              {
+                "recordAssocLabel": "implements",
+                "linkedRecord": {
+                  "type": "identifier_schema",
+                  "metadata": {
+                    "persistent": false
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }.to_json,
+      headers: headers
+    )
+
+    post '/test/ft_ark_f1',
+         params: { resource_identifier: 'https://fairsharing.org/1234' }.to_json,
+         headers: headers
+
+    assert last_response.ok?
+
+    body = JSON.parse(last_response.body)
+    assert_equal body['value'], 'fail'
+  end
+
+  def test_is_not_a_database
+    stub_request(:post, "#{ENV['FAIRSHARING_API_URL']}").
+      with(headers: headers).to_return(
+      status: 200,
+      body: {
+        "data": {
+          "fairsharingRecord": {
+            "id": "123456",
+            "registry": "Standard"
+          }
+        }
+      }.to_json,
+      headers: headers
+    )
+
+    post '/test/ft_ark_f1',
+         params: { resource_identifier: 'https://fairsharing.org/1234' }.to_json,
+         headers: headers
+
+    assert last_response.ok?
+
+    body = JSON.parse(last_response.body)
+    assert_equal body['value'], 'fail'
+  end
+
+  def test_file_not_found
+    stub_request(:post, "#{ENV['FAIRSHARING_API_URL']}").
+      with(headers: headers).to_return(
+      status: 200,
+      body: {
+        "data": {
+          "fairsharingRecord": {}
+        }
+      }.to_json,
+      headers: headers
+    )
+
+    post '/test/ft_ark_f1',
+         params: { resource_identifier: 'https://fairsharing.org/1234' }.to_json,
+         headers: headers
+
+    assert last_response.ok?
+
+    body = JSON.parse(last_response.body)
+    assert_equal body['value'], 'indeterminate'
+  end
 end

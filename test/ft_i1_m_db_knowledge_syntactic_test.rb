@@ -108,4 +108,34 @@ class FtI1MDbKnowledgeSyntacticTest < Minitest::Test
     assert_equal body['value'], 'indeterminate'
   end
 
+  def test_is_not_a_database_via_doi
+    stub_request(:get, 'https://doi.org/10.1234%2F5678').to_return(
+      status: 200,
+      body: "https://fairsharing.org/5678".to_json,
+      headers: headers
+    )
+    stub_request(:post, "#{ENV['FAIRSHARING_API_URL']}").to_return(
+      status: 200,
+      body: {
+        "data": {
+          "fairsharingRecord": {
+            "id": "123456",
+            "registry": "Standard",
+            "format": nil
+          }
+        }
+      }.to_json,
+      headers: headers
+    )
+
+    post '/test/ft_i1_m_db_knowledge_syntactic',
+         params: { resource_identifier: 'https://doi.org/10.1234/5678' }.to_json,
+         headers: headers
+
+    assert last_response.ok?
+
+    body = JSON.parse(last_response.body)
+    assert_equal body['value'], 'fail'
+  end
+
 end
