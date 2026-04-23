@@ -55,8 +55,7 @@ module FtF2MDiscoverypublisher
         end
       end
     else # Try content negotiation
-      real_url = resolve_doi(url_record)
-      record = content_negotiation(real_url)
+      record = content_negotiation(url_record)
       if record && !record.empty?
         return perform_ft_f2_m_discoverypublisher(record, response)
       end
