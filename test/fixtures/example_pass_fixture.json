@@ -1,0 +1,258 @@
+{
+  "response": {
+    "document": {
+      "abstract": "Ensuring that research outputs are Findable, Accessible, Interoperable, and Reusable (FAIR) requires coordinated action across diverse stakeholders—from researchers and data stewards to publishers and repository managers. This session showcases four examples of practical initiatives and collaborative tools supporting the FAIR Principles in action. During the session, FAIRsharing's role in promoting the value and use of standards, repositories and policies to researchers across all disciplines is described, as well as its service provisions including transparent FAIR assessment and integrations with a variety of RDM tools. To align institutional practices with global standards the development of the ORA-FAIRsharing FAIR benchmark is discussed, designed to embed FAIR assessment and assistance within institutional repositories. Results of two TIER2 publisher pilots, the Editorial Reference Handbook and the Data Availability Statement, are summarised highlighting concrete steps and associated challenges to facilitate consistent and transparent FAIR data reporting in publications. Additionally, the RDA Domain Ambassadors programme is introduced, including how it connects disciplinary communities with FAIR resources and expertise, fostering cross-domain collaboration and knowledge exchange to strengthen FAIR implementation worldwide.",
+      "indexing__all_text": [
+        "Ensuring that research outputs are Findable, Accessible, Interoperable, and Reusable (FAIR) requires coordinated action across diverse stakeholders—from researchers and data stewards to publishers and repository managers. This session showcases four examples of practical initiatives and collaborative tools supporting the FAIR Principles in action. During the session, FAIRsharing's role in promoting the value and use of standards, repositories and policies to researchers across all disciplines is described, as well as its service provisions including transparent FAIR assessment and integrations with a variety of RDM tools. To align institutional practices with global standards the development of the ORA-FAIRsharing FAIR benchmark is discussed, designed to embed FAIR assessment and assistance within institutional repositories. Results of two TIER2 publisher pilots, the Editorial Reference Handbook and the Data Availability Statement, are summarised highlighting concrete steps and associated challenges to facilitate consistent and transparent FAIR data reporting in publications. Additionally, the RDA Domain Ambassadors programme is introduced, including how it connects disciplinary communities with FAIR resources and expertise, fostering cross-domain collaboration and knowledge exchange to strengthen FAIR implementation worldwide.",
+        "10.5287/ora-yrqaj4p0r",
+        "Oxford Forum of Open Scholarship 2026",
+        "2026-01-01T00:00:00Z",
+        "English",
+        "FAIR",
+        "institutional repository",
+        "repository",
+        "open access",
+        "pubs:2384680",
+        "2384680",
+        "Research",
+        "Cultivating FAIR data across disciplines: examples of collaborative initiatives and practical tools",
+        "Sansone, S-A",
+        "Sansone, SA",
+        "Crane, D",
+        "Mitchell, T",
+        "Lister, A",
+        "Manrique-Castano, D",
+        "Taylor-Grant, R",
+        "Cannon, M",
+        "Knazook, B",
+        "oerc0043",
+        "bodl3575",
+        "bodl3087",
+        "oerc0086",
+        "0000-0001-5306-5690",
+        "0000-0002-7197-0974",
+        "0009-0007-5451-0486",
+        "0000-0002-7702-4495",
+        "0000-0002-1912-1764",
+        "0000-0002-7614-0806",
+        "0000-0002-1496-8392",
+        "0000-0003-3108-3921",
+        "uuid:b1dfbe7e-e356-48a8-949f-4ac655447aeb",
+        "10.5287/ora-yrqaj4p0r",
+        "Susanna-Assunta Sansone",
+        "Daniel Crane",
+        "Tom Mitchell",
+        "Allyson Lister",
+        "Daniel Manrique-Castano",
+        "Rebecca Taylor-Grant",
+        "Matthew Cannon",
+        "Beth Knazook",
+        "Lister_et_al_2026_Cultivating_FAIR_data.pdf",
+        "svh53wz50s",
+        "uuid_b1dfbe7e-e356-48a8-949f-4ac655447aeb",
+        "b1fbe7e-e356-48a8-949f-4ac655447aeb"
+      ],
+      "citation_publication_date": "2026-03-05T00:00:00Z",
+      "publisher_name": "Bodleian Libraries, University of Oxford",
+      "citation_place_of_publication": "Oxford",
+      "publisher_website_url": "https://www.bodleian.ox.ac.uk/",
+      "identifier_doi": "10.5287/ora-yrqaj4p0r",
+      "indexing__identifiers": [
+        "10.5287/ora-yrqaj4p0r",
+        "pubs:2384680",
+        "2384680",
+        "oerc0043",
+        "bodl3575",
+        "bodl3087",
+        "oerc0086",
+        "0000-0001-5306-5690",
+        "0000-0002-7197-0974",
+        "0009-0007-5451-0486",
+        "0000-0002-7702-4495",
+        "0000-0002-1912-1764",
+        "0000-0002-7614-0806",
+        "0000-0002-1496-8392",
+        "0000-0003-3108-3921",
+        "uuid:b1dfbe7e-e356-48a8-949f-4ac655447aeb",
+        "10.5287/ora-yrqaj4p0r",
+        "svh53wz50s",
+        "uuid_b1dfbe7e-e356-48a8-949f-4ac655447aeb",
+        "b1fbe7e-e356-48a8-949f-4ac655447aeb"
+      ],
+      "event_title": "Oxford Forum of Open Scholarship 2026",
+      "event_location": "Online - Virtual conference",
+      "event_start_date": "2026-03-02T00:00:00Z",
+      "event_end_date": "2026-03-06T00:00:00Z",
+      "event_website_url": "https://openaccess.ox.ac.uk/oxfos",
+      "rights_copyright_date": "2026-01-01T00:00:00Z",
+      "licence": "CC Attribution (CC BY)",
+      "licence_url": "http://creativecommons.org/licenses/by/4.0/",
+      "rights_holders": [
+        "Lister et al."
+      ],
+      "rights_statement": "© 2026 The Author(s)",
+      "record_created_date": "2026-03-04T00:00:00Z",
+      "record_deposit_date": "2026-03-04T11:01:21Z",
+      "record_content_source": [
+        "Symplectic Elements"
+      ],
+      "record_publication_date": "2026-03-04T11:13:55Z",
+      "language": [
+        "English"
+      ],
+      "f_language": [
+        "English"
+      ],
+      "keyword": [
+        "FAIR",
+        "institutional repository",
+        "repository",
+        "open access"
+      ],
+      "indexing__tags": [
+        "FAIR",
+        "institutional repository",
+        "repository",
+        "open access",
+        "Research"
+      ],
+      "f_keyword": [
+        "FAIR",
+        "institutional repository",
+        "repository",
+        "open access"
+      ],
+      "computed__modified_date": "2026-03-10T09:45:01Z",
+      "tinypid": "pubs:2384680",
+      "type_of_work": "Conference item",
+      "f_type_of_work": [
+        "Conference item"
+      ],
+      "content_type": "Conference item",
+      "sub_type_of_work": "Presentation",
+      "f_sub_type_of_work": [
+        "Presentation"
+      ],
+      "identifier_pubs_identifier": "2384680",
+      "subject": [
+        "Research"
+      ],
+      "f_subject": [
+        "Research"
+      ],
+      "title": "Cultivating FAIR data across disciplines: examples of collaborative initiatives and practical tools",
+      "indexing__title_search": [
+        "Cultivating FAIR data across disciplines: examples of collaborative initiatives and practical tools"
+      ],
+      "display__versions": "[{\"version_title\":\"Cultivating FAIR data across disciplines: Examples of collaborative initiatives and practical tools\",\"version_identifier_doi\":\"10.5287/ora-yrqaj4p0r\",\"version_created_date\":\"2026-03-04T11:13:53+00:00\",\"version_public_note\":\"\"}]",
+      "contributors__department": [
+        "Engineering Science",
+        "Bodleian Libraries Scholarly Resources",
+        "Bodleian Collections Management"
+      ],
+      "f_contributors__department": [
+        "Engineering Science",
+        "Bodleian Libraries Scholarly Resources",
+        "Bodleian Collections Management"
+      ],
+      "contributors__name": [
+        "Sansone, S-A",
+        "Sansone, SA",
+        "Crane, D",
+        "Mitchell, T",
+        "Lister, A",
+        "Manrique-Castano, D",
+        "Taylor-Grant, R",
+        "Cannon, M",
+        "Knazook, B",
+        "Sansone",
+        "Crane",
+        "Mitchell"
+      ],
+      "f_contributors__name": [
+        "Sansone, S-A",
+        "Sansone, SA",
+        "Crane, D",
+        "Mitchell, T",
+        "Lister, A",
+        "Manrique-Castano, D",
+        "Taylor-Grant, R",
+        "Cannon, M",
+        "Knazook, B"
+      ],
+      "contributors__division": [
+        "MPLS",
+        "GLAM"
+      ],
+      "f_contributors__division": [
+        "MPLS",
+        "GLAM"
+      ],
+      "contributors__preferred_family_name": [
+        "Sansone",
+        "Crane",
+        "Mitchell"
+      ],
+      "contributors__institution": [
+        "University of Oxford"
+      ],
+      "contributors__institutional_identifier": [
+        "oerc0043",
+        "bodl3575",
+        "bodl3087",
+        "oerc0086"
+      ],
+      "contributors__orcid_identifier": [
+        "0000-0001-5306-5690",
+        "0000-0002-7197-0974",
+        "0009-0007-5451-0486",
+        "0000-0002-7702-4495",
+        "0000-0002-1912-1764",
+        "0000-0002-7614-0806",
+        "0000-0002-1496-8392",
+        "0000-0003-3108-3921"
+      ],
+      "contributors__sub_department": [
+        "Engineering Science"
+      ],
+      "computed__has_binary_files": true,
+      "display__binary_files": "[{\"safe_filename\":\"Lister_et_al_2026_Cultivating_FAIR_data.pdf\",\"file_path\":\"/transfer_data/symp_to_review/svh53wz50s/2026-03-05+OxFOS+-+Cultivating+FAIR+data+across+disciplines_+Examples+of+collaborative+initiatives+and+practical+tools.pdf\",\"source_file_path\":\"/transfer_data/symp_to_review/svh53wz50s/2026-03-05+OxFOS+-+Cultivating+FAIR+data+across+disciplines_+Examples+of+collaborative+initiatives+and+practical+tools.pdf\",\"file_made_available_date\":\"2026-03-04T12:33:14Z\",\"file_requestable\":\"\",\"filename\":\"Lister_et_al_2026_Cultivating_FAIR_data.pdf\",\"embargo_status\":\"\",\"embargo_release\":\"\",\"embargo_end\":\"2026-03-04T00:00:00Z\",\"embargo_reasons\":\"\",\"description\":\"\",\"file_format\":\"application/pdf\",\"hash\":\"urn:sha1:6dfcda8ca563c1aa51cdcad9d3920f2df0e13e09\",\"datastream_id\":\"\",\"file_size\":\"21843533\",\"file_order\":\"1\",\"file_version\":\"Version of record\",\"file_rioxx_file_version\":\"VoR\",\"file_version_of\":\"\",\"file_admin_hyrax_filesest_identifier\":\"svh53wz50s\",\"file_licence\":\"\",\"file_licence_url\":\"\"}]",
+      "binary_files__filename": [
+        "Lister_et_al_2026_Cultivating_FAIR_data.pdf"
+      ],
+      "computed__contains_full_text": true,
+      "computed__item_year": 2026,
+      "f_item_year": [
+        2026
+      ],
+      "oaipmh__oai_dc__creator": [
+        "Sansone, S-A",
+        "Crane, D",
+        "Mitchell, T",
+        "Lister, A",
+        "Manrique-Castano, D",
+        "Taylor-Grant, R",
+        "Cannon, M",
+        "Knazook, B"
+      ],
+      "indexing__author_search": [
+        "Sansone, S-A",
+        "Crane, D",
+        "Mitchell, T",
+        "Lister, A",
+        "Manrique-Castano, D",
+        "Taylor-Grant, R",
+        "Cannon, M",
+        "Knazook, B"
+      ],
+      "oaipmh__oai_dc__citation": "",
+      "_solr_record_updated_": "2026-03-10T09:45:29Z",
+      "id": "uuid:b1dfbe7e-e356-48a8-949f-4ac655447aeb",
+      "pid": "uuid:b1dfbe7e-e356-48a8-949f-4ac655447aeb",
+      "display__related_items": "[]",
+      "display__funding": "[]",
+      "_version_": 1859267780796219392,
+      "display__contributors": "[{\"department\":\"Engineering Science\",\"display_name\":\"Sansone, S-A\",\"division\":\"MPLS\",\"email\":\"\",\"ora3_affiliation\":\"\",\"family_name\":\"Sansone\",\"given_names\":\"Susanna-Assunta\",\"preferred_family_name\":\"Sansone\",\"preferred_given_names\":\"Susanna-Assunta\",\"institution\":\"University of Oxford\",\"institutional_identifier\":\"oerc0043\",\"orcid_identifier\":\"0000-0001-5306-5690\",\"oxford_college\":\"\",\"research_group\":\"\",\"sub_department\":\"Engineering Science\",\"sub_unit\":\"\",\"contributor_website_url\":\"\",\"contributor_type\":\"Personal\",\"roles\":[{\"role_title\":\"Author\",\"role_order\":\"2\",\"et_al\":\"\"}]},{\"department\":\"Bodleian Libraries Scholarly Resources\",\"display_name\":\"Crane, D\",\"division\":\"GLAM\",\"email\":\"\",\"ora3_affiliation\":\"\",\"family_name\":\"Crane\",\"given_names\":\"Daniel\",\"preferred_family_name\":\"Crane\",\"preferred_given_names\":\"Daniel\",\"institution\":\"University of Oxford\",\"institutional_identifier\":\"bodl3575\",\"orcid_identifier\":\"0000-0002-7197-0974\",\"oxford_college\":\"\",\"research_group\":\"\",\"sub_department\":\"\",\"sub_unit\":\"\",\"contributor_website_url\":\"\",\"contributor_type\":\"Personal\",\"roles\":[{\"role_title\":\"Author\",\"role_order\":\"4\",\"et_al\":\"\"}]},{\"department\":\"Bodleian Collections Management\",\"display_name\":\"Mitchell, T\",\"division\":\"GLAM\",\"email\":\"\",\"ora3_affiliation\":\"\",\"family_name\":\"Mitchell\",\"given_names\":\"Tom\",\"preferred_family_name\":\"Mitchell\",\"preferred_given_names\":\"Tom\",\"institution\":\"University of Oxford\",\"institutional_identifier\":\"bodl3087\",\"orcid_identifier\":\"0009-0007-5451-0486\",\"oxford_college\":\"\",\"research_group\":\"\",\"sub_department\":\"\",\"sub_unit\":\"\",\"contributor_website_url\":\"\",\"contributor_type\":\"Personal\",\"roles\":[{\"role_title\":\"Author\",\"role_order\":\"5\",\"et_al\":\"\"}]},{\"department\":\"Engineering Science\",\"display_name\":\"Lister, A\",\"division\":\"MPLS\",\"email\":\"\",\"ora3_affiliation\":\"\",\"family_name\":\"Lister\",\"given_names\":\"Allyson\",\"preferred_family_name\":\"\",\"preferred_given_names\":\"\",\"institution\":\"University of Oxford\",\"institutional_identifier\":\"oerc0086\",\"orcid_identifier\":\"0000-0002-7702-4495\",\"oxford_college\":\"\",\"research_group\":\"\",\"sub_department\":\"\",\"sub_unit\":\"\",\"contributor_website_url\":\"\",\"contributor_type\":\"Personal\",\"roles\":[{\"role_title\":\"Depositor\",\"role_order\":\"1\",\"et_al\":\"\"},{\"role_title\":\"Author\",\"role_order\":\"1\",\"et_al\":\"\"}]},{\"department\":\"\",\"display_name\":\"Manrique-Castano, D\",\"division\":\"\",\"email\":\"\",\"ora3_affiliation\":\"\",\"family_name\":\"Manrique-Castano\",\"given_names\":\"Daniel\",\"preferred_family_name\":\"\",\"preferred_given_names\":\"\",\"institution\":\"\",\"institutional_identifier\":\"\",\"orcid_identifier\":\"0000-0002-1912-1764\",\"oxford_college\":\"\",\"research_group\":\"\",\"sub_department\":\"\",\"sub_unit\":\"\",\"contributor_website_url\":\"\",\"contributor_type\":\"Personal\",\"roles\":[{\"role_title\":\"Author\",\"role_order\":\"7\",\"et_al\":\"\"}]},{\"department\":\"\",\"display_name\":\"Taylor-Grant, R\",\"division\":\"\",\"email\":\"\",\"ora3_affiliation\":\"\",\"family_name\":\"Taylor-Grant\",\"given_names\":\"Rebecca\",\"preferred_family_name\":\"\",\"preferred_given_names\":\"\",\"institution\":\"\",\"institutional_identifier\":\"\",\"orcid_identifier\":\"0000-0002-7614-0806\",\"oxford_college\":\"\",\"research_group\":\"\",\"sub_department\":\"\",\"sub_unit\":\"\",\"contributor_website_url\":\"\",\"contributor_type\":\"Personal\",\"roles\":[{\"role_title\":\"Author\",\"role_order\":\"8\",\"et_al\":\"\"}]},{\"department\":\"\",\"display_name\":\"Cannon, M\",\"division\":\"\",\"email\":\"\",\"ora3_affiliation\":\"\",\"family_name\":\"Cannon\",\"given_names\":\"Matthew\",\"preferred_family_name\":\"\",\"preferred_given_names\":\"\",\"institution\":\"\",\"institutional_identifier\":\"\",\"orcid_identifier\":\"0000-0002-1496-8392\",\"oxford_college\":\"\",\"research_group\":\"\",\"sub_department\":\"\",\"sub_unit\":\"\",\"contributor_website_url\":\"\",\"contributor_type\":\"Personal\",\"roles\":[{\"role_title\":\"Author\",\"role_order\":\"3\",\"et_al\":\"\"}]},{\"department\":\"\",\"display_name\":\"Knazook, B\",\"division\":\"\",\"email\":\"\",\"ora3_affiliation\":\"\",\"family_name\":\"Knazook\",\"given_names\":\"Beth\",\"preferred_family_name\":\"\",\"preferred_given_names\":\"\",\"institution\":\"\",\"institutional_identifier\":\"\",\"orcid_identifier\":\"0000-0003-3108-3921\",\"oxford_college\":\"\",\"research_group\":\"\",\"sub_department\":\"\",\"sub_unit\":\"\",\"contributor_website_url\":\"\",\"contributor_type\":\"Personal\",\"roles\":[{\"role_title\":\"Author\",\"role_order\":\"6\",\"et_al\":\"\"}]}]"
+    }
+  }
+}
