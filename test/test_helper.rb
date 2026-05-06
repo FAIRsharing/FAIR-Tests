@@ -9,7 +9,9 @@ end
 
 require 'minitest/autorun'
 require 'rack/test'
+require 'json/ld'
 require_relative '../fair_tests'
+
 
 module TestHelper
   include Rack::Test::Methods
@@ -28,5 +30,21 @@ module TestHelper
     {
       'Accept'=>'application/vnd.citationstyles.csl+json'
     }
+  end
+
+  def parsed_response_body(body)
+    body = JSON.parse(body)
+    body.is_a?(String) ? JSON.parse(body) : body
+  end
+
+end
+
+module JSON
+  module LD
+    class API
+      def self.serializer(object, *_args, **options)
+        ::JSON.generate(object, options.fetch(:serializer_opts, JSON_STATE))
+      end
+    end
   end
 end

@@ -7,6 +7,7 @@ class FtArkF1Test < Minitest::Test
   include ::TestHelper
   include ::FtArkF1
 
+
   def test_mints_persistent_identifiers
     stub_request(:post, "#{ENV['FAIRSHARING_API_URL']}").
       with(headers: headers).to_return(
@@ -39,8 +40,8 @@ class FtArkF1Test < Minitest::Test
 
     assert last_response.ok?
 
-    body = JSON.parse(last_response.body)
-    assert_equal body['value'], 'pass'
+    body = parsed_response_body(last_response.body)
+    assert_equal 'pass', find_prov_value(body)
   end
 
   def test_does_not_mint_persistent_identifiers
@@ -75,8 +76,8 @@ class FtArkF1Test < Minitest::Test
 
     assert last_response.ok?
 
-    body = JSON.parse(last_response.body)
-    assert_equal body['value'], 'fail'
+    body = parsed_response_body(last_response.body)
+    assert_equal 'fail', find_prov_value(body)
   end
 
   def test_is_not_a_database
@@ -100,8 +101,8 @@ class FtArkF1Test < Minitest::Test
 
     assert last_response.ok?
 
-    body = JSON.parse(last_response.body)
-    assert_equal body['value'], 'fail'
+    body = parsed_response_body(last_response.body)
+    assert_equal 'fail', find_prov_value(body)
   end
 
   def test_file_not_found
@@ -122,7 +123,7 @@ class FtArkF1Test < Minitest::Test
 
     assert last_response.ok?
 
-    body = JSON.parse(last_response.body)
-    assert_equal body['value'], 'indeterminate'
+    body = parsed_response_body(last_response.body)
+    assert_equal 'indeterminate', find_prov_value(body)
   end
 end
