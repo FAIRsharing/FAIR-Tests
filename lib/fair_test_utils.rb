@@ -54,6 +54,19 @@ module FairTestUtils
     response
   end
 
+  def improved_content_negotiation(url)
+    json_headers = {
+      'Accept' => 'application/json',
+      'Content-Type' => 'application/json'
+    }
+    champion_url = 'https://tools.ostrails.eu/champion/harvest_only'
+    response = HTTParty.post(champion_url,
+                             body: { resource_identifier: url }.to_json,
+                             headers: json_headers
+    )
+    response
+  end
+
   def content_negotiation(url)
     return {} if url.nil? || url.empty?
 
