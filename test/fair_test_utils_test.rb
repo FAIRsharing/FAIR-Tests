@@ -111,4 +111,6 @@ class FairTestUtilsTest < Minitest::Test
     assert_equal find_by_regex("FAIRsharing.123456"), {:message=>"Error getting record from FAIRsharing API: 404, "}
   end
 
+
+
 end

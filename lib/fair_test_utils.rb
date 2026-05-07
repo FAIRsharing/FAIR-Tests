@@ -54,7 +54,7 @@ module FairTestUtils
     response
   end
 
-  def improved_content_negotiation(url)
+  def metadata_harvesting(url)
     json_headers = {
       'Accept' => 'application/json',
       'Content-Type' => 'application/json'
