@@ -67,6 +67,44 @@ module FairTestUtils
     response
   end
 
+  # Parse the data structure returned by metadata harvesting and look for particular keys.
+  # Usage: has_matching_key_with_value?(data, %w[publisher publish])
+  def has_matching_key_with_value?(obj, patterns)
+    case obj
+    when Hash
+      obj.any? do |key, value|
+        (
+          patterns.any? { |p| key.to_s.downcase.include?(p.downcase) } &&
+            contains_meaningful_value?(value)
+        ) || has_matching_key_with_value?(value, patterns)
+      end
+
+    when Array
+      obj.any? { |item| has_matching_key_with_value?(item, patterns) }
+
+    else
+      false
+    end
+  end
+
+  # Necessary for the above function:
+  # This code is to return true if a value from the data structure is not nil, empty etc.
+  def contains_meaningful_value?(value)
+    case value
+    when nil
+      false
+    when String
+      !value.strip.empty?
+    when Numeric
+      value != 0
+    when Array, Hash
+      !value.empty?
+    else
+      true
+    end
+  end
+
+
   def content_negotiation(url)
     return {} if url.nil? || url.empty?
 
