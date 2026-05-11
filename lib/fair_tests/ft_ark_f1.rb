@@ -13,7 +13,7 @@ module FtArkF1
       keywords: ['ARK', 'FAIR', 'F1', 'GUPRI', 'persistent identifiers'],
       creator: 'https://orcid.org/0000-0001-9572-0972',
       indicators: [],
-      metric: '', # TODO: Find which metric belongs here.
+      metric: 'https://doi.org/10.25504/FAIRsharing.432cab',
       license: 'https://creativecommons.org/licenses/by/4.0/',
       testversion: '1.0.0',
       protocol: 'https',
