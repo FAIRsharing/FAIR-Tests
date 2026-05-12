@@ -12,7 +12,7 @@ module FtF1MIdresolvable
       keywords: ['FAIR', 'A2', 'GUPRI', 'globally unique identifiers'],
       creator: 'https://orcid.org/0000-0002-6468-9260',
       indicators: [],
-      metric: '', # TODO: Add FAIRsharing metric for this test.
+      metric: 'https://doi.org/10.25504/FAIRsharing.f8508f'
       license: 'https://creativecommons.org/licenses/by/4.0/',
       testversion: '1.0.0',
       protocol: 'https',
