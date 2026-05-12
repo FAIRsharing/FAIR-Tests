@@ -9,7 +9,7 @@ module FtF1MIdpersistent
       testid: 'ft_f1_m_idpersistent',
       testname: 'FAIR Test – F1 – Metadata - evaluate identifier persistence',
       description: "F1 requires that metadata be assigned a globally unique, persistent and resolvable identifier. This test is particularly concerned with the persistence aspect of GUPRIs; persistence is required to guarantee long-term continuity of reference. In this test, the definition of persistence follows the FAIRsharing guidance on Globally Unique, Persistent and Resolvable Identifier (GUPRI) schemas. The identifier being evaluated is checked for a match (using regular expressions) to an existing id schema within FAIRsharing. Pass: There is an id_schema record matching the regular expression that has the persistent field set to 'true'. Indeterminate: No matching records were found in FAIRsharing. Fail: No indication of this resource having a persistent identifier was found.",
-      keywords: ['FAIR', 'A2', 'GUPRI', 'globally unique identifiers'],
+      keywords: ['FAIR', 'F1', 'PID', 'persistent identifiers'],
       creator: 'https://orcid.org/0000-0002-6468-9260',
       indicators: [],
       metric: '', # TODO: Add FAIRsharing metric for this test.
