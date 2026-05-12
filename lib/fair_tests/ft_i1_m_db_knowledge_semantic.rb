@@ -12,7 +12,7 @@ module FtI1MDbKnowledgeSemantic
     meta = {
       testid: 'ft_i1_m_db_knowledge_semantic',
       testname: 'FAIR Test - I1 – Metadata - Database-level knowledge representation languages (semantic)',
-      description: "This test checks that the database uses semantic knowledge representation languages.",
+      description: "This test checks whether the hosting database declares support for metadata formats that are semantically grounded (grounded/linked data), as recorded in its FAIRsharing registry entry.",
       keywords: ['FAIR', 'I1', 'semantic'],
       creator: 'https://orcid.org/0000-0002-6468-9260',
       indicators: [],
