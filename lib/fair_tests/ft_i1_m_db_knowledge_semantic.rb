@@ -16,7 +16,7 @@ module FtI1MDbKnowledgeSemantic
       keywords: ['FAIR', 'I1', 'semantic'],
       creator: 'https://orcid.org/0000-0002-6468-9260',
       indicators: [],
-      metric: '',
+      metric: 'https://doi.org/10.25504/FAIRsharing.9114a7',
       license: 'https://creativecommons.org/licenses/by/4.0/',
       testversion: '1.0.0',
       protocol: 'https',
