@@ -14,8 +14,19 @@ gem 'rake'
 gem 'dotenv'
 gem 'webmock'
 
+
 gem 'simplecov', require: false
 
 # Somewhat old, but should do the trick...
 gem 'simple_doi', github: 'UMNLibraries/simpledoi-ruby'
 gem 'curb'
+
+# For generating test responses.
+gem 'ftr_ruby'
+gem 'rest-client'
+gem 'sparql'
+gem 'linkeddata'
+gem 'safe_yaml'
+gem 'triple_easy'
+gem 'rdf'
+gem 'rdf-raptor'

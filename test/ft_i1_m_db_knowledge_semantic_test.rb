@@ -32,8 +32,8 @@ class FtI1MDbKnowledgeSemanticTest < Minitest::Test
 
     assert last_response.ok?
 
-    body = JSON.parse(last_response.body)
-    assert_equal body['value'], 'pass'
+    body = parsed_response_body(last_response.body)
+    assert_equal 'pass', find_prov_value(body)
   end
 
   def test_is_not_semantic
@@ -58,8 +58,8 @@ class FtI1MDbKnowledgeSemanticTest < Minitest::Test
 
     assert last_response.ok?
 
-    body = JSON.parse(last_response.body)
-    assert_equal body['value'], 'fail'
+    body = parsed_response_body(last_response.body)
+    assert_equal 'fail', find_prov_value(body)
   end
 
   def test_is_not_a_database
@@ -84,8 +84,8 @@ class FtI1MDbKnowledgeSemanticTest < Minitest::Test
 
     assert last_response.ok?
 
-    body = JSON.parse(last_response.body)
-    assert_equal body['value'], 'fail'
+    body = parsed_response_body(last_response.body)
+    assert_equal 'fail', find_prov_value(body)
   end
 
   def test_is_not_found
@@ -104,8 +104,8 @@ class FtI1MDbKnowledgeSemanticTest < Minitest::Test
 
     assert last_response.ok?
 
-    body = JSON.parse(last_response.body)
-    assert_equal body['value'], 'indeterminate'
+    body = parsed_response_body(last_response.body)
+    assert_equal 'indeterminate', find_prov_value(body)
   end
 
   def test_is_not_a_database_via_doi
@@ -134,8 +134,8 @@ class FtI1MDbKnowledgeSemanticTest < Minitest::Test
 
     assert last_response.ok?
 
-    body = JSON.parse(last_response.body)
-    assert_equal body['value'], 'fail'
+    body = parsed_response_body(last_response.body)
+    assert_equal 'fail', find_prov_value(body)
   end
 
 end
