@@ -33,8 +33,8 @@ class FtA2MDbpersistencepolicyTest < Minitest::Test
 
     assert last_response.ok?
 
-    body = JSON.parse(last_response.body)
-    assert_equal body['value'], 'pass'
+    body = parsed_response_body(last_response.body)
+    assert_equal 'pass', find_prov_value(body)
   end
 
   def test_ft_a2_m_dbpersistencepolicy_fails
@@ -63,8 +63,8 @@ class FtA2MDbpersistencepolicyTest < Minitest::Test
 
     assert last_response.ok?
 
-    body = JSON.parse(last_response.body)
-    assert_equal body['value'], 'fail'
+    body = parsed_response_body(last_response.body)
+    assert_equal 'fail', find_prov_value(body)
   end
 
   def test_ft_a2_m_dbpersistencepolicy_is_indeterminate
@@ -87,8 +87,8 @@ class FtA2MDbpersistencepolicyTest < Minitest::Test
 
     assert last_response.ok?
 
-    body = JSON.parse(last_response.body)
-    assert_equal body['value'], 'indeterminate'
+    body = parsed_response_body(last_response.body)
+    assert_equal 'indeterminate', find_prov_value(body)
   end
 
   def test_fail_not_a_database
@@ -112,7 +112,7 @@ class FtA2MDbpersistencepolicyTest < Minitest::Test
 
     assert last_response.ok?
 
-    body = JSON.parse(last_response.body)
-    assert_equal body['value'], 'fail'
+    body = parsed_response_body(last_response.body)
+    assert_equal 'fail', find_prov_value(body)
   end
 end

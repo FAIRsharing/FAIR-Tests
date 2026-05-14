@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v6
 
       - name: Set up RVM
         run: |
@@ -15,6 +15,7 @@ jobs:
 
       - name: Install Curl libraries
         run: |
+          sudo apt-get update
           sudo apt-get -yqq install libcurl4-openssl-dev build-essential
 
       - name: Set up Ruby from .ruby-version

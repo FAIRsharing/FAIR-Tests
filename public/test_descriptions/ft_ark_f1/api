@@ -3,7 +3,7 @@ openapi: 3.0.0
 info:
   version: "1.0"
   title: "FAIR Test - ARK T-F1 - Persistent Identifiers for Database Content"
-  x-tests_metric: "https://fairsharing.org/7163"
+  x-tests_metric: "https://doi.org/10.25504/FAIRsharing.432cab"
   description: >-
     "The 'FAIR Test ARK T-F1 - Persistent Identifiers for Database Content' is a database-level test that requires the minting of persistent identifiers for at least some of the content within the database being evaluated. It expects a FAIRsharing URL or DOI as its input and evaluates that FAIRsharing record for the presence of an implemented id schema. An important facet of FAIR for databases is that they mint persistent identifiers. As described by the GFF, global uniqueness guarantees the unambiguous referencing of the described resource; it is insufficient for it to be unique only locally. Persistence refers to the requirement that this globally unique identifier is never reused elsewhere and continues to identify the same resource over time. These features are key to the Findability of the database being evaluated.The test will return as follows: Pass: GUID must point to an existing FAIRsharing database record; the record must have an 'implements' to an id_schema record. Indeterminate: GUID is non-existent or malformed. Fail: if any of the conditions in 'pass' fail; specifically, if the GUID is not a database record, OR if there is no 'implements' relationship to an id_schema."
   x-applies_to_principle: "https://doi.org/10.25504/FAIRsharing.e226cb"
@@ -38,4 +38,3 @@ components:
       - resource_identifier:
           type: string
           description: the GUID being tested
-

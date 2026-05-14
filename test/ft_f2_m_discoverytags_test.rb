@@ -26,8 +26,8 @@ class FtF2MDiscoverytagsTest < Minitest::Test
 
     assert last_response.ok?
 
-    body = JSON.parse(last_response.body)
-    assert_equal body['value'], 'pass'
+    body = parsed_response_body(last_response.body)
+    assert_equal 'pass', find_prov_value(body)
   end
 
   def test_resolve_doi_then_passes
@@ -52,8 +52,8 @@ class FtF2MDiscoverytagsTest < Minitest::Test
 
     assert last_response.ok?
 
-    body = JSON.parse(last_response.body)
-    assert_equal body['value'], 'pass'
+    body = parsed_response_body(last_response.body)
+    assert_equal 'pass', find_prov_value(body)
   end
 
   def test_is_doi_and_fails_then_resolution_passes
@@ -88,8 +88,8 @@ class FtF2MDiscoverytagsTest < Minitest::Test
 
     assert last_response.ok?
 
-    body = JSON.parse(last_response.body)
-    assert_equal body['value'], 'pass'
+    body = parsed_response_body(last_response.body)
+    assert_equal 'pass', find_prov_value(body)
   end
 
   def test_is_doi_and_fails_then_resolution_fails
@@ -122,8 +122,8 @@ class FtF2MDiscoverytagsTest < Minitest::Test
 
     assert last_response.ok?
 
-    body = JSON.parse(last_response.body)
-    assert_equal body['value'], 'fail'
+    body = parsed_response_body(last_response.body)
+    assert_equal 'fail', find_prov_value(body)
   end
 
   def test_non_doi_passes
@@ -142,8 +142,8 @@ class FtF2MDiscoverytagsTest < Minitest::Test
 
     assert last_response.ok?
 
-    body = JSON.parse(last_response.body)
-    assert_equal body['value'], 'pass'
+    body = parsed_response_body(last_response.body)
+    assert_equal 'pass', find_prov_value(body)
   end
 
   #################
@@ -181,8 +181,8 @@ class FtF2MDiscoverytagsTest < Minitest::Test
 
     assert last_response.ok?
 
-    body = JSON.parse(last_response.body)
-    assert_equal body['value'], 'fail'
+    body = parsed_response_body(last_response.body)
+    assert_equal 'fail', find_prov_value(body)
   end
 
   def test_is_not_doi_and_fails
@@ -202,8 +202,8 @@ class FtF2MDiscoverytagsTest < Minitest::Test
 
     assert last_response.ok?
 
-    body = JSON.parse(last_response.body)
-    assert_equal body['value'], 'fail'
+    body = parsed_response_body(last_response.body)
+    assert_equal 'fail', find_prov_value(body)
   end
 
   #######################
@@ -237,8 +237,8 @@ class FtF2MDiscoverytagsTest < Minitest::Test
 
     assert last_response.ok?
 
-    body = JSON.parse(last_response.body)
-    assert_equal body['value'], 'indeterminate'
+    body = parsed_response_body(last_response.body)
+    assert_equal 'indeterminate', find_prov_value(body)
   end
 
   def test_is_not_doi_and_indeterminate
@@ -256,8 +256,8 @@ class FtF2MDiscoverytagsTest < Minitest::Test
 
     assert last_response.ok?
 
-    body = JSON.parse(last_response.body)
-    assert_equal body['value'], 'indeterminate'
+    body = parsed_response_body(last_response.body)
+    assert_equal 'indeterminate', find_prov_value(body)
   end
 
   #######################
@@ -278,8 +278,8 @@ class FtF2MDiscoverytagsTest < Minitest::Test
 
     assert last_response.ok?
 
-    body = JSON.parse(last_response.body)
-    assert_equal body['value'], 'pass'
+    body = parsed_response_body(last_response.body)
+    assert_equal 'pass', find_prov_value(body)
   end
 
   def test_ora_data_fails
@@ -297,8 +297,8 @@ class FtF2MDiscoverytagsTest < Minitest::Test
 
     assert last_response.ok?
 
-    body = JSON.parse(last_response.body)
-    assert_equal body['value'], 'fail'
+    body = parsed_response_body(last_response.body)
+    assert_equal 'fail', find_prov_value(body)
   end
 
 end

@@ -1,4 +1,5 @@
 require_relative './test_helper'
+require 'webmock/minitest'
 require_relative '../lib/fair_test_utils'
 
 unless defined?(Addressable::URI::InvalidURIError)
@@ -65,6 +66,29 @@ class FairTestUtilsTest < Minitest::Test
       assert_equal 'https://example.org/', resolve_doi('https://example.org/')
   end
 
+  def test_resolve_doi_handles_invalid_resolved_uri
+    invalid_uri = 'http://[invalid'
+
+    fake_request = Object.new
+    fake_request.define_singleton_method(:last_uri) { invalid_uri }
+
+    fake_response = Object.new
+    fake_response.define_singleton_method(:success?) { true }
+    fake_response.define_singleton_method(:body) { '"https://example.org/records/abc123"' }
+    fake_response.define_singleton_method(:request) { fake_request }
+
+    with_stubbed_httparty_get(response: fake_response) do
+      assert_equal invalid_uri,
+                   resolve_doi('https://doi.org/10.25504/FAIRsharing.123456')
+    end
+  end
+
+  def test_resolve_doi_handles_timeouts
+    with_stubbed_httparty_get(error: Net::OpenTimeout.new('execution expired')) do
+      assert_nil resolve_doi('https://doi.org/10.25504/FAIRsharing.123456')
+    end
+  end
+
 
   def test_normalizes_dois
     assert_equal "https://doi.org/10.25504%2FFAIRsharing.123456",
@@ -101,6 +125,16 @@ class FairTestUtilsTest < Minitest::Test
     assert_equal get_fairsharing_record("FAIRsharing.123456"), {:message=>"Error getting record from FAIRsharing API: 404, "}
   end
 
+  def test_handles_malformed_fairsharing_record_response
+    stub_request(:post, "#{ENV['FAIRSHARING_API_URL']}").to_return(
+      status: 200,
+      body: 'not json',
+      headers: headers
+    )
+
+    assert_equal({}, get_fairsharing_record("FAIRsharing.123456"))
+  end
+
   def test_handles_find_by_regex_errors
     stub_request(:post, "#{ENV['FAIRSHARING_API_URL']}").to_return(
       status: 404,
@@ -112,5 +146,26 @@ class FairTestUtilsTest < Minitest::Test
   end
 
 
+  private
+
+  def with_stubbed_httparty_get(response: nil, error: nil)
+    httparty_singleton = HTTParty.singleton_class
+    original_method = :__original_get_for_fair_test_utils_test
+    httparty_singleton.alias_method original_method, :get
+    httparty_singleton.remove_method :get
+    httparty_singleton.define_method(:get) do |*_args, **_kwargs|
+      raise error if error
+
+      response
+    end
+
+    yield
+  ensure
+    if defined?(httparty_singleton) && httparty_singleton.method_defined?(original_method)
+      httparty_singleton.remove_method :get if httparty_singleton.method_defined?(:get)
+      httparty_singleton.alias_method :get, original_method
+      httparty_singleton.remove_method original_method
+    end
+  end
 
 end

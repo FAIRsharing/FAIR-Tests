@@ -104,7 +104,6 @@ module FairTestUtils
     end
   end
 
-
   def content_negotiation(url)
     return {} if url.nil? || url.empty?
 
@@ -175,18 +174,14 @@ module FairTestUtils
       resolved = begin
         response.request.last_uri.to_s
       rescue Addressable::URI::InvalidURIError
-        #:nocov:
         nil
-        #:nocov:
       end
 
       if !resolved.nil? && !resolved.empty?
         resolved_host = begin
           URI.parse(resolved).host.to_s.downcase
         rescue URI::InvalidURIError
-          #:nocov:
           nil
-          #:nocov:
         end
         return body_url if resolved_host == 'doi.org' && !body_url.nil?
         return nil if resolved_host == 'doi.org'
@@ -200,9 +195,7 @@ module FairTestUtils
       nil
     end
   rescue Net::OpenTimeout, Net::ReadTimeout
-    #:nocov:
     nil
-    #:nocov:
   end
 
   def normalize_doi_url(url)
@@ -344,9 +337,7 @@ module FairTestUtils
       begin
         JSON.parse(response.body)['data']['fairsharingRecord']
       rescue
-        #:nocov:
         {}
-        #:nocov:
       end
     else
       {
@@ -421,6 +412,34 @@ module FairTestUtils
     end
 
     results.flatten
+  end
+
+  # Recursively traverse a parsed JSON-LD structure and return prov:value's @value.
+  def find_prov_value(obj)
+    case obj
+    when Hash
+      prov_value = obj['prov:value'] || obj[:'prov:value']
+      if prov_value.is_a?(Hash)
+        value = prov_value['@value'] || prov_value[:'@value']
+        return value unless value.nil?
+      end
+
+      obj.each_value do |value|
+        result = find_prov_value(value)
+        return result unless result.nil?
+      end
+
+      nil
+    when Array
+      obj.each do |item|
+        result = find_prov_value(item)
+        return result unless result.nil?
+      end
+
+      nil
+    else
+      nil
+    end
   end
 
 end
