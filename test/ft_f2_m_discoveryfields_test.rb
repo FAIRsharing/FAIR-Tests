@@ -37,14 +37,20 @@ class FtF2MDiscoveryfieldsTest < Minitest::Test
       body: "https://example.org/records/abc123".to_json,
       headers: headers
     )
-    stub_request(:get, "https://example.org/records/abc123").
-      to_return(
-      status: 200,
-      body: {
-        title: "This record passes"
-      }.to_json,
-      headers: headers
-    )
+    stub_request(:post, "https://tools.ostrails.eu/champion/harvest_only").
+      with(
+        body: "{\"resource_identifier\":\"https://example.org/records/abc123\"}",
+        headers: {
+          'Accept'=>'application/json',
+          'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'Content-Type'=>'application/json',
+          'User-Agent'=>'Ruby'
+        }).
+      to_return(status: 200,
+                body: {
+                  title: "This record passes"
+                }.to_json,
+                headers: {})
 
     post '/test/ft_f2_m_discoveryfields',
          params: { resource_identifier: 'https://doi.org/10.25504/FAIRsharing.9kahy4'}.to_json,
@@ -57,14 +63,20 @@ class FtF2MDiscoveryfieldsTest < Minitest::Test
   end
 
   def test_non_doi_passes
-    stub_request(:get, "https://example.org/records/abc123").
-      to_return(
-        status: 200,
-        body: {
-          title: "This record passes"
-        }.to_json,
-        headers: headers
-      )
+    stub_request(:post, "https://tools.ostrails.eu/champion/harvest_only").
+      with(
+        body: "{\"resource_identifier\":\"https://example.org/records/abc123\"}",
+        headers: {
+          'Accept'=>'application/json',
+          'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'Content-Type'=>'application/json',
+          'User-Agent'=>'Ruby'
+        }).
+      to_return(status: 200,
+                body: {
+                  title: "This record passes"
+                }.to_json,
+                headers: {})
 
     post '/test/ft_f2_m_discoveryfields',
          params: { resource_identifier: 'https://example.org/records/abc123'}.to_json,
@@ -93,14 +105,21 @@ class FtF2MDiscoveryfieldsTest < Minitest::Test
         body: "https://example.org/records/abc123".to_json,
         headers: headers
       )
-    stub_request(:get, "https://example.org/records/abc123").
-      to_return(
-        status: 200,
-        body: {
-          title: "This record passes"
-        }.to_json,
-        headers: headers
-      )
+    stub_request(:post, "https://tools.ostrails.eu/champion/harvest_only").
+      with(
+        body: "{\"resource_identifier\":\"https://example.org/records/abc123\"}",
+        headers: {
+          'Accept'=>'application/json',
+          'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'Content-Type'=>'application/json',
+          'User-Agent'=>'Ruby'
+        }).
+      to_return(status: 200,
+                body: {
+                  title: "This record passes"
+                }.to_json,
+                headers: {})
+
 
     post '/test/ft_f2_m_discoveryfields',
          params: { resource_identifier: 'https://doi.org/10.1234/FAIRsharing.123456' }.to_json,
@@ -133,12 +152,18 @@ class FtF2MDiscoveryfieldsTest < Minitest::Test
         body: "https://example.org/records/abc123".to_json,
         headers: headers
       )
-    stub_request(:get, "https://example.org/records/abc123").
-      to_return(
-        status: 200,
-        body: {}.to_json,
-        headers: headers
-      )
+    stub_request(:post, "https://tools.ostrails.eu/champion/harvest_only").
+      with(
+        body: "{\"resource_identifier\":\"https://example.org/records/abc123\"}",
+        headers: {
+          'Accept'=>'application/json',
+          'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'Content-Type'=>'application/json',
+          'User-Agent'=>'Ruby'
+        }).
+      to_return(status: 200,
+                body: {}.to_json,
+                headers: {})
 
     post '/test/ft_f2_m_discoveryfields',
          params: { resource_identifier: 'https://doi.org/10.1234/FAIRsharing.123456' }.to_json,
@@ -167,14 +192,20 @@ class FtF2MDiscoveryfieldsTest < Minitest::Test
       body: "https://example.org/records/abc123".to_json,
       headers: headers
     )
-    stub_request(:get, "https://example.org/records/abc123").
-      to_return(
-        status: 200,
-        body: {
-          codename: "This record fails"
-        }.to_json,
-        headers: headers
-      )
+    stub_request(:post, "https://tools.ostrails.eu/champion/harvest_only").
+      with(
+        body: "{\"resource_identifier\":\"https://example.org/records/abc123\"}",
+        headers: {
+          'Accept'=>'application/json',
+          'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'Content-Type'=>'application/json',
+          'User-Agent'=>'Ruby'
+        }).
+      to_return(status: 200,
+                body: {
+                  codename: "This record fails"
+                }.to_json,
+                headers: {})
 
     post '/test/ft_f2_m_discoveryfields',
          params: { resource_identifier: 'https://doi.org/10.1234/FAIRsharing.123456' }.to_json,
@@ -187,15 +218,20 @@ class FtF2MDiscoveryfieldsTest < Minitest::Test
   end
 
   def test_is_not_doi_and_fails
-
-    stub_request(:get, "https://example.org/records/abc123").
-      to_return(
-        status: 200,
-        body: {
-          codename: "This record fails"
-        }.to_json,
-        headers: headers
-      )
+    stub_request(:post, "https://tools.ostrails.eu/champion/harvest_only").
+      with(
+        body: "{\"resource_identifier\":\"https://example.org/records/abc123\"}",
+        headers: {
+          'Accept'=>'application/json',
+          'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'Content-Type'=>'application/json',
+          'User-Agent'=>'Ruby'
+        }).
+      to_return(status: 200,
+                body: {
+                  codename: "This record fails"
+                }.to_json,
+                headers: {})
 
     post '/test/ft_f2_m_discoveryfields',
          params: { resource_identifier: 'https://example.org/records/abc123' }.to_json,
@@ -225,12 +261,17 @@ class FtF2MDiscoveryfieldsTest < Minitest::Test
         body: "https://example.org/records/abc123".to_json,
         headers: headers
       )
-    stub_request(:get, "https://example.org/records/abc123").
-      to_return(
-        status: 200,
-        body: {}.to_json,
-        headers: headers
-      )
+    stub_request(:post, "https://tools.ostrails.eu/champion/harvest_only").
+      with(
+        body: "{\"resource_identifier\":\"https://example.org/records/abc123\"}",
+        headers: {
+          'Accept'=>'application/json',
+          'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'Content-Type'=>'application/json',
+          'User-Agent'=>'Ruby'
+        }).
+      to_return(status: 200, body: "", headers: {})
+
 
     post '/test/ft_f2_m_discoveryfields',
          params: { resource_identifier: 'https://doi.org/10.1234/FAIRsharing.123456' }.to_json,
@@ -243,13 +284,18 @@ class FtF2MDiscoveryfieldsTest < Minitest::Test
   end
 
   def test_is_not_doi_and_indeterminate
-
-    stub_request(:get, "https://example.org/records/abc123").
-      to_return(
-        status: 200,
-        body: {}.to_json,
-        headers: headers
-      )
+    stub_request(:post, "https://tools.ostrails.eu/champion/harvest_only").
+      with(
+        body: "{\"resource_identifier\":\"https://example.org/records/abc123\"}",
+        headers: {
+          'Accept'=>'application/json',
+          'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'Content-Type'=>'application/json',
+          'User-Agent'=>'Ruby'
+        }).
+      to_return(status: 200,
+                body: {}.to_json,
+                headers: {})
 
     post '/test/ft_f2_m_discoveryfields',
          params: { resource_identifier: 'https://example.org/records/abc123' }.to_json,
@@ -266,12 +312,19 @@ class FtF2MDiscoveryfieldsTest < Minitest::Test
   #######################
   def test_ora_data_passes
     json_file = JSON.load_file('test/fixtures/example_pass_fixture.json')
-    stub_request(:get, "https://example.org/records/abc123").
-      to_return(
-        status: 200,
-        body: json_file.to_json,
-        headers: headers
-      )
+    stub_request(:post, "https://tools.ostrails.eu/champion/harvest_only").
+      with(
+        body: "{\"resource_identifier\":\"https://example.org/records/abc123\"}",
+        headers: {
+          'Accept'=>'application/json',
+          'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'Content-Type'=>'application/json',
+          'User-Agent'=>'Ruby'
+        }).
+      to_return(status: 200,
+                body: json_file.to_json,
+                headers: {})
+
 
     post '/test/ft_f2_m_discoveryfields',
          params: { resource_identifier: 'https://example.org/records/abc123' }.to_json,
@@ -285,12 +338,18 @@ class FtF2MDiscoveryfieldsTest < Minitest::Test
 
   def test_ora_data_fails
     json_file = JSON.load_file('test/fixtures/example_fail_discoveryfields_fixture.json')
-    stub_request(:get, "https://example.org/records/abc123").
-      to_return(
-        status: 200,
-        body: json_file.to_json,
-        headers: headers
-      )
+    stub_request(:post, "https://tools.ostrails.eu/champion/harvest_only").
+      with(
+        body: "{\"resource_identifier\":\"https://example.org/records/abc123\"}",
+        headers: {
+          'Accept'=>'application/json',
+          'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'Content-Type'=>'application/json',
+          'User-Agent'=>'Ruby'
+        }).
+      to_return(status: 200,
+                body: json_file.to_json,
+                headers: {})
 
     post '/test/ft_f2_m_discoveryfields',
          params: { resource_identifier: 'https://example.org/records/abc123' }.to_json,

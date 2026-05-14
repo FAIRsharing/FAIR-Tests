@@ -64,7 +64,12 @@ module FairTestUtils
                              body: { resource_identifier: url }.to_json,
                              headers: json_headers
     )
-    response
+    body = response.body.to_s.strip
+    return nil if body.empty?
+
+    JSON.parse(body)
+  rescue JSON::ParserError
+    nil
   end
 
   # Parse the data structure returned by metadata harvesting and look for particular keys.
