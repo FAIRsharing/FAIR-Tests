@@ -14,7 +14,7 @@ module FtR11MDatabaseLevelLicenses
     meta = {
       testid: 'ft_r1_1_m_database_level_licenses',
       testname: 'FAIR Metric - R1.1 - Metadata - Database-level licenses',
-      description: "TBC", # TODO; please provide a suitable description
+      description: "R1.1 requires that metadata be released with a clear and accessible data usage licence. The purpose of this principle is to ensure that reuse conditions are explicitly stated and legally unambiguous. This metric evaluates whether there is at least one licence declared at the database level in the FAIRsharing registry record associated with the identifier under evaluation.",
       keywords: %w[FAIR R.1.1 licenses],
       creator: 'https://orcid.org/0000-0002-6468-9260',
       indicators: [],
