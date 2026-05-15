@@ -20,6 +20,25 @@ module TestHelper
     FairTests
   end
 
+  CHAMPION_URL = "https://tools.ostrails.eu/champion/harvest_only"
+  CHAMPION_HEADERS = {
+    'Accept'=>'application/json',
+    'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+    'Content-Type'=>'application/json',
+    'User-Agent'=>'Ruby'
+  }
+
+  def stub_metadata_harvesting(response_body, resource_identifier: "https://example.org/records/abc123")
+    body = response_body.is_a?(String) ? response_body : response_body.to_json
+
+    stub_request(:post, CHAMPION_URL).
+      with(
+        body: { resource_identifier: resource_identifier }.to_json,
+        headers: CHAMPION_HEADERS
+      ).
+      to_return(status: 200, body: body, headers: {})
+  end
+
   def headers
     {
       'Content-Type' => 'application/json',

@@ -64,34 +64,6 @@ module FairTestUtils
     end
   end
 
-  def content_negotiation(url)
-    return {} if url.nil? || url.empty?
-
-    # TODO: This assumes that there's JSON data available.
-    # TODO: Better content negotation needed (Mark's tool?)
-    json_headers = {
-      'Accept' => 'application/json',
-      'Content-Type' => 'application/json'
-    }
-    jsonld_headers = {
-      'Accept' => 'application/ld+json',
-      'Content-Type' => 'application/ld+json'
-    }
-
-    # Try LD+JSON first
-    response = HTTParty.get(url, headers: jsonld_headers)
-    body = JSON.parse(response.body)
-
-    unless body && body['@context'] == 'https://schema.org'
-      response = HTTParty.get(url, headers: json_headers)
-      body = JSON.parse(response.body)
-    end
-    #status = response.code,
-    #message = response.message
-
-    body
-  end
-
   # TODO:
   # This should be able to get JSON-formatted data from a DOI.
   # It may be that we replace this at a later date with Mark's system, or
@@ -340,38 +312,6 @@ module FairTestUtils
         message: "Error getting record from FAIRsharing API: #{response.code}, #{response.message}",
       }
     end
-  end
-
-  # The purpose of this function is to flip out and recursively traverse a hash in order to find any keys where
-  # the value is a non-empty array.
-  def find_keys_with_non_empty_values(obj, results = [], path = [])
-    case obj
-    when Hash
-      obj.each do |key, value|
-        current_path = path + [key]
-
-        # Check if the value is a non-empty array
-        if value.is_a?(Array) && !value.empty?
-          results << current_path
-        end
-
-        if value.is_a?(String) && !value.empty?
-          results << current_path
-        end
-
-        # Recurse into nested structures
-        find_keys_with_non_empty_values(value, results, current_path)
-      end
-
-    when Array
-      obj.each_with_index do |item, index|
-        find_keys_with_non_empty_values(item, results, path + [index])
-      end
-    else
-      return []
-    end
-
-    results.flatten
   end
 
   # Recursively traverse a parsed JSON-LD structure and return prov:value's @value.

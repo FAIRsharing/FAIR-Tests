@@ -37,14 +37,9 @@ class FtF2MDiscoverypublisherTest < Minitest::Test
         body: "https://example.org/records/abc123".to_json,
         headers: headers
       )
-    stub_request(:get, "https://example.org/records/abc123").
-      to_return(
-        status: 200,
-        body: {
-          publisher: "This record passes publishing co."
-        }.to_json,
-        headers: headers
-      )
+    stub_metadata_harvesting({
+      publisher: "This record passes publishing co."
+    })
 
     post '/test/ft_f2_m_discoverypublisher',
          params: { resource_identifier: 'https://doi.org/10.25504/FAIRsharing.9kahy4'}.to_json,
@@ -57,14 +52,9 @@ class FtF2MDiscoverypublisherTest < Minitest::Test
   end
 
   def test_non_doi_passes
-    stub_request(:get, "https://example.org/records/abc123").
-      to_return(
-        status: 200,
-        body: {
-          publisher: "This record passes publishing co."
-        }.to_json,
-        headers: headers
-      )
+    stub_metadata_harvesting({
+      publisher: "This record passes publishing co."
+    })
 
     post '/test/ft_f2_m_discoverypublisher',
          params: { resource_identifier: 'https://example.org/records/abc123'}.to_json,
@@ -93,14 +83,9 @@ class FtF2MDiscoverypublisherTest < Minitest::Test
         body: "https://example.org/records/abc123".to_json,
         headers: headers
       )
-    stub_request(:get, "https://example.org/records/abc123").
-      to_return(
-        status: 200,
-        body: {
-          publisher: "This record passes publishing co."
-        }.to_json,
-        headers: headers
-      )
+    stub_metadata_harvesting({
+      publisher: "This record passes publishing co."
+    })
 
     post '/test/ft_f2_m_discoverypublisher',
          params: { resource_identifier: 'https://doi.org/10.1234/FAIRsharing.123456' }.to_json,
@@ -134,12 +119,7 @@ class FtF2MDiscoverypublisherTest < Minitest::Test
         body: "https://example.org/records/abc123".to_json,
         headers: headers
       )
-    stub_request(:get, "https://example.org/records/abc123").
-      to_return(
-        status: 200,
-        body: {}.to_json,
-        headers: headers
-      )
+    stub_metadata_harvesting({})
 
     post '/test/ft_f2_m_discoverypublisher',
          params: { resource_identifier: 'https://doi.org/10.1234/FAIRsharing.123456' }.to_json,
@@ -168,14 +148,9 @@ class FtF2MDiscoverypublisherTest < Minitest::Test
         body: "https://example.org/records/abc123".to_json,
         headers: headers
       )
-    stub_request(:get, "https://example.org/records/abc123").
-      to_return(
-        status: 200,
-        body: {
-          codename: "This record fails"
-        }.to_json,
-        headers: headers
-      )
+    stub_metadata_harvesting({
+      codename: "This record fails"
+    })
 
     post '/test/ft_f2_m_discoverypublisher',
          params: { resource_identifier: 'https://doi.org/10.1234/FAIRsharing.123456' }.to_json,
@@ -189,14 +164,9 @@ class FtF2MDiscoverypublisherTest < Minitest::Test
 
   def test_is_not_doi_and_fails
 
-    stub_request(:get, "https://example.org/records/abc123").
-      to_return(
-        status: 200,
-        body: {
-          codename: "This record fails"
-        }.to_json,
-        headers: headers
-      )
+    stub_metadata_harvesting({
+      codename: "This record fails"
+    })
 
     post '/test/ft_f2_m_discoverypublisher',
          params: { resource_identifier: 'https://example.org/records/abc123' }.to_json,
@@ -226,12 +196,7 @@ class FtF2MDiscoverypublisherTest < Minitest::Test
         body: "https://example.org/records/abc123".to_json,
         headers: headers
       )
-    stub_request(:get, "https://example.org/records/abc123").
-      to_return(
-        status: 200,
-        body: {}.to_json,
-        headers: headers
-      )
+    stub_metadata_harvesting({})
 
     post '/test/ft_f2_m_discoverypublisher',
          params: { resource_identifier: 'https://doi.org/10.1234/FAIRsharing.123456' }.to_json,
@@ -245,12 +210,7 @@ class FtF2MDiscoverypublisherTest < Minitest::Test
 
   def test_is_not_doi_and_indeterminate
 
-    stub_request(:get, "https://example.org/records/abc123").
-      to_return(
-        status: 200,
-        body: {}.to_json,
-        headers: headers
-      )
+    stub_metadata_harvesting({})
 
     post '/test/ft_f2_m_discoverypublisher',
          params: { resource_identifier: 'https://example.org/records/abc123' }.to_json,
@@ -267,12 +227,7 @@ class FtF2MDiscoverypublisherTest < Minitest::Test
   #######################
   def test_ora_data_passes
     json_file = JSON.load_file('test/fixtures/example_pass_fixture.json')
-    stub_request(:get, "https://example.org/records/abc123").
-      to_return(
-        status: 200,
-        body: json_file.to_json,
-        headers: headers
-      )
+    stub_metadata_harvesting(json_file)
 
     post '/test/ft_f2_m_discoverypublisher',
          params: { resource_identifier: 'https://example.org/records/abc123' }.to_json,
@@ -286,12 +241,7 @@ class FtF2MDiscoverypublisherTest < Minitest::Test
 
   def test_ora_data_fails
     json_file = JSON.load_file('test/fixtures/example_fail_discoverypublisher_fixture.json')
-    stub_request(:get, "https://example.org/records/abc123").
-      to_return(
-        status: 200,
-        body: json_file.to_json,
-        headers: headers
-      )
+    stub_metadata_harvesting(json_file)
 
     post '/test/ft_f2_m_discoverypublisher',
          params: { resource_identifier: 'https://example.org/records/abc123' }.to_json,
