@@ -9,32 +9,59 @@ require 'uri'
 # Utility functions common to all FAIR tests.
 module FairTestUtils
 
-  def content_negotiation(url)
-    return {} if url.nil? || url.empty?
-
-    # TODO: This assumes that there's JSON data available.
-    # TODO: Better content negotation needed (Mark's tool?)
+  def metadata_harvesting(url)
     json_headers = {
       'Accept' => 'application/json',
       'Content-Type' => 'application/json'
     }
-    jsonld_headers = {
-      'Accept' => 'application/ld+json',
-      'Content-Type' => 'application/ld+json'
-    }
+    champion_url = 'https://tools.ostrails.eu/champion/harvest_only'
+    response = HTTParty.post(champion_url,
+                             body: { resource_identifier: url }.to_json,
+                             headers: json_headers
+    )
+    body = response.body.to_s.strip
+    return nil if body.empty?
 
-    # Try LD+JSON first
-    response = HTTParty.get(url, headers: jsonld_headers)
-    body = JSON.parse(response.body)
+    JSON.parse(body)
+  rescue JSON::ParserError
+    nil
+  end
 
-    unless body && body['@context'] == 'https://schema.org'
-      response = HTTParty.get(url, headers: json_headers)
-      body = JSON.parse(response.body)
+  # Parse the data structure returned by metadata harvesting and look for particular keys.
+  # Usage: has_matching_key_with_value?(data, %w[publisher publish])
+  def has_matching_key_with_value?(obj, patterns)
+    case obj
+    when Hash
+      obj.any? do |key, value|
+        (
+          patterns.any? { |p| key.to_s.downcase.include?(p.downcase) } &&
+            contains_meaningful_value?(value)
+        ) || has_matching_key_with_value?(value, patterns)
+      end
+
+    when Array
+      obj.any? { |item| has_matching_key_with_value?(item, patterns) }
+
+    else
+      false
     end
-    #status = response.code,
-    #message = response.message
+  end
 
-    body
+  # Necessary for the above function:
+  # This code is to return true if a value from the data structure is not nil, empty etc.
+  def contains_meaningful_value?(value)
+    case value
+    when nil
+      false
+    when String
+      !value.strip.empty?
+    when Numeric
+      value != 0
+    when Array, Hash
+      !value.empty?
+    else
+      true
+    end
   end
 
   # TODO:
@@ -285,38 +312,6 @@ module FairTestUtils
         message: "Error getting record from FAIRsharing API: #{response.code}, #{response.message}",
       }
     end
-  end
-
-  # The purpose of this function is to flip out and recursively traverse a hash in order to find any keys where
-  # the value is a non-empty array.
-  def find_keys_with_non_empty_values(obj, results = [], path = [])
-    case obj
-    when Hash
-      obj.each do |key, value|
-        current_path = path + [key]
-
-        # Check if the value is a non-empty array
-        if value.is_a?(Array) && !value.empty?
-          results << current_path
-        end
-
-        if value.is_a?(String) && !value.empty?
-          results << current_path
-        end
-
-        # Recurse into nested structures
-        find_keys_with_non_empty_values(value, results, current_path)
-      end
-
-    when Array
-      obj.each_with_index do |item, index|
-        find_keys_with_non_empty_values(item, results, path + [index])
-      end
-    else
-      return []
-    end
-
-    results.flatten
   end
 
   # Recursively traverse a parsed JSON-LD structure and return prov:value's @value.

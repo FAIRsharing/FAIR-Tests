@@ -8,9 +8,9 @@ module FtF2MDiscoverytags
   def ft_f2_m_discoverytags(url_record)
     # 1. If a DOI, get metadata from Datacite.
     # 2. Run tests.
-    # 3. If fail, try content negotation.
+    # 3. If fail, try metadata harvesting.
     # 4. Run tests again.
-    # 5. If not DOI, try content negotation.
+    # 5. If not DOI, try metadata harvesting.
 
     # SimpleDOI may mutate the passed string, so keep an immutable copy.
     original_url = url_record&.dup
@@ -48,23 +48,26 @@ module FtF2MDiscoverytags
         else
           # If DOI metadata fails, resolve DOI and test the resolved target.
           real_url = resolve_doi(original_url)
-          record = content_negotiation(real_url)
+          record = metadata_harvesting(real_url)
           if record && !record.empty?
-            return perform_ft_f2_m_discoverytags(record, response).createEvaluationResponse
+            response = perform_ft_f2_m_discoverytags(record, response)
+            return response.createEvaluationResponse
           end
         end
         return response.createEvaluationResponse
-      else # Try content negotiation
+      else # Try metadata harvesting
         real_url = resolve_doi(original_url)
-        record = content_negotiation(real_url)
+        record = metadata_harvesting(real_url)
         if record && !record.empty?
-          return perform_ft_f2_m_discoverytags(record, response).createEvaluationResponse
+          response = perform_ft_f2_m_discoverytags(record, response)
+          return response.createEvaluationResponse
         end
       end
-    else # Try content negotiation
-      record = content_negotiation(url_record)
+    else # Try metadata harvesting
+      record = metadata_harvesting(url_record)
       if record && !record.empty?
-        return perform_ft_f2_m_discoverytags(record, response).createEvaluationResponse
+        response = perform_ft_f2_m_discoverytags(record, response)
+        return response.createEvaluationResponse
       end
     end
 
@@ -73,24 +76,10 @@ module FtF2MDiscoverytags
 
   # This method will perform the actual tests to avoid repetition above.
   def perform_ft_f2_m_discoverytags(record, response)
-    pass = false
-    keys = find_keys_with_non_empty_values(record)
-    keys.each do |key|
-      if @@required_fields.include?(key)
-        response.score = 'pass'
-        response.comments << "The record contains at least one of the required fields: #{@@required_fields.join(', ')}."
-        pass = true
-      else
-        @@required_fields.each do |field|
-          if field.include?(key) || key.include?(field)
-            response.score = 'pass'
-            response.comments << "The record contains at least one of the required fields: #{@@required_fields.join(', ')}."
-            pass = true
-          end
-        end
-      end
-    end
-    unless pass
+    if has_matching_key_with_value?(record, @@required_fields)
+      response.score = 'pass'
+      response.comments << "The record contains at least one of the required fields: #{@@required_fields.join(', ')}."
+    else
       response.score = 'fail'
       response.comments << "The record does not contain at least one of the required fields: #{@@required_fields.join(', ')}."
     end

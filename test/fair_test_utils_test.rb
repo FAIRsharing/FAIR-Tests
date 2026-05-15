@@ -26,6 +26,43 @@ class FairTestUtilsTest < Minitest::Test
     assert_equal res[:error].include?("Error parsing DOI metadata"), true
   end
 
+  def test_metadata_harvesting_returns_parsed_json
+    stub_request(:post, "https://tools.ostrails.eu/champion/harvest_only").
+      to_return(
+        status: 200,
+        body: { title: "This record passes" }.to_json,
+        headers: headers
+      )
+
+    assert_equal({ "title" => "This record passes" },
+                 metadata_harvesting("https://example.org/records/abc123"))
+  end
+
+  def test_metadata_harvesting_returns_nil_for_non_json
+    stub_request(:post, "https://tools.ostrails.eu/champion/harvest_only").
+      to_return(status: 200, body: "not json", headers: headers)
+
+    assert_nil metadata_harvesting("https://example.org/records/abc123")
+  end
+
+  def test_contains_meaningful_value_covers_all_value_types
+    refute contains_meaningful_value?(nil)
+
+    assert contains_meaningful_value?("title")
+    refute contains_meaningful_value?("  ")
+
+    assert contains_meaningful_value?(1)
+    refute contains_meaningful_value?(0)
+
+    assert contains_meaningful_value?(["title"])
+    refute contains_meaningful_value?([])
+
+    assert contains_meaningful_value?({ title: "A title" })
+    refute contains_meaningful_value?({})
+
+    assert contains_meaningful_value?(false)
+  end
+
   def test_resolves_dois
     fake_request = Object.new
     def fake_request.last_uri
@@ -144,6 +181,7 @@ class FairTestUtilsTest < Minitest::Test
     )
     assert_equal find_by_regex("FAIRsharing.123456"), {:message=>"Error getting record from FAIRsharing API: 404, "}
   end
+
 
   private
 

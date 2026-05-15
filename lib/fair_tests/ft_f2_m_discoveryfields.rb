@@ -48,7 +48,7 @@ module FtF2MDiscoveryfields
         else
           # If DOI metadata fails, resolve DOI and test the resolved target.
           real_url = resolve_doi(original_url)
-          record = content_negotiation(real_url)
+          record = metadata_harvesting(real_url)
           if record && !record.empty?
             response = perform_ft_f2_m_discoveryfields(record, response)
             return response.createEvaluationResponse
@@ -57,14 +57,14 @@ module FtF2MDiscoveryfields
         return response.createEvaluationResponse
       else # Try content negotiation
         real_url = resolve_doi(original_url)
-        record = content_negotiation(real_url)
+        record = metadata_harvesting(real_url)
         if record && !record.empty?
           response = perform_ft_f2_m_discoveryfields(record, response)
           return response.createEvaluationResponse
         end
       end
     else # Try content negotiation
-      record = content_negotiation(url_record)
+      record = metadata_harvesting(url_record)
       if record && !record.empty?
         response = perform_ft_f2_m_discoveryfields(record, response)
         return response.createEvaluationResponse
@@ -76,24 +76,10 @@ module FtF2MDiscoveryfields
 
   # This method will perform the actual tests to avoid repetition above.
   def perform_ft_f2_m_discoveryfields(record, response)
-    pass = false
-    keys = find_keys_with_non_empty_values(record)
-    keys.each do |key|
-      if @@required_fields.to_s.include?(key)
-        response.score = 'pass'
-        response.comments << "The record contains at least one of the required fields: #{@@required_fields.join(', ')}."
-        pass = true
-      else
-        @@required_fields.each do |field|
-          if field.to_s.include?(key) || key.include?(field)
-            response.score = 'pass'
-            response.comments << "The record contains at least one of the required fields: #{@@required_fields.join(', ')}."
-            pass = true
-          end
-        end
-      end
-    end
-    unless pass
+    if has_matching_key_with_value?(record, @@required_fields)
+      response.score = 'pass'
+      response.comments << "The record contains at least one of the required fields: #{@@required_fields.join(', ')}."
+    else
       response.score = 'fail'
       response.comments << "The record does not contain at least one of the required fields: #{@@required_fields.join(', ')}."
     end
