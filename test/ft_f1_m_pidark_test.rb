@@ -1,21 +1,20 @@
 # frozen_string_literal: true
 require_relative './test_helper'
 require 'webmock/minitest'
-require_relative '../lib/fair_tests/ft_ark_f1'
+require_relative '../lib/fair_tests/ft_f1_m_pidark'
 
-class FtArkF1Test < Minitest::Test
+class FtArkf1gupriTest < Minitest::Test
   include ::TestHelper
-  include ::FtArkF1
+  include ::FtF1MPidark
 
-
-  def test_mints_persistent_identifiers
+  def test_pass_ft_f1_m_pidark
     stub_request(:post, "#{ENV['FAIRSHARING_API_URL']}").
       with(headers: headers).to_return(
       status: 200,
       body: {
         "data": {
           "fairsharingRecord": {
-            "id": "123456",
+            "id": "1234567",
             "registry": "Database",
             "recordAssociations": [
               {
@@ -23,7 +22,9 @@ class FtArkF1Test < Minitest::Test
                 "linkedRecord": {
                   "type": "identifier_schema",
                   "metadata": {
-                    "persistent": true
+                    "persistent": true,
+                    "globally_unique": true,
+                    "resolvable": true
                   }
                 }
               }
@@ -34,7 +35,7 @@ class FtArkF1Test < Minitest::Test
       headers: headers
     )
 
-    post '/test/ft_ark_f1',
+    post '/test/ft_f1_m_pidark',
          params: { resource_identifier: 'https://fairsharing.org/1234' }.to_json,
          headers: headers
 
@@ -44,14 +45,14 @@ class FtArkF1Test < Minitest::Test
     assert_equal 'pass', find_prov_value(body)
   end
 
-  def test_does_not_mint_persistent_identifiers
+  def test_fail_ft_f1_m_pidark
     stub_request(:post, "#{ENV['FAIRSHARING_API_URL']}").
       with(headers: headers).to_return(
       status: 200,
       body: {
         "data": {
           "fairsharingRecord": {
-            "id": "123456",
+            "id": "1234567",
             "registry": "Database",
             "recordAssociations": [
               {
@@ -70,7 +71,7 @@ class FtArkF1Test < Minitest::Test
       headers: headers
     )
 
-    post '/test/ft_ark_f1',
+    post '/test/ft_f1_m_pidark',
          params: { resource_identifier: 'https://fairsharing.org/1234' }.to_json,
          headers: headers
 
@@ -80,22 +81,22 @@ class FtArkF1Test < Minitest::Test
     assert_equal 'fail', find_prov_value(body)
   end
 
-  def test_is_not_a_database
+  def test_fail_not_database_ft_f1_m_pidark
     stub_request(:post, "#{ENV['FAIRSHARING_API_URL']}").
       with(headers: headers).to_return(
       status: 200,
       body: {
         "data": {
           "fairsharingRecord": {
-            "id": "123456",
-            "registry": "Standard"
+            "id": "1234567",
+            "registry": "Standard",
           }
         }
       }.to_json,
       headers: headers
     )
 
-    post '/test/ft_ark_f1',
+    post '/test/ft_f1_m_pidark',
          params: { resource_identifier: 'https://fairsharing.org/1234' }.to_json,
          headers: headers
 
@@ -105,19 +106,21 @@ class FtArkF1Test < Minitest::Test
     assert_equal 'fail', find_prov_value(body)
   end
 
-  def test_file_not_found
+  def test_indeterminate_ft_f1_m_pidark
     stub_request(:post, "#{ENV['FAIRSHARING_API_URL']}").
       with(headers: headers).to_return(
       status: 200,
       body: {
         "data": {
-          "fairsharingRecord": {}
+          "regex": {
+            "records": []
+          }
         }
       }.to_json,
       headers: headers
     )
 
-    post '/test/ft_ark_f1',
+    post '/test/ft_f1_m_pidark',
          params: { resource_identifier: 'https://fairsharing.org/1234' }.to_json,
          headers: headers
 
