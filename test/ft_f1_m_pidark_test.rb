@@ -3,7 +3,7 @@ require_relative './test_helper'
 require 'webmock/minitest'
 require_relative '../lib/fair_tests/ft_f1_m_pidark'
 
-class FtArkf1gupriTest < Minitest::Test
+class FtF1MPidarkTest < Minitest::Test
   include ::TestHelper
   include ::FtF1MPidark
 

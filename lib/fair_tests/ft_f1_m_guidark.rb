@@ -3,7 +3,7 @@ module FtF1MGuidark
   require_relative '../fair_test_utils'
   include FairTestUtils
 
-  def ft_f1_m_Guidark(url_record)
+  def ft_f1_m_guidark(url_record)
     record = obtain_record_from_text(url_record)
 
 
