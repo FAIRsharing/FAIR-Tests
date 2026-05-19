@@ -66,7 +66,7 @@ class FairTests < Sinatra::Base
 
     # If the test exists, call it, passing the resource identifier.
     if respond_to?(params[:test_name])
-      json public_send(params[:test_name], all_params['resource_identifier'])
+      json JSON.parse(public_send(params[:test_name], all_params['resource_identifier']))
     else
       json message: "Test #{params[:test_name]} not found."
     end
