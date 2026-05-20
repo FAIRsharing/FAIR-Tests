@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 require_relative './test_helper'
 require 'webmock/minitest'
-require_relative '../lib/fair_tests/ft_ark_f1gupri'
+require_relative '../lib/fair_tests/ft_f1_m_ridark'
 
-class FtArkf1gupriTest < Minitest::Test
+class FtF1MRidarkTest < Minitest::Test
   include ::TestHelper
-  include ::FtArkF1gupri
+  include ::FtF1MRidark
 
-  def test_pass_ft_ark_f1gupri
+  def test_pass_ft_f1_m_ridark
     stub_request(:post, "#{ENV['FAIRSHARING_API_URL']}").
       with(headers: headers).to_return(
       status: 200,
@@ -35,7 +35,7 @@ class FtArkf1gupriTest < Minitest::Test
       headers: headers
     )
 
-    post '/test/ft_ark_f1gupri',
+    post '/test/ft_f1_m_ridark',
          params: { resource_identifier: 'https://fairsharing.org/1234' }.to_json,
          headers: headers
 
@@ -45,7 +45,7 @@ class FtArkf1gupriTest < Minitest::Test
     assert_equal 'pass', find_prov_value(body)
   end
 
-  def test_fail_ft_ark_f1gupri
+  def test_fail_ft_f1_m_ridark
     stub_request(:post, "#{ENV['FAIRSHARING_API_URL']}").
       with(headers: headers).to_return(
       status: 200,
@@ -60,8 +60,7 @@ class FtArkf1gupriTest < Minitest::Test
                 "linkedRecord": {
                   "type": "identifier_schema",
                   "metadata": {
-                    "persistent": true,
-                    "globally_unique": false
+                    "resolvable": false
                   }
                 }
               }
@@ -72,7 +71,7 @@ class FtArkf1gupriTest < Minitest::Test
       headers: headers
     )
 
-    post '/test/ft_ark_f1gupri',
+    post '/test/ft_f1_m_ridark',
          params: { resource_identifier: 'https://fairsharing.org/1234' }.to_json,
          headers: headers
 
@@ -82,7 +81,7 @@ class FtArkf1gupriTest < Minitest::Test
     assert_equal 'fail', find_prov_value(body)
   end
 
-  def test_fail_not_database_ft_ark_f1gupri
+  def test_fail_not_database_ft_f1_m_ridark
     stub_request(:post, "#{ENV['FAIRSHARING_API_URL']}").
       with(headers: headers).to_return(
       status: 200,
@@ -97,7 +96,7 @@ class FtArkf1gupriTest < Minitest::Test
       headers: headers
     )
 
-    post '/test/ft_ark_f1gupri',
+    post '/test/ft_f1_m_ridark',
          params: { resource_identifier: 'https://fairsharing.org/1234' }.to_json,
          headers: headers
 
@@ -107,7 +106,7 @@ class FtArkf1gupriTest < Minitest::Test
     assert_equal 'fail', find_prov_value(body)
   end
 
-  def test_indeterminate_ft_ark_f1gupri
+  def test_indeterminate_ft_f1_m_ridark
     stub_request(:post, "#{ENV['FAIRSHARING_API_URL']}").
       with(headers: headers).to_return(
       status: 200,
@@ -121,7 +120,7 @@ class FtArkf1gupriTest < Minitest::Test
       headers: headers
     )
 
-    post '/test/ft_ark_f1gupri',
+    post '/test/ft_f1_m_ridark',
          params: { resource_identifier: 'https://fairsharing.org/1234' }.to_json,
          headers: headers
 
