@@ -9,7 +9,7 @@ module FtF1MPidark
 
     meta = {
       testid: 'ft_f1_m_pidark',
-      testname: 'FAIR Metric - F1-PID - Metadata - Persistent identifiers for database content',
+      testname: 'FAIR Test - F1-PID - Metadata - Persistent identifiers for database content',
       description: 'This test checks that the database requires the minting of community-relevant, publicly available persistent identifiers for at least some of the content within the database being evaluated.',
       keywords: ['ARK', 'FAIR', 'F1', 'PID', 'persistent identifiers'],
       creator: 'https://orcid.org/0000-0001-9572-0972',
