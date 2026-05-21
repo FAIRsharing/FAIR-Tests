@@ -1,32 +1,24 @@
 # frozen_string_literal: true
-require_relative './test_helper'
 require 'webmock/minitest'
-require_relative '../lib/fair_tests/ft_ark_f1gupri'
+require_relative './test_helper'
+require_relative '../lib/fair_tests/ft_r1_1_m_database_level_licenses'
 
-class FtArkf1gupriTest < Minitest::Test
+class FtR11MDatabaseLevelLicensesTest < Minitest::Test
   include ::TestHelper
-  include ::FtArkF1gupri
+  include ::FtR11MDatabaseLevelLicenses
 
-  def test_pass_ft_ark_f1gupri
+  def test_has_a_licence
     stub_request(:post, "#{ENV['FAIRSHARING_API_URL']}").
       with(headers: headers).to_return(
       status: 200,
       body: {
         "data": {
           "fairsharingRecord": {
-            "id": "1234567",
+            "id": "123456",
             "registry": "Database",
-            "recordAssociations": [
+            "licences": [
               {
-                "recordAssocLabel": "implements",
-                "linkedRecord": {
-                  "type": "identifier_schema",
-                  "metadata": {
-                    "persistent": true,
-                    "globally_unique": true,
-                    "resolvable": true
-                  }
-                }
+                id: 1
               }
             ]
           }
@@ -35,7 +27,7 @@ class FtArkf1gupriTest < Minitest::Test
       headers: headers
     )
 
-    post '/test/ft_ark_f1gupri',
+    post '/test/ft_r1_1_m_database_level_licenses',
          params: { resource_identifier: 'https://fairsharing.org/1234' }.to_json,
          headers: headers
 
@@ -45,25 +37,44 @@ class FtArkf1gupriTest < Minitest::Test
     assert_equal 'pass', find_prov_value(body)
   end
 
-  def test_fail_ft_ark_f1gupri
+  def test_has_no_licence
     stub_request(:post, "#{ENV['FAIRSHARING_API_URL']}").
       with(headers: headers).to_return(
       status: 200,
       body: {
         "data": {
           "fairsharingRecord": {
-            "id": "1234567",
+            "id": "123456",
             "registry": "Database",
-            "recordAssociations": [
+            "licences": []
+          }
+        }
+      }.to_json,
+      headers: headers
+    )
+
+    post '/test/ft_r1_1_m_database_level_licenses',
+         params: { resource_identifier: 'https://example.org/1234' }.to_json,
+         headers: headers
+
+    assert last_response.ok?
+
+    body = parsed_response_body(last_response.body)
+    assert_equal 'fail', find_prov_value(body)
+  end
+
+  def test_is_not_a_database
+    stub_request(:post, "#{ENV['FAIRSHARING_API_URL']}").
+      with(headers: headers).to_return(
+      status: 200,
+      body: {
+        "data": {
+          "fairsharingRecord": {
+            "id": "123456",
+            "registry": "Standard",
+            "licences": [
               {
-                "recordAssocLabel": "implements",
-                "linkedRecord": {
-                  "type": "identifier_schema",
-                  "metadata": {
-                    "persistent": true,
-                    "globally_unique": false
-                  }
-                }
+                id: 1
               }
             ]
           }
@@ -72,7 +83,7 @@ class FtArkf1gupriTest < Minitest::Test
       headers: headers
     )
 
-    post '/test/ft_ark_f1gupri',
+    post '/test/ft_r1_1_m_database_level_licenses',
          params: { resource_identifier: 'https://fairsharing.org/1234' }.to_json,
          headers: headers
 
@@ -82,47 +93,18 @@ class FtArkf1gupriTest < Minitest::Test
     assert_equal 'fail', find_prov_value(body)
   end
 
-  def test_fail_not_database_ft_ark_f1gupri
+  def test_is_not_found
     stub_request(:post, "#{ENV['FAIRSHARING_API_URL']}").
       with(headers: headers).to_return(
       status: 200,
       body: {
-        "data": {
-          "fairsharingRecord": {
-            "id": "1234567",
-            "registry": "Standard",
-          }
-        }
+        "data": {}
       }.to_json,
       headers: headers
     )
 
-    post '/test/ft_ark_f1gupri',
-         params: { resource_identifier: 'https://fairsharing.org/1234' }.to_json,
-         headers: headers
-
-    assert last_response.ok?
-
-    body = parsed_response_body(last_response.body)
-    assert_equal 'fail', find_prov_value(body)
-  end
-
-  def test_indeterminate_ft_ark_f1gupri
-    stub_request(:post, "#{ENV['FAIRSHARING_API_URL']}").
-      with(headers: headers).to_return(
-      status: 200,
-      body: {
-        "data": {
-          "regex": {
-            "records": []
-          }
-        }
-      }.to_json,
-      headers: headers
-    )
-
-    post '/test/ft_ark_f1gupri',
-         params: { resource_identifier: 'https://fairsharing.org/1234' }.to_json,
+    post '/test/ft_r1_1_m_database_level_licenses',
+         params: { resource_identifier: 'https://example.org/1234' }.to_json,
          headers: headers
 
     assert last_response.ok?
@@ -130,4 +112,39 @@ class FtArkf1gupriTest < Minitest::Test
     body = parsed_response_body(last_response.body)
     assert_equal 'indeterminate', find_prov_value(body)
   end
+
+  def test_is_not_a_database_via_doi
+    stub_request(:get, 'https://doi.org/10.1234%2F5678').to_return(
+      status: 200,
+      body: "https://fairsharing.org/5678".to_json,
+      headers: headers
+    )
+    stub_request(:post, "#{ENV['FAIRSHARING_API_URL']}").to_return(
+      status: 200,
+      body: {
+        "data": {
+          "fairsharingRecord": {
+            "id": "123456",
+            "registry": "Standard",
+            "licences": [
+              {
+                id: 1
+              }
+            ]
+          }
+        }
+      }.to_json,
+      headers: headers
+    )
+
+    post '/test/ft_r1_1_m_database_level_licenses',
+         params: { resource_identifier: 'https://doi.org/10.1234/5678' }.to_json,
+         headers: headers
+
+    assert last_response.ok?
+
+    body = parsed_response_body(last_response.body)
+    assert_equal 'fail', find_prov_value(body)
+  end
+
 end

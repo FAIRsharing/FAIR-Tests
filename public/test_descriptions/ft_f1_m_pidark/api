@@ -1,0 +1,40 @@
+
+openapi: 3.0.0
+info:
+  version: "1.0"
+  title: "FAIR Metric - F1-PID - Metadata - Persistent identifiers for database content"
+  x-tests_metric: "https://doi.org/10.25504/FAIRsharing.432cab"
+  description: >-
+    "The 'FAIR Metric - F1 - Metadata - Persistent identifiers for database content' is a database-level test that requires the minting of community-relevant, publicly available persistent identifiers for at least some of the content within the database being evaluated. ft_f1_m_pidark expects a FAIRsharing URL or DOI as its input and evaluates the database described by the FAIRsharing record for the guaranteed persistence of the identifier schema as defined by the identifier schema record type in FAIRsharing. Persistence refers to the requirement that this globally unique identifier is never reused elsewhere and continues to identify the same resource over time. This feature is key to the Findability of the database being evaluated. The test will return as follows: Pass: URL/DOI must point to an existing FAIRsharing database record; the record must have an 'implements' to an id_schema record; that id_schema record must have the persistent field set to 'true'. Indeterminate: URL/DOI is non-existent or malformed. Fail: if any of the conditions in 'pass' fail; specifically, if the URL/DOI is not a database record, OR if there is no 'implements' relationship to an id_schema, OR if the persistent field is set to 'false'."
+  x-applies_to_principle: "https://doi.org/10.25504/FAIRsharing.e226cb"
+  contact:
+    x-organization: "FAIRsharing, Oxford University"
+    url: "https://fairsharing.org"
+    name: "Ramon Granell"
+    x-role: developer
+    email: "ramon.granell@oerc.ox.ac.uk"
+    x-id: "https://orcid.org/0000-0001-9572-0972"
+paths:
+  "/ft_f1_m_pidark":
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/schemas"
+        required: true
+      responses:
+        "200":
+          description:  >-
+            The response is "pass", "fail" or "indeterminate"
+servers:
+  - url: "https://fair-tests.fairsharing.org/fair_tests"
+components:
+  schemas:
+    schemas:
+      required:
+        - resource_identifier
+      properties:
+      - resource_identifier:
+          type: string
+          description: the GUID being tested
