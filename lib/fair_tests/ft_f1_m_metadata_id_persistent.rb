@@ -9,7 +9,7 @@ module FtF1MMetadataIdPersistent
     meta = {
       testid: 'ft_f1_m_metadata_id_persistent',
       testname: 'FAIR Test – F1 – Metadata - Metadata contains identifier that is guaranteed persistent',
-      description: "This metric evaluates whether the metadata retrieved from the provided URI contains an identifier that satisfies the FAIRsharing definition of guaranteed persistence, as aligned with the EOSC PID Policy. Note that it assesses the metadata retrieved from the URI rather than the URI itself. Resolution of the provided URI should follow FAIRsharing’s identifier resolution during assessment best practices. If the record contains DOI or ARK identifiers it will pass. If any identifier URLs can be determined as persistent via FAIRsharing data the test will also pass. Otherwise, it will fail.",
+      description: "This metric evaluates whether the metadata retrieved from the provided URI contains an identifier that satisfies the FAIRsharing definition of guaranteed persistence, as aligned with the EOSC PID Policy. Note that it assesses the metadata retrieved from the URI rather than the URI itself. During assessment, the provided URI is resolved in accordance with FAIRsharing’s identifier resolution best practices. If the record contains DOI or ARK identifiers it will pass. If any identifier URLs can be determined as persistent via FAIRsharing data the test will also pass. Otherwise, it will fail.",
       keywords: ['FAIR', 'F1', 'GUID', 'persistent identifiers'],
       creator: 'https://orcid.org/0000-0002-6468-9260',
       indicators: [],
