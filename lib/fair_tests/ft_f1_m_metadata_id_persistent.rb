@@ -1,19 +1,19 @@
-module FtF1MMetadataIdResolvable
+module FtF1MMetadataIdPersistent
   require 'ftr_ruby'
   require_relative '../fair_test_utils'
   include FairTestUtils
 
-  def ft_f1_m_metadata_id_resolvable(url_record)
+  def ft_f1_m_metadata_id_persistent(url_record)
     record = metadata_harvesting(url_record)
 
     meta = {
-      testid: 'ft_f1_m_metadata_id_resolvable',
-      testname: 'FAIR Test – F1 – Metadata - Metadata contains identifier that is guaranteed resolvable',
-      description: "This metric evaluates whether the metadata retrieved from the provided URI contains an identifier that satisfies the FAIRsharing definition of guaranteed resolvability, as aligned with the EOSC PID Policy. Note that it assesses the metadata retrieved from the URI rather than the URI itself. Resolution of the provided URI should follow FAIRsharing’s identifier resolution during assessment best practices. If the record contains DOI or ARK identifiers it will pass. If any identifier URLs can be determined as resolvable via FAIRsharing data the test will also pass. Otherwise, it will fail.",
-      keywords: ['FAIR', 'F1', 'GUID', 'resolvable identifiers'],
+      testid: 'ft_f1_m_metadata_id_persistent',
+      testname: 'FAIR Test – F1 – Metadata - Metadata contains identifier that is guaranteed persistent',
+      description: "This metric evaluates whether the metadata retrieved from the provided URI contains an identifier that satisfies the FAIRsharing definition of guaranteed persistence, as aligned with the EOSC PID Policy. Note that it assesses the metadata retrieved from the URI rather than the URI itself. Resolution of the provided URI should follow FAIRsharing’s identifier resolution during assessment best practices. If the record contains DOI or ARK identifiers it will pass. If any identifier URLs can be determined as persistent via FAIRsharing data the test will also pass. Otherwise, it will fail.",
+      keywords: ['FAIR', 'F1', 'GUID', 'persistent identifiers'],
       creator: 'https://orcid.org/0000-0002-6468-9260',
       indicators: [],
-      metric: 'https://fairsharing.org/8203',
+      metric: 'https://fairsharing.org/8204',
       license: 'https://creativecommons.org/licenses/by/4.0/',
       testversion: '1.0.0',
       protocol: 'https',
@@ -24,14 +24,14 @@ module FtF1MMetadataIdResolvable
     response = FtrRuby::Output.new(
       testedGUID: url_record,
       meta: meta,
-    )
+      )
 
     if record && !record.empty?
       pass = false
       identifiers = find_schema_property_value_triples(record)
       if identifiers.empty?
         response.score = 'fail'
-        response.comments << 'This record does not contain any resolvable identifiers.'
+        response.comments << 'This record does not contain any persistent identifiers.'
       else
         identifiers.each do |identifier|
           property_ids = schema_object_values(identifier, 'propertyID')
@@ -47,7 +47,7 @@ module FtF1MMetadataIdResolvable
             urls.each do |identifier_url|
               records = find_by_regex(identifier_url)['records'] || []
               records.each do |r|
-                next unless r.dig('metadata', 'resolvable') && !pass
+                next unless r.dig('metadata', 'persistent') && !pass
 
                 pass = true
                 break
@@ -59,10 +59,10 @@ module FtF1MMetadataIdResolvable
 
         if pass
           response.score = 'pass'
-          response.comments << 'This record contains a resolvable identifier.'
+          response.comments << 'This record contains a persistent identifier.'
         else
           response.score = 'fail'
-          response.comments << 'This record does not contain any resolvable identifiers.'
+          response.comments << 'This record does not contain any persistent identifiers.'
         end
       end
     end
