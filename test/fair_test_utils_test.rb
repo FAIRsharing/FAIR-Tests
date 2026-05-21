@@ -63,6 +63,57 @@ class FairTestUtilsTest < Minitest::Test
     assert contains_meaningful_value?(false)
   end
 
+  def test_finds_schema_property_value_triples
+    data = {
+      '@graph' => [
+        {
+          '@id' => 'urn:local:harvester:graph',
+          'local:triples' => [
+            {
+              '@id' => 'uuid:example',
+              '@type' => ['http://schema.org/Dataset']
+            },
+            {
+              '@id' => '_:identifier',
+              '@type' => ['http://schema.org/PropertyValue'],
+              'http://schema.org/propertyID' => [{ '@value' => 'DOI' }],
+              'http://schema.org/url' => [{ '@id' => 'https://doi.org/10.1234/example' }]
+            }
+          ]
+        }
+      ]
+    }
+
+    matches = find_schema_property_value_triples(data)
+
+    assert_equal 1, matches.length
+    assert_equal ['DOI'], schema_object_values(matches.first, 'propertyID')
+    assert_equal ['https://doi.org/10.1234/example'], schema_object_values(matches.first, 'url')
+  end
+
+  def test_jsonld_scalar_values_covers_supported_shapes
+    assert_equal ['literal'], jsonld_scalar_values({ '@value' => 'literal' })
+    assert_equal ['symbol literal'], jsonld_scalar_values({ :'@value' => 'symbol literal' })
+    assert_equal ['https://example.org/id'], jsonld_scalar_values({ '@id' => 'https://example.org/id' })
+    assert_equal ['symbol-id'], jsonld_scalar_values({ :'@id' => 'symbol-id' })
+    assert_equal [], jsonld_scalar_values({})
+
+    assert_equal [], jsonld_scalar_values(nil)
+    assert_equal ['plain'], jsonld_scalar_values('plain')
+    assert_equal [1], jsonld_scalar_values(1)
+
+    assert_equal(
+      ['nested literal', 'nested-id', 'plain'],
+      jsonld_scalar_values([
+                             { '@value' => 'nested literal' },
+                             { :'@id' => 'nested-id' },
+                             'plain',
+                             nil,
+                             {}
+                           ])
+    )
+  end
+
   def test_resolves_dois
     fake_request = Object.new
     def fake_request.last_uri
