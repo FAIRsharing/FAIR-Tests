@@ -8,6 +8,8 @@ require 'uri'
 
 # Utility functions common to all FAIR tests.
 module FairTestUtils
+  SCHEMA_PROPERTY_VALUE_TYPE = 'http://schema.org/PropertyValue'
+  LOCAL_TRIPLES_KEY = 'local:triples'
 
   def metadata_harvesting(url)
     json_headers = {
@@ -163,6 +165,61 @@ module FairTestUtils
     return value if value.match?(%r{\Ahttps?://}i)
 
     nil
+  end
+
+  # This will look through the output of the metadata harvester and find all objects
+  # which include an ID; these IDs can then be checked directly (e.g. are they DOIs, ARKs etc.)
+  # or sent to FAIRsharing to match their URLs.
+  def find_schema_property_value_triples(obj, results = [])
+    case obj
+    when Hash
+      triples = obj[LOCAL_TRIPLES_KEY] || obj[LOCAL_TRIPLES_KEY.to_sym]
+      if triples.is_a?(Array)
+        triples.each do |triple|
+          next unless triple.is_a?(Hash)
+
+          results << triple if Array(triple['@type'] || triple[:'@type']).include?(SCHEMA_PROPERTY_VALUE_TYPE)
+        end
+      end
+
+      obj.each_value do |value|
+        find_schema_property_value_triples(value, results)
+      end
+    when Array
+      obj.each do |item|
+        find_schema_property_value_triples(item, results)
+      end
+    end
+
+    results
+  end
+
+  def schema_object_values(obj, property_name)
+    return [] unless obj.is_a?(Hash)
+
+    keys = [
+      property_name,
+      "schema:#{property_name}",
+      "http://schema.org/#{property_name}"
+    ]
+
+    keys.flat_map do |key|
+      [obj[key], obj[key.to_sym]]
+    end.compact.flat_map do |value|
+      jsonld_scalar_values(value)
+    end
+  end
+
+  def jsonld_scalar_values(value)
+    case value
+    when Array
+      value.flat_map { |item| jsonld_scalar_values(item) }
+    when Hash
+      scalar = value['@value'] || value[:'@value'] || value['@id'] || value[:'@id']
+      scalar.nil? ? [] : [scalar]
+    else
+      value.nil? ? [] : [value]
+    end
   end
 
 
@@ -340,25 +397,6 @@ module FairTestUtils
     else
       nil
     end
-  end
-
-  # Find all matching keys within a hash and return their values:
-  def find_all_keys(obj, target_key, results = [])
-    case obj
-    when Hash
-      results << obj[target_key] if obj.key?(target_key)
-
-      obj.each_value do |value|
-        find_all_keys(value, target_key, results)
-      end
-
-    when Array
-      obj.each do |item|
-        find_all_keys(item, target_key, results)
-      end
-    end
-
-    results
   end
 
 end

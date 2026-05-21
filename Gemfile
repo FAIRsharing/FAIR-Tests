@@ -3,6 +3,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '3.3.10'
 
+gem 'rubocop', group: 'development', require: false
 gem 'sinatra'
 gem 'rackup'
 gem 'puma'
