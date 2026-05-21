@@ -342,4 +342,23 @@ module FairTestUtils
     end
   end
 
+  # Find all matching keys within a hash and return their values:
+  def find_all_keys(obj, target_key, results = [])
+    case obj
+    when Hash
+      results << obj[target_key] if obj.key?(target_key)
+
+      obj.each_value do |value|
+        find_all_keys(value, target_key, results)
+      end
+
+    when Array
+      obj.each do |item|
+        find_all_keys(item, target_key, results)
+      end
+    end
+
+    results
+  end
+
 end
