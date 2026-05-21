@@ -9,7 +9,7 @@ module FtF1MRidark
 
     meta = {
       testid: 'ft_f1_m_ridark',
-      testname: 'FAIR Metric - F1 - Metadata - Resolvable identifiers for database content',
+      testname: 'FAIR Test - F1 - Metadata - Resolvable identifiers for database content',
       description: 'This test checks that the database requires the minting of community-relevant, publicly available globally resolvable identifiers for at least some of the content within the database being evaluated.',
       keywords: ['ARK', 'FAIR', 'F1', 'RID', 'resolvable identifiers'],
       creator: 'https://orcid.org/0000-0001-9572-0972',
