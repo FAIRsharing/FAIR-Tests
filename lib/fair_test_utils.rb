@@ -8,8 +8,8 @@ require 'uri'
 
 # Utility functions common to all FAIR tests.
 module FairTestUtils
-  SCHEMA_PROPERTY_VALUE_TYPE = 'http://schema.org/PropertyValue'
-  LOCAL_TRIPLES_KEY = 'local:triples'
+  SCHEMA_PROPERTY_VALUE_TYPE = 'http://schema.org/PropertyValue'.freeze
+  LOCAL_TRIPLES_KEY = 'local:triples'.freeze
 
   def metadata_harvesting(url)
     json_headers = {
@@ -21,6 +21,7 @@ module FairTestUtils
                              body: { resource_identifier: url }.to_json,
                              headers: json_headers
     )
+
     body = response.body.to_s.strip
     return nil if body.empty?
 
