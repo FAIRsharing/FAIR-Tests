@@ -20,10 +20,10 @@ gem 'simplecov', require: false
 
 # Somewhat old, but should do the trick...
 gem 'simple_doi', github: 'UMNLibraries/simpledoi-ruby'
-gem 'curb'
+gem 'curb', '< 1.3.0'
 
 # For generating test responses.
-gem 'ftr_ruby'
+gem 'ftr_ruby', '~> 0.1.12'
 gem 'rest-client'
 gem 'sparql'
 gem 'linkeddata'
