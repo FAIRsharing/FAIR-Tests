@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 require_relative './test_helper'
 require 'webmock/minitest'
-require_relative '../lib/fair_tests/ft_r1_2_ror_id_for_funder'
+require_relative '../lib/fair_tests/ft_r1_2_m_ror_id_for_funder'
 
-class FtR12RorIdForFunderTest < Minitest::Test
+class FtR12MRorIdForFunderTest < Minitest::Test
   include ::TestHelper
   include ::FtF1MMetadataIdPersistent
 
@@ -30,7 +30,7 @@ class FtR12RorIdForFunderTest < Minitest::Test
       }
     )
 
-    post '/test/ft_r1_2_ror_id_for_funder',
+    post '/test/ft_r1_2_m_ror_id_for_funder',
          params: { resource_identifier: 'https://example.org/records/abc123' }.to_json,
          headers: headers
 
@@ -59,7 +59,7 @@ class FtR12RorIdForFunderTest < Minitest::Test
       }
     )
 
-    post '/test/ft_r1_2_ror_id_for_funder',
+    post '/test/ft_r1_2_m_ror_id_for_funder',
          params: { resource_identifier: 'https://example.org/records/abc123' }.to_json,
          headers: headers
 
@@ -92,7 +92,7 @@ class FtR12RorIdForFunderTest < Minitest::Test
       }
     )
 
-    post '/test/ft_r1_2_ror_id_for_funder',
+    post '/test/ft_r1_2_m_ror_id_for_funder',
          params: { resource_identifier: 'https://example.org/records/abc123' }.to_json,
          headers: headers
 
