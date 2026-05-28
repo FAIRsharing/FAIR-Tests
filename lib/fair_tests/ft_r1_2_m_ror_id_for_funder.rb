@@ -1,13 +1,13 @@
-module FtR12RorIdForFunder
+module FtR12MRorIdForFunder
   require 'ftr_ruby'
   require_relative '../fair_test_utils'
   include FairTestUtils
 
-  def ft_r1_2_ror_id_for_funder(url_record)
+  def ft_r1_2_m_ror_id_for_funder(url_record)
     record = metadata_harvesting(url_record)
 
     meta = {
-      testid: 'ft_r1_2_ror_id_for_funder',
+      testid: 'ft_r1_2_m_ror_id_for_funder',
       testname: 'FAIR Test - R1.2 - Metadata - ROR ID for funder',
       description: 'This test evaluates whether the metadata includes at least one ROR ID for a funder associated with the research object. The assessment checks for structured funding references within both the landing page metadata and the central records held by DOI registration agencies (such as DataCite or Crossref). Specifically, it verifies that fields such as fundingReferences (DataCite) or funder (Crossref) are populated with at least one funder ROR ID. It checks the record’s landing page for embedded or linked structured data that can be successfully parsed against the declared community schema. If the record contains ROR identifiers it will pass; otherwise, the test will fail.',
       keywords: ['FAIR', 'R1.2', 'ror id'],
