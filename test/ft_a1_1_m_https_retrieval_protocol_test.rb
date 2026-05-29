@@ -92,4 +92,25 @@ class FtR12MRorIdForFunderTest < Minitest::Test
     assert_equal 'fail', find_prov_value(body)
     assert_includes last_response.body, 'certificate verify failed'
   end
+
+  def test_fails_when_https_retrieval_raises_socket_error
+    stub_request(:head, 'https://doesntexist.lol')
+      .with(
+        headers: {
+          'Accept' => '*/*',
+          'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'User-Agent' => 'Ruby'
+        }
+      )
+      .to_raise(Socket::ResolutionError.new('no such domain'))
+
+    post '/test/ft_a1_1_m_https_retrieval_protocol',
+         params: { resource_identifier: 'https://doesntexist.lol' }.to_json,
+         headers: headers
+
+    assert last_response.ok?
+
+    body = parsed_response_body(last_response.body)
+    assert_equal 'fail', find_prov_value(body)
+  end
 end
