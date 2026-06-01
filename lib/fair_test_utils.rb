@@ -195,6 +195,51 @@ module FairTestUtils
     results
   end
 
+  # This will look through the output of the metadata harvester and find all objects
+  # that were in a hash element that the key matches val_keys based on property
+  # For example, find_schema_object_values({"a1" :{"a2": [v1, v2]}, "a2": "text"}, "a2")
+  # will return [[v1, v2], "text"]
+  def find_schema_object_values(obj, property_name, results = [])
+    val_keys = [
+      property_name,
+      "schema:#{property_name}",
+      "http://schema.org/#{property_name}"
+    ]
+    case obj
+    when Hash
+      obj.each do |key, value|
+        results << value if val_keys.to_s.downcase.include?(key.downcase)
+        find_schema_object_values(value, property_name, results)
+      end
+    when Array
+      obj.each do |item|
+        find_schema_object_values(item, property_name, results)
+      end
+    end
+
+    results
+  end
+
+  # This will look through the output of the metadata harvester and find all hash tables H
+  # that have a key equal to "key_name" and H[key] is equal to value_to_match
+  def find_all_schema_object_key_value(obj, key_name, value_to_match, results = [])
+
+    case obj
+    when Hash
+      obj.each do |key, value|
+        results << obj if key_name.to_s == key.downcase && value.is_a?(String) && value == value_to_match
+
+        find_all_schema_object_key_value(value, key_name, value_to_match, results)
+      end
+    when Array
+      obj.each do |item|
+        find_all_schema_object_key_value(item, key_name, value_to_match, results)
+      end
+    end
+
+    results
+  end
+
   def schema_object_values(obj, property_name)
     return [] unless obj.is_a?(Hash)
 
