@@ -48,7 +48,7 @@ module FtR12MRorIdForFunder
         identifiers.each do |identifier|
           property_ids = schema_object_values(identifier, 'propertyID')
 
-          if (property_ids & %w[ORCID]).any? and identifier.include?('@ID') && con_ids.include?(identifier['@ID'])
+          if (property_ids & %w[ORCID]).any? && identifier.include?('@ID') && con_ids.include?(identifier['@ID'])
             pass = true
             break
           end
