@@ -1,4 +1,4 @@
-module FtR12MRorIdForFunder
+module FtR12MCreatorOrcid
   require 'ftr_ruby'
   require_relative '../fair_test_utils'
   include FairTestUtils
@@ -29,37 +29,40 @@ module FtR12MRorIdForFunder
     if record && !record.empty?
       pass = false
       identifiers = find_schema_property_value_triples(record)
-      creators = find_schema_object_values(record,'creator')
-      if identifiers.empty? || creators.empty?
-        response.score = 'fail'
-        response.comments << 'This record does not contain a creator with ORCID ID.'
-      else
-        con_ids = []
-        find_schema_object_values(creators,'@id').each do |id_c|
+      creators = find_schema_object_values(record, 'creator')
+      # con_ids will contain the ID of an element that is connected to the creators.
+      # These elements need to be checked if it is ORCID
+      con_ids = []
+      unless creators.empty?
+        find_schema_object_values(creators[0], '@id').each do |id_c|
           next unless id_c.is_a?(String)
+
           find_all_schema_object_key_value(record, '@id', id_c).each do |c|
             schema_object_values(c, 'identifier').each do |d|
-              con_ids << d[0]
+              next unless d.is_a?(String)
+
+              con_ids << d unless d.empty?
             end
           end
         end
-
-
+      end
+      if identifiers.empty? || creators.empty? || con_ids.empty?
+        response.score = 'fail'
+        response.comments << 'This record does not contain a creator with ORCID ID.'
+      else
         identifiers.each do |identifier|
           property_ids = schema_object_values(identifier, 'propertyID')
-
-          if (property_ids & %w[ORCID]).any? && identifier.include?('@ID') && con_ids.include?(identifier['@ID'])
+          if (property_ids & %w[ORCID]).any? && identifier.include?('@id') && con_ids.include?(identifier['@id'])
             pass = true
             break
           end
         end
-
         if pass
           response.score = 'pass'
-          response.comments << 'This record contains ROR identifiers.'
+          response.comments << 'This record contains a creator with ORCID ID.'
         else
           response.score = 'fail'
-          response.comments << 'This record does not contain ROR identifiers.'
+          response.comments << 'This record does not contain a creator with ORCID ID.'
         end
       end
     end

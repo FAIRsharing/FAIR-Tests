@@ -5,7 +5,7 @@ require_relative '../lib/fair_tests/ft_r1_2_m_ror_id_for_funder'
 
 class FtR12MRorIdForFunderTest < Minitest::Test
   include ::TestHelper
-  include ::FtF1MMetadataIdPersistent
+  include ::FtR12MRorIdForFunder
 
   def test_passes_when_schema_property_value_triple_contains_ror
     stub_metadata_harvesting(
