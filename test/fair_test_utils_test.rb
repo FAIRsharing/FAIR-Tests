@@ -91,6 +91,62 @@ class FairTestUtilsTest < Minitest::Test
     assert_equal ['https://doi.org/10.1234/example'], schema_object_values(matches.first, 'url')
   end
 
+  def test_find_schema_object_values
+    data = {
+      '@graph' => [
+        {
+          '@id' => 'urn:local:harvester:graph',
+          'local:triples' => [
+            {
+              '@id' => [1, 2],
+              '@type' => ['http://schema.org/Dataset']
+            },
+            {
+              '@id' => '_:identifier',
+              '@type' => ['http://schema.org/PropertyValue'],
+              'http://schema.org/propertyID' => [{ '@value' => 'DOI' }],
+              'http://schema.org/url' => [{ '@id' => 'https://doi.org/10.1234/example' }]
+            }
+          ]
+        }
+      ]
+    }
+
+    matches = find_schema_object_values(data,'@id')
+
+    assert_equal 4, matches.length
+    assert_equal [1, 2], matches[1]
+    assert_equal 'https://doi.org/10.1234/example', matches[3]
+  end
+
+  def test_find_all_schema_object_key_value
+    data = {
+      '@graph' => [
+        {
+          '@id' => 'urn:local:harvester:graph',
+          'local:triples' => [
+            {
+              '@id' => [1, 2],
+              '@type' => ['http://schema.org/Dataset']
+            },
+            {
+              '@id' => '_:identifier',
+              '@type' => ['http://schema.org/PropertyValue'],
+              'http://schema.org/propertyID' => [{ '@value' => 'DOI' }],
+              'http://schema.org/url' => [{ '@id' => '_:identifier' }]
+            }
+          ]
+        }
+      ]
+    }
+
+    matches = find_all_schema_object_key_value(data,'@id', '_:identifier')
+
+    assert_equal 2, matches.length
+    assert_equal ['http://schema.org/PropertyValue'], matches[0]['@type']
+    assert_equal 1, matches[1].keys.length
+  end
+
   def test_jsonld_scalar_values_covers_supported_shapes
     assert_equal ['literal'], jsonld_scalar_values({ '@value' => 'literal' })
     assert_equal ['symbol literal'], jsonld_scalar_values({ :'@value' => 'symbol literal' })

@@ -1,0 +1,38 @@
+openapi: 3.0.0
+info:
+  version: "1.0"
+  title: "FAIR Test - R1.2 - Metadata - Creator ORCIDs"
+  x-tests_metric: "https://doi.org/10.25504/FAIRsharing.342aaa"
+  description: >-
+      "This test evaluates whether the metadata includes at least one qualified reference to ORCID for a contributor with a ‘creator’ role. The presence of ORCIDs linked to individuals, together with the defined ‘creator’ role, constitutes a qualified provenance reference. If the record contains a creator and this creator has an ORCID ID it will pass; otherwise, the test will fail."
+  x-applies_to_principle: "https://doi.org/10.25504/FAIRsharing.3e9860"
+  contact:
+    x-organization: "FAIRsharing, Oxford University"
+    url: "https://fairsharing.org"
+    name: "FAIRsharing Support"
+    email: "contact@fairsharing.org"
+paths:
+  "/ft_r1_2_m_creator_orcid":
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/schemas"
+        required: true
+      responses:
+        "200":
+          description:  >-
+            The response is "pass", "fail" or "indeterminate"
+servers:
+  - url: "https://fair-tests.fairsharing.org/test"
+components:
+  schemas:
+    schemas:
+      required:
+        - resource_identifier
+      properties:
+      - resource_identifier:
+          type: string
+          description: the GUID being tested
+
