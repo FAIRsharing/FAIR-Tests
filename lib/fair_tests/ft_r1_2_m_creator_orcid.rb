@@ -11,7 +11,7 @@ module FtR12MCreatorOrcid
       testname: 'FAIR Test - R1.2 - Metadata - Creator ORCIDs',
       description: 'This test evaluates whether the metadata includes at least one qualified reference to ORCID for a contributor with a ‘creator’ role. The presence of ORCIDs linked to individuals, together with the defined ‘creator’ role, constitutes a qualified provenance reference. If the record contains a creator and this creator has an ORCID ID it will pass; otherwise, the test will fail.',
       keywords: ['FAIR', 'R1.2', 'creator orcid'],
-      creator: 'https://orcid.org/0000-0002-6468-9260',
+      creator: 'https://orcid.org/0000-0001-9572-0972',
       indicators: [],
       metric: 'https://doi.org/10.25504/FAIRsharing.342aaa',
       license: 'https://creativecommons.org/licenses/by/4.0/',
@@ -24,7 +24,7 @@ module FtR12MCreatorOrcid
     response = FtrRuby::Output.new(
       testedGUID: url_record,
       meta: meta,
-      )
+    )
 
     if record && !record.empty?
       pass = false
