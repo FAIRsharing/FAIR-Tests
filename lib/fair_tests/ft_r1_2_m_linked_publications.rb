@@ -29,39 +29,30 @@ module FtR12MLinkedPublications
     if record && !record.empty?
       pass = false
       isRelatedTo = find_schema_object_values(record, 'isRelatedTo')
-      identifiers = find_schema_property_value_triples(record)
-      if isRelatedTo.empty? || identifiers.empty?
+      if isRelatedTo.empty?
         response.score = 'fail'
         response.comments << 'This record does not contain a linked publication.'
       else
-        val_ids = []
-        isRelatedTo[0].each do |realtedTo|
-          next unless realtedTo.is_a?(Hash) && realtedTo.include?('@id')
+        isRelatedTo[0].each do |relatedTo|
+          next unless relatedTo.is_a?(Hash) && relatedTo.include?('@id')
 
-          val_ids << realtedTo['@id']
-        end
-        unless val_ids.empty?
-
-          identifiers.each do |identifier|
-            type = schema_object_values(identifier, '@type')
-
-            if (identifier.is_a?(Hash) && type & %w[ScholarlyArticle, Thesis, Book, Chapter, CreativeWork]).any? && identifier.include?('@id') && val_ids.include?(identifier['@id'])
-                pass = true
-                break
-              end
+          find_all_schema_object_key_value(record, '@id', relatedTo['@id']).each do |c|
+            type = schema_object_values(c, '@type')
+            if (type & %w[http://schema.org/ScholarlyArticle http://schema.org/Thesis http://schema.org/Book http://schema.org/Chapter http://schema.org/CreativeWork]).any?
+              pass = true
+              break
             end
-
-
+            break if pass
           end
+          break if pass
         end
-
-        if pass
-          response.score = 'pass'
-          response.comments << 'This record contains a linked publication.'
-        else
-          response.score = 'fail'
-          response.comments << 'This record does not contain a linked publication.'
-        end
+      end
+      if pass
+        response.score = 'pass'
+        response.comments << 'This record contains a linked publication.'
+      else
+        response.score = 'fail'
+        response.comments << 'This record does not contain a linked publication.'
       end
     end
 
