@@ -1,0 +1,38 @@
+openapi: 3.0.0
+info:
+  version: "1.0"
+  title: "FAIR Test – A1.2 – Metadata - retrieval protocol supports auth"
+  x-tests_metric: "https://fairsharing.org/7834"
+  description: >-
+    "A1.2 requires that the protocol used to retrieve research objects clearly describes any necessary authentication and authorisation procedures. This ensures that access conditions are transparent and that restricted content is accessed in a defined and controlled way. Optionally, if a FAIRsharing record for the hosting database is available, the evaluation first checks the declared data access conditions. If the access condition is “open” then no authentication or authorisation is required for any content within that database, and the evaluation is complete. Otherwise, the test currently fails. https://tests.ostrails.eu/tests/test_FM_A1_2_M_Auth should also be run."
+  x-applies_to_principle: "https://fairsharing.org/6295"
+  contact:
+    x-organization: "FAIRsharing, Oxford University"
+    url: "https://fairsharing.org"
+    name: "FAIRsharing Support"
+    email: "contact@fairsharing.org"
+paths:
+  "/ft_a1_2_m_retrieval_protocol_supports_auth":
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/schemas"
+        required: true
+      responses:
+        "200":
+          description:  >-
+            The response is "pass", "fail" or "indeterminate"
+servers:
+  - url: "https://fair-tests.fairsharing.org/test"
+components:
+  schemas:
+    schemas:
+      required:
+        - resource_identifier
+      properties:
+      - resource_identifier:
+          type: string
+          description: the GUID being tested
+

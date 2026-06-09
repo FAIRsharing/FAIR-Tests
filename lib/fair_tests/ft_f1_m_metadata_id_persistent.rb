@@ -24,7 +24,7 @@ module FtF1MMetadataIdPersistent
     response = FtrRuby::Output.new(
       testedGUID: url_record,
       meta: meta,
-      )
+    )
 
     if record && !record.empty?
       pass = false
