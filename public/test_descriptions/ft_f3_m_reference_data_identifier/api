@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   version: "1.0"
-  title: "FAIR Test - F2 - Metadata - Tagging To Aid Discovery"
+  title: "FAIR Test - F3 - Metadata - uses common formats to reference data identifier(s)"
   x-tests_metric: "https://fairsharing.org/10.25504/FAIRsharing.0a2061"
   description: >-
       "This test evaluates whether the metadata record explicitly includes the identifier of the research object(s) it describes. The discovery of a research object should be possible from its metadata. For this to happen, the metadata must explicitly contain the identifier for the digital resource it describes, and this should be present in the form of a qualified reference. This test evaluates whether the identifier provided as input resolves to metadata that contains a research object identifier. Further, that research object identifier must be distinguished from the numerous other fields and values that will be present in the metadata. If the record contains at least one identifier it will pass; otherwise, the test will fail."
