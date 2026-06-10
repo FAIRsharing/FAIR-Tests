@@ -17,8 +17,8 @@ module FtF1MMetadataIdUnique
       license: 'https://creativecommons.org/licenses/by/4.0/',
       testversion: '1.0.0',
       protocol: 'https',
-      host: "fair-tests.fairsharing.org",
-      basePath: "test"
+      host: "ostrails.github.io",
+      basePath: "assessment-component-metadata-records/test"
     }
 
     response = FtrRuby::Output.new(
