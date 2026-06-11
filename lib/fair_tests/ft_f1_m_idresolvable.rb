@@ -6,7 +6,7 @@ module FtF1MIdresolvable
     records = find_by_regex(url_record)['records']
 
     meta = {
-      testid: 'ft_f1_m_idresolvable',
+      testid: 'FT_F1_M_IdResolvable.ttl',
       testname: 'FAIR Test – F1 – Metadata - Evaluate identifier resolvability',
       description: "F1 requires that metadata be assigned a globally unique, persistent and resolvable identifier. This test is particularly concerned with the resolvability aspect of GUPRIs. Resolvability is required so that identifiers are actionable for both humans and machines. In this test, the definition of resolvability follows the FAIRsharing guidance on Globally Unique, Persistent and Resolvable Identifier (GUPRI) schemas. The identifier being evaluated is checked for a match (using regular expressions) to an existing id schema within FAIRsharing. Pass: There is an id_schema record matching the regular expression that has the resolvable field set to 'true'. Indeterminate: No matching records were found in FAIRsharing. Fail: No indication of this resource having a resolvable identifier was found.",
       keywords: ['FAIR', 'F1', 'resolvable identifiers'],
@@ -16,8 +16,8 @@ module FtF1MIdresolvable
       license: 'https://creativecommons.org/licenses/by/4.0/',
       testversion: '1.0.0',
       protocol: 'https',
-      host: "fair-tests.fairsharing.org",
-      basePath: "test"
+      host: 'ostrails.github.io',
+      basePath: '/assessment-component-metadata-records/test/'
     }
 
     response = FtrRuby::Output.new(

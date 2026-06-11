@@ -7,7 +7,7 @@ module FtArkA2preservation
     record = obtain_record_from_text(url_record)
 
     meta = {
-      testid: 'ft_ark_a2preservation',
+      testid: 'FTARKTA2Preservation.ttl',
       testname: 'FAIR Test - ARK T-A2 - Database has a preservation policy',
       description: 'This test checks that the database requires the presence of a data preservation policy for the database being evaluated. FM ARK A2-Preservation expects a FAIRsharing URL or DOI as its input and evaluates the database described by the FAIRsharing record.',
       keywords: ['ARK', 'FAIR', 'A2', 'preservation policy'],
@@ -17,8 +17,8 @@ module FtArkA2preservation
       license: 'https://creativecommons.org/licenses/by/4.0/',
       testversion: '1.0.0',
       protocol: 'https',
-      host: "fair-tests.fairsharing.org",
-      basePath: "test"
+      host: 'ostrails.github.io',
+      basePath: '/assessment-component-metadata-records/test/'
     }
 
     response = FtrRuby::Output.new(

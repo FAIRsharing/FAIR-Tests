@@ -8,7 +8,7 @@ module FtF1MGuidark
 
 
     meta = {
-      testid: 'ft_f1_m_guidark',
+      testid: 'FT_F1_M_GUID-ARK.ttl',
       testname: 'FAIR Test - F1 - Metadata - Globally unique identifiers for database content',
       description: 'This test checks that the database requires the minting of community-relevant, publicly available globally unique identifiers for at least some of the content within the database being evaluated.',
       keywords: ['ARK', 'FAIR', 'F1', 'GUID', 'globally unique identifiers'],
@@ -18,8 +18,8 @@ module FtF1MGuidark
       license: 'https://creativecommons.org/licenses/by/4.0/',
       testversion: '1.0.0',
       protocol: 'https',
-      host: "fair-tests.fairsharing.org",
-      basePath: "test"
+      host: 'ostrails.github.io',
+      basePath: '/assessment-component-metadata-records/test/'
     }
 
     response = FtrRuby::Output.new(

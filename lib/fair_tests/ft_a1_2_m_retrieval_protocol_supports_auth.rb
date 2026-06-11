@@ -10,7 +10,7 @@ module FtA12MRetrievalProtocolSupportsAuth
     record = get_fairsharing_record(url_record)
 
     meta = {
-      testid: 'ft_a1_2_m_retrieval_protocol_supports_auth',
+      testid: 'FT_A1-2_M_Auth.ttl',
       testname: 'FAIR Test – A1.2 – Metadata - retrieval protocol supports auth',
       description: 'A1.2 requires that the protocol used to retrieve research objects clearly describes any necessary authentication and authorisation procedures. This ensures that access conditions are transparent and that restricted content is accessed in a defined and controlled way. Optionally, if a FAIRsharing record for the hosting database is available, the evaluation first checks the declared data access conditions. If the access condition is “open” then no authentication or authorisation is required for any content within that database, and the evaluation is complete. Otherwise, the test currently fails. https://tests.ostrails.eu/tests/test_FM_A1_2_M_Auth should also be run.',
       keywords: ['FAIR', 'A1.2', 'authentication', 'retrieval protocol'],
@@ -20,8 +20,8 @@ module FtA12MRetrievalProtocolSupportsAuth
       license: 'https://creativecommons.org/licenses/by/4.0/',
       testversion: '1.0.0',
       protocol: 'https',
-      host: "fair-tests.fairsharing.org",
-      basePath: "test"
+      host: 'ostrails.github.io',
+      basePath: '/assessment-component-metadata-records/test/'
     }
 
     response = FtrRuby::Output.new(

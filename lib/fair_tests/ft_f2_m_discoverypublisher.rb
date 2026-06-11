@@ -16,7 +16,7 @@ module FtF2MDiscoverypublisher
     original_url = url_record&.dup
 
     meta = {
-      testid: 'ft_f2_m_discoverypublisher',
+      testid: 'FT_F2_M_Discoverypublisher.ttl',
       testname: 'FAIR Test - F2 - Metadata - Has Publisher Information',
       description: "FAIR Test - F2 - Metadata - Has Publisher Information evaluates whether the metadata includes explicit information regarding the organisation responsible for publishing the metadata record. It looks for a structured “publisher” field within the record. In the context of an institutional repository, this is typically the institution itself, or an external repository (like Zenodo) if the record is registering an object hosted elsewhere. The test will fail if this value is not present.",
       keywords: ['FAIR', 'F2', 'publisher metadata'],
@@ -26,8 +26,8 @@ module FtF2MDiscoverypublisher
       license: 'https://creativecommons.org/licenses/by/4.0/',
       testversion: '1.0.0',
       protocol: 'https',
-      host: "fair-tests.fairsharing.org",
-      basePath: "test"
+      host: 'ostrails.github.io',
+      basePath: '/assessment-component-metadata-records/test/'
     }
 
     response = FtrRuby::Output.new(

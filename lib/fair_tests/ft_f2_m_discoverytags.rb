@@ -16,7 +16,7 @@ module FtF2MDiscoverytags
     original_url = url_record&.dup
 
     meta = {
-      testid: 'ft_f2_m_discoverytags',
+      testid: 'FT_F2_M_Discoverytags.ttl',
       testname: 'FAIR Test - F2 - Metadata - Tagging To Aid Discovery',
       description: "FAIR Test - F2 - Metadata - Tagging To Aid Discovery evaluates the metadata for the presence of at least one keyword or tag of any kind (free-text or controlled). With regards to Findability (as opposed to e.g., Interoperability), the presence of any type of tag (irrespective of whether that tag is part of a controlled vocabulary) is the key feature for this metric. The metric expects the identifier to point to structured metadata (e.g., schema.org, DataCite, or DC) and verifies that the keyword/subject property is not empty. The metric passes if at least one tag is identified and fails if the keyword attribute is missing or null.",
       keywords: ['FAIR', 'F2', 'metadata discovery'],
@@ -26,8 +26,8 @@ module FtF2MDiscoverytags
       license: 'https://creativecommons.org/licenses/by/4.0/',
       testversion: '1.0.0',
       protocol: 'https',
-      host: "fair-tests.fairsharing.org",
-      basePath: "test"
+      host: 'ostrails.github.io',
+      basePath: '/assessment-component-metadata-records/test/'
     }
 
     response = FtrRuby::Output.new(

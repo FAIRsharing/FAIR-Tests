@@ -7,7 +7,7 @@ module FtR12MCreatorOrcid
     record = metadata_harvesting(url_record)
 
     meta = {
-      testid: 'ft_r1_2_m_creator_orcid',
+      testid: 'FT_R1_2_M_CreatorORCID.ttl',
       testname: 'FAIR Test - R1.2 - Metadata - Creator ORCIDs',
       description: 'This test evaluates whether the metadata includes at least one qualified reference to ORCID for a contributor with a ‘creator’ role. The presence of ORCIDs linked to individuals, together with the defined ‘creator’ role, constitutes a qualified provenance reference. If the record contains a creator and this creator has an ORCID ID it will pass; otherwise, the test will fail.',
       keywords: ['FAIR', 'R1.2', 'creator orcid'],
@@ -17,8 +17,8 @@ module FtR12MCreatorOrcid
       license: 'https://creativecommons.org/licenses/by/4.0/',
       testversion: '1.0.0',
       protocol: 'https',
-      host: 'fair-tests.fairsharing.org',
-      basePath: 'test'
+      host: 'ostrails.github.io',
+      basePath: '/assessment-component-metadata-records/test/'
     }
 
     response = FtrRuby::Output.new(

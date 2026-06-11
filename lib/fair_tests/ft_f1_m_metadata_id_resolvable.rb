@@ -7,7 +7,7 @@ module FtF1MMetadataIdResolvable
     record = metadata_harvesting(url_record)
 
     meta = {
-      testid: 'ft_f1_m_metadata_id_resolvable',
+      testid: 'FT_F1_M_MetadataIdResolvable.ttl',
       testname: 'FAIR Test – F1 – Metadata - Metadata contains identifier that is guaranteed resolvable',
       description: "This metric evaluates whether the metadata retrieved from the provided URI contains an identifier that satisfies the FAIRsharing definition of guaranteed resolvability, as aligned with the EOSC PID Policy. Note that it assesses the metadata retrieved from the URI rather than the URI itself. During assessment, the provided URI is resolved in accordance with FAIRsharing’s identifier resolution best practices. If the record contains DOI or ARK identifiers it will pass. If any identifier URLs can be determined as resolvable via FAIRsharing data the test will also pass. Otherwise, it will fail.",
       keywords: ['FAIR', 'F1', 'RID', 'resolvable identifiers'],
@@ -17,8 +17,8 @@ module FtF1MMetadataIdResolvable
       license: 'https://creativecommons.org/licenses/by/4.0/',
       testversion: '1.0.0',
       protocol: 'https',
-      host: "fair-tests.fairsharing.org",
-      basePath: "test"
+      host: 'ostrails.github.io',
+      basePath: '/assessment-component-metadata-records/test/'
     }
 
     response = FtrRuby::Output.new(

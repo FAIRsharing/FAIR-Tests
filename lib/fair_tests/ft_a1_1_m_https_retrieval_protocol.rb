@@ -5,7 +5,7 @@ module FtA11MHttpsRetrievalProtocol
 
   def ft_a1_1_m_https_retrieval_protocol(url_record)
     meta = {
-      testid: 'ft_a1_1_m_https_retrieval_protocol',
+      testid: 'FT_A1.1_M_HTTPSRetrievalProtocol.ttl',
       testname: 'FAIR Metric – A1.1 – Metadata - HTTP(S) retrieval protocol',
       description: "This metric evaluates whether the protocol used to retrieve metadata referenced by the provided identifier is either HTTP or HTTPS and therefore openly specified, free to implement, and universally implementable.",
       keywords: ['FAIR', 'A1.1', 'https'],
@@ -15,8 +15,8 @@ module FtA11MHttpsRetrievalProtocol
       license: 'https://creativecommons.org/licenses/by/4.0/',
       testversion: '1.0.0',
       protocol: 'https',
-      host: "fair-tests.fairsharing.org",
-      basePath: "test"
+      host: 'ostrails.github.io',
+      basePath: '/assessment-component-metadata-records/test/'
     }
 
     response = FtrRuby::Output.new(
