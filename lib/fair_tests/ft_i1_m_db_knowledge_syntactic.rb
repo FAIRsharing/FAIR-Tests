@@ -10,7 +10,7 @@ module FtI1MDbKnowledgeSyntactic
     end
 
     meta = {
-      testid: 'ft_i1_m_db_knowledge_syntactic',
+      testid: 'FT_I1_M_DbKnowledgeSyntactic.ttl',
       testname: 'FAIR Test - I1 – Metadata - Database-level knowledge representation languages (syntactic)',
       description: "This test checks whether the hosting database declares support for metadata formats that are syntactically structured, as recorded in its FAIRsharing registry entry.",
       keywords: ['FAIR', 'I1', 'syntactic'],
@@ -20,8 +20,8 @@ module FtI1MDbKnowledgeSyntactic
       license: 'https://creativecommons.org/licenses/by/4.0/',
       testversion: '1.0.0',
       protocol: 'https',
-      host: "fair-tests.fairsharing.org",
-      basePath: "test"
+      host: 'ostrails.github.io',
+      basePath: '/assessment-component-metadata-records/test/'
     }
 
     response = FtrRuby::Output.new(

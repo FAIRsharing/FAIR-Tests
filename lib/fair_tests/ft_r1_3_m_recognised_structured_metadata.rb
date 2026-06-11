@@ -7,7 +7,7 @@ module FtR13MRecognisedStructuredMetadata
     record = metadata_harvesting(url_record)
 
     meta = {
-      testid: 'ft_r1_3_m_recognised_structured_metadata',
+      testid: 'FT_R1_3_M_UseStuctGenericFormat.ttl',
       testname: 'FAIR Test – R1.3 - Metadata – use of recognised and structured generic metadata format',
       description: 'This metric evaluates whether the dataset metadata is structured according to predefined, widely adopted metadata schemas appropriate to institutional repositories and other generalist contexts, such as schema.org (JSON-LD) or DataCite. It checks the record’s landing page for embedded or linked structured data that can be successfully parsed against the declared community schema. Finding JSON+LD or XML formats will result in a pass; otherwise, the test will fail.',
       keywords: ['FAIR', 'R1.3', 'recognised structured metadata'],
@@ -17,8 +17,8 @@ module FtR13MRecognisedStructuredMetadata
       license: 'https://creativecommons.org/licenses/by/4.0/',
       testversion: '1.0.0',
       protocol: 'https',
-      host: 'fair-tests.fairsharing.org',
-      basePath: 'test'
+      host: 'ostrails.github.io',
+      basePath: '/assessment-component-metadata-records/test/'
     }
 
     response = FtrRuby::Output.new(

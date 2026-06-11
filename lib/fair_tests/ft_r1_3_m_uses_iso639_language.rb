@@ -8,7 +8,7 @@ module FtR13MUsesIso639Language
     record = metadata_harvesting(url_record)
 
     meta = {
-      testid: 'ft_r1_3_m_uses_iso639_language',
+      testid: 'FT_R1.3_M_UsesISO639.ttl',
       testname: 'FAIR Test – R1.3 - Metadata – use of ISO 639 language', # FM:R1.3:M:UseISO639
       description: 'This test evaluates whether the metadata for the digital object includes at least one resolvable language attribute defined by the ISO 639 standard. It evaluates the value held in the language field against the official ISO 639 registry, searching for a valid, standardised code (specifically 639-2 / 639:2023) or a URI pointing to an ISO term.',
       keywords: %w[FAIR R1.3 ISO639],
@@ -18,8 +18,8 @@ module FtR13MUsesIso639Language
       license: 'https://creativecommons.org/licenses/by/4.0/',
       testversion: '1.0.0',
       protocol: 'https',
-      host: 'fair-tests.fairsharing.org',
-      basePath: 'test'
+      host: 'ostrails.github.io',
+      basePath: '/assessment-component-metadata-records/test/'
     }
 
     response = FtrRuby::Output.new(

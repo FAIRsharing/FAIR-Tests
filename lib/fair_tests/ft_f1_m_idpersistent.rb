@@ -6,7 +6,7 @@ module FtF1MIdpersistent
     records = find_by_regex(url_record)['records']
 
     meta = {
-      testid: 'ft_f1_m_idpersistent',
+      testid: 'FT_F1_M_IdPersistent.ttl',
       testname: 'FAIR Test – F1 – Metadata - evaluate identifier persistence',
       description: "F1 requires that metadata be assigned a globally unique, persistent and resolvable identifier. This test is particularly concerned with the persistence aspect of GUPRIs; persistence is required to guarantee long-term continuity of reference. In this test, the definition of persistence follows the FAIRsharing guidance on Globally Unique, Persistent and Resolvable Identifier (GUPRI) schemas. The identifier being evaluated is checked for a match (using regular expressions) to an existing id schema within FAIRsharing. Pass: There is an id_schema record matching the regular expression that has the persistent field set to 'true'. Indeterminate: No matching records were found in FAIRsharing. Fail: No indication of this resource having a persistent identifier was found.",
       keywords: ['FAIR', 'F1', 'PID', 'persistent identifiers'],
@@ -16,8 +16,8 @@ module FtF1MIdpersistent
       license: 'https://creativecommons.org/licenses/by/4.0/',
       testversion: '1.0.0',
       protocol: 'https',
-      host: "fair-tests.fairsharing.org",
-      basePath: "test"
+      host: 'ostrails.github.io',
+      basePath: '/assessment-component-metadata-records/test/'
     }
 
     response = FtrRuby::Output.new(

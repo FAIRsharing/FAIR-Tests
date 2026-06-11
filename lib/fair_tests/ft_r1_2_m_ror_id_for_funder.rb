@@ -7,7 +7,7 @@ module FtR12MRorIdForFunder
     record = metadata_harvesting(url_record)
 
     meta = {
-      testid: 'ft_r1_2_m_ror_id_for_funder',
+      testid: 'FT_R1_2_M_FundROR.ttl',
       testname: 'FAIR Test - R1.2 - Metadata - ROR ID for funder',
       description: 'This test evaluates whether the metadata includes at least one ROR ID for a funder associated with the research object. The assessment checks for structured funding references within both the landing page metadata and the central records held by DOI registration agencies (such as DataCite or Crossref). Specifically, it verifies that fields such as fundingReferences (DataCite) or funder (Crossref) are populated with at least one funder ROR ID. It checks the record’s landing page for embedded or linked structured data that can be successfully parsed against the declared community schema. If the record contains ROR identifiers it will pass; otherwise, the test will fail.',
       keywords: ['FAIR', 'R1.2', 'ror id'],
@@ -17,8 +17,8 @@ module FtR12MRorIdForFunder
       license: 'https://creativecommons.org/licenses/by/4.0/',
       testversion: '1.0.0',
       protocol: 'https',
-      host: 'fair-tests.fairsharing.org',
-      basePath: 'test'
+      host: 'ostrails.github.io',
+      basePath: '/assessment-component-metadata-records/test/'
     }
 
     response = FtrRuby::Output.new(

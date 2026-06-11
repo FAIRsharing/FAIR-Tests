@@ -7,7 +7,7 @@ module FtR12MLinkedPublications
     record = metadata_harvesting(url_record)
 
     meta = {
-      testid: 'ft_r1_2_m_ror_id_for_funder',
+      testid: 'FT_R1_2_M_LinkedPublications.ttl',
       testname: 'FAIR Test - R1.2 - Metadata - Linked Publications',
       description: 'This test evaluates whether the metadata includes at least one qualified reference to linked publications: where a metadata record includes at least one linked publication that explicitly supports the metadata record (rather than just providing context), this constitutes a qualified provenance reference. Where this information is present, at least one declaration is sufficient to pass this metric. The overall level of FAIRness under R1.2 increases as additional provenance dimensions are satisfied; using multiple metrics for R1.2 can help create a detailed picture of reusability. If the record is linked to an object of any of these types: ScholarlyArticle, Thesis, Book, Chapter or CreativeWork; it will pass; otherwise, the test will fail.',
       keywords: ['FAIR', 'R1.2', 'linked publications'],
@@ -17,8 +17,8 @@ module FtR12MLinkedPublications
       license: 'https://creativecommons.org/licenses/by/4.0/',
       testversion: '1.0.0',
       protocol: 'https',
-      host: 'fair-tests.fairsharing.org',
-      basePath: 'test'
+      host: 'ostrails.github.io',
+      basePath: '/assessment-component-metadata-records/test/'
     }
 
     response = FtrRuby::Output.new(

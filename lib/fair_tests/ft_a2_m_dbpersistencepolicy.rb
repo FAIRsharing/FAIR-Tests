@@ -9,7 +9,7 @@ module FtA2MDbpersistencepolicy
     record = get_fairsharing_record(url_record)
 
     meta = {
-      testid: 'ft_a2_m_dbpersistencepolicy',
+      testid: 'FTA2MDbPersistencepolicy.ttl',
       testname: 'FAIR Test - A2 - Metadata - Database persistence policy',
       description: 'A2 requires that metadata remain accessible even if the digital object is no longer available. The purpose of this principle is to ensure that information about a resource persists over time, independent of the continued availability of the research object itself. As per FAIR Principle F3, when this metadata remains discoverable, even in the absence of the research object, it will also contain an explicit reference to the identifier of the research object. This metric evaluates whether the hosting database or repository declares a formal data preservation policy. The evaluation retrieves the FAIRsharing record for the database and checks for the presence of a value in the “Data Preservation Policy” field, as defined in the FAIRsharing database conditions documentation. The presence of a declared preservation policy in the FAIRsharing record is interpreted as evidence that the database has articulated commitments to long-term metadata availability. If a preservation policy is listed in the FAIRsharing record, the resource passes this metric; if not, it fails. This metric measures database-level persistence policies as persistence information is rarely included in record-level metadata.',
       keywords: ['FAIR', 'A2', 'persistence policy'],
@@ -19,8 +19,8 @@ module FtA2MDbpersistencepolicy
       license: 'https://creativecommons.org/licenses/by/4.0/',
       testversion: '1.0.0',
       protocol: 'https',
-      host: "fair-tests.fairsharing.org",
-      basePath: "test"
+      host: 'ostrails.github.io',
+      basePath: '/assessment-component-metadata-records/test/'
     }
 
     response = FtrRuby::Output.new(
