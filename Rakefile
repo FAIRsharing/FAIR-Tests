@@ -7,6 +7,7 @@ Rake::TestTask.new do |t|
   t.pattern = 'test/**/*_test.rb'
   # Attempt to clean up warning spam from ftr_ruby related gems.
   t.warning = false
+  t.ruby_opts << '-W0'
   puts "Running tests with warnings disabled..."
 end
 

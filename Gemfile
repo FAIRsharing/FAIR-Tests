@@ -1,7 +1,7 @@
 source 'https://gem.coop'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.3.10'
+ruby '3.4.2'
 
 gem 'rubocop', group: 'development', require: false
 gem 'sinatra'
@@ -14,6 +14,7 @@ gem 'httparty'
 gem 'rake'
 gem 'dotenv'
 gem 'webmock'
+gem 'ostruct'
 
 
 gem 'simplecov', require: false

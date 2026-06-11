@@ -233,6 +233,70 @@ class FairTestUtilsTest < Minitest::Test
     end
   end
 
+  def test_resolve_doi_returns_nil_for_blank_input
+    assert_nil resolve_doi(nil)
+    assert_nil resolve_doi('')
+    assert_nil resolve_doi('   ')
+  end
+
+  def test_resolve_doi_returns_nil_for_unsuccessful_response
+    fake_response = Object.new
+    fake_response.define_singleton_method(:success?) { false }
+
+    with_stubbed_httparty_get(response: fake_response) do
+      assert_nil resolve_doi('https://doi.org/10.25504/FAIRsharing.123456')
+    end
+  end
+
+  def test_resolve_doi_uses_body_url_when_redirect_stays_on_doi_org
+    fake_request = Object.new
+    fake_request.define_singleton_method(:last_uri) { URI('https://doi.org/10.25504/FAIRsharing.123456') }
+
+    fake_response = Object.new
+    fake_response.define_singleton_method(:success?) { true }
+    fake_response.define_singleton_method(:body) { 'https://example.org/records/abc123' }
+    fake_response.define_singleton_method(:request) { fake_request }
+
+    with_stubbed_httparty_get(response: fake_response) do
+      assert_equal 'https://example.org/records/abc123',
+                   resolve_doi('https://doi.org/10.25504/FAIRsharing.123456')
+    end
+  end
+
+  def test_resolve_doi_returns_nil_when_redirect_stays_on_doi_org_without_body_url
+    fake_request = Object.new
+    fake_request.define_singleton_method(:last_uri) { URI('https://doi.org/10.25504/FAIRsharing.123456') }
+
+    fake_response = Object.new
+    fake_response.define_singleton_method(:success?) { true }
+    fake_response.define_singleton_method(:body) { '{"message":"still resolving"}' }
+    fake_response.define_singleton_method(:request) { fake_request }
+
+    with_stubbed_httparty_get(response: fake_response) do
+      assert_nil resolve_doi('https://doi.org/10.25504/FAIRsharing.123456')
+    end
+  end
+
+  def test_resolve_doi_returns_nil_for_success_without_resolved_or_body_url
+    fake_request = Object.new
+    fake_request.define_singleton_method(:last_uri) { nil }
+
+    fake_response = Object.new
+    fake_response.define_singleton_method(:success?) { true }
+    fake_response.define_singleton_method(:body) { '{"message":"no target"}' }
+    fake_response.define_singleton_method(:request) { fake_request }
+
+    with_stubbed_httparty_get(response: fake_response) do
+      assert_nil resolve_doi('https://doi.org/10.25504/FAIRsharing.123456')
+    end
+  end
+
+  def test_resolve_doi_handles_read_timeouts
+    with_stubbed_httparty_get(error: Net::ReadTimeout.new('execution expired')) do
+      assert_nil resolve_doi('https://doi.org/10.25504/FAIRsharing.123456')
+    end
+  end
+
 
   def test_normalizes_dois
     assert_equal "https://doi.org/10.25504%2FFAIRsharing.123456",

@@ -74,7 +74,7 @@ GEM
       mini_mime (>= 1.0.0)
       multi_xml (>= 0.5.2)
     io-console (0.8.2)
-    json (2.19.6)
+    json (2.19.8)
     json-canonicalization (1.0.0)
     json-ld (3.3.2)
       htmlentities (~> 4.3)
@@ -151,6 +151,7 @@ GEM
     nio4r (2.7.5)
     nokogiri (1.18.10-x86_64-linux-gnu)
       racc (~> 1.4)
+    ostruct (0.6.3)
     parallel (2.1.0)
     parseconfig (1.1.2)
     parser (3.3.11.1)
@@ -354,6 +355,7 @@ DEPENDENCIES
   httparty
   linkeddata
   minitest
+  ostruct
   puma
   rack-test
   rackup
@@ -400,7 +402,7 @@ CHECKSUMS
   http-cookie (1.1.6) sha256=ba4b82be64de61dc281243dac70e3c382c45142f20268ed9276a3670c93feaa9
   httparty (0.24.2) sha256=8fca6a54aa0c4aa4303a0fd33e5e2156175d6a5334f714263b458abd7fda9c38
   io-console (0.8.2) sha256=d6e3ae7a7cc7574f4b8893b4fca2162e57a825b223a177b7afa236c5ef9814cc
-  json (2.19.6) sha256=39de513f3e66e718a383295ac10f3148294736faefb607641e2170d61de92673
+  json (2.19.8) sha256=6354310fd76ef69b87d5bd1f38b40d730613baf90b6803d2d0a48f618d32dfaa
   json-canonicalization (1.0.0) sha256=d4848a8cca7534455c6721f2d9fc9e5e9adca49486864a898810024f67d59446
   json-ld (3.3.2) sha256=b9531893bf5bdc01db428e96953845a23adb1097125ce918ae0f97c4a6e1ab27
   json-ld-preloaded (3.3.2) sha256=46294327eaf3bf95d48877222a70dd79740917adff94d5f0d380a4c492131ee1
@@ -425,6 +427,7 @@ CHECKSUMS
   netrc (0.11.0) sha256=de1ce33da8c99ab1d97871726cba75151113f117146becbe45aa85cb3dabee3f
   nio4r (2.7.5) sha256=6c90168e48fb5f8e768419c93abb94ba2b892a1d0602cb06eef16d8b7df1dca1
   nokogiri (1.18.10-x86_64-linux-gnu) sha256=ff5ba26ba2dbce5c04b9ea200777fd225061d7a3930548806f31db907e500f72
+  ostruct (0.6.3) sha256=95a2ed4a4bd1d190784e666b47b2d3f078e4a9efda2fccf18f84ddc6538ed912
   parallel (2.1.0) sha256=b35258865c2e31134c5ecb708beaaf6772adf9d5efae28e93e99260877b09356
   parseconfig (1.1.2) sha256=e52247d15070fb47f9e58f44f7888d1e7f65775274cd60f9ab4b7acd7943b291
   parser (3.3.11.1) sha256=d17ace7aabe3e72c3cc94043714be27cc6f852f104d81aa284c2281aecc65d54
@@ -497,7 +500,7 @@ CHECKSUMS
   yaml-ld (0.0.3) sha256=2934e06ef651337bf4c5d78e6a22007e0c46f1215c19dc024816c1fa82b971d1
 
 RUBY VERSION
-  ruby 3.3.10
+  ruby 3.4.2
 
 BUNDLED WITH
   4.0.9
