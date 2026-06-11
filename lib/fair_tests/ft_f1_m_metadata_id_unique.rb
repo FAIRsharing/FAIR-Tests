@@ -21,7 +21,7 @@ module FtF1MMetadataIdUnique
       #host: "fair-tests.fairsharing.org",
       #basePath: "test"
       host: 'ostrails.github.io',
-      basePath: "assessment-component-metadata-records/test"
+      basePath: "/assessment-component-metadata-records/test/"
     }
 
     response = FtrRuby::Output.new(
