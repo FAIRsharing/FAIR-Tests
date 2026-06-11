@@ -1,0 +1,38 @@
+openapi: 3.0.0
+info:
+  version: "1.0"
+  title: "FAIR Test - R1.1 - Metadata - Database-level licenses"
+  x-tests_metric: "https://fairsharing.org/7843"
+  description: >-
+    "R1.1 requires that metadata be released with a clear and accessible data usage licence. The purpose of this principle is to ensure that reuse conditions are explicitly stated and legally unambiguous. This metric evaluates whether there is at least one licence declared at the database level in the FAIRsharing registry record associated with the identifier under evaluation."
+  x-applies_to_principle: "https://fairsharing.org/6043"
+  contact:
+    x-organization: "FAIRsharing, Oxford University"
+    url: "https://fairsharing.org"
+    name: "FAIRsharing Support"
+    email: "contact@fairsharing.org"
+paths:
+  "/ft_r1_1_m_database_level_licenses":
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/schemas"
+        required: true
+      responses:
+        "200":
+          description:  >-
+            The response is "pass", "fail" or "indeterminate"
+servers:
+  - url: "https://fair-tests.fairsharing.org/test"
+components:
+  schemas:
+    schemas:
+      required:
+        - resource_identifier
+      properties:
+      - resource_identifier:
+          type: string
+          description: the GUID being tested
+
