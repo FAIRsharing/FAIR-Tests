@@ -15,6 +15,7 @@ gem 'rake'
 gem 'dotenv'
 gem 'webmock'
 gem 'ostruct'
+gem 'irb'
 
 
 gem 'simplecov', require: false
