@@ -25,7 +25,8 @@ gem 'simple_doi', github: 'UMNLibraries/simpledoi-ruby'
 gem 'curb', '< 1.3.0'
 
 # For generating test responses.
-gem 'ftr_ruby', '~> 0.1.12'
+#gem 'ftr_ruby', '~> 0.1.13'
+gem 'ftr_ruby', git: 'https://github.com/FAIRsharing/FTR-Ruby.git', branch: 'endpoint_fix'
 gem 'rest-client'
 gem 'sparql'
 gem 'linkeddata'

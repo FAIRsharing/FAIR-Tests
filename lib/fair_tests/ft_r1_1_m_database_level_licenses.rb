@@ -23,7 +23,9 @@ module FtR11MDatabaseLevelLicenses
       testversion: '1.0.0',
       protocol: 'https',
       host: 'ostrails.github.io',
-      basePath: '/assessment-component-metadata-records/test/'
+      basePath: '/assessment-component-metadata-records/test/',
+      endpoint_url: 'https://fair-tests.fairsharing.org/test/ft_r1_1_m_database_level_licenses',
+      endpoint_description: 'https://fair-tests.fairsharing.org/test_descriptions/ft_r1_1_m_database_level_licenses/api',
     }
 
     response = FtrRuby::Output.new(

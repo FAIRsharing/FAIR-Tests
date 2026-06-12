@@ -28,7 +28,9 @@ module FtF2MDiscoveryfields
       testversion: '1.0.0',
       protocol: 'https',
       host: 'ostrails.github.io',
-      basePath: '/assessment-component-metadata-records/test/'
+      basePath: '/assessment-component-metadata-records/test/',
+      endpoint_url: 'https://fair-tests.fairsharing.org/test/ft_f2_m_discoveryfields',
+      endpoint_description: 'https://fair-tests.fairsharing.org/test_descriptions/ft_f2_m_discoveryfields/api',
     }
 
     response = FtrRuby::Output.new(

@@ -16,7 +16,9 @@ module FtA11MHttpsRetrievalProtocol
       testversion: '1.0.0',
       protocol: 'https',
       host: 'ostrails.github.io',
-      basePath: '/assessment-component-metadata-records/test/'
+      basePath: '/assessment-component-metadata-records/test/',
+      endpoint_url: 'https://fair-tests.fairsharing.org/test/ft_a1_1_m_https_retrieval_protocol',
+      endpoint_description: 'https://fair-tests.fairsharing.org/test_descriptions/ft_a1_1_m_https_retrieval_protocol/api',
     }
 
     response = FtrRuby::Output.new(

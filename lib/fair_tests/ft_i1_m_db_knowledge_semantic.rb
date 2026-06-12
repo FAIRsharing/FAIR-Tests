@@ -21,7 +21,9 @@ module FtI1MDbKnowledgeSemantic
       testversion: '1.0.0',
       protocol: 'https',
       host: 'ostrails.github.io',
-      basePath: '/assessment-component-metadata-records/test/'
+      basePath: '/assessment-component-metadata-records/test/',
+      endpoint_url: 'https://fair-tests.fairsharing.org/test/ft_i1_m_db_knowledge_semantic',
+      endpoint_description: 'https://fair-tests.fairsharing.org/test_descriptions/ft_i1_m_db_knowledge_semantic/api',
     }
 
     response = FtrRuby::Output.new(

@@ -18,7 +18,9 @@ module FtF1MIdgloballyunique
       testversion: '1.0.0',
       protocol: 'https',
       host: 'ostrails.github.io',
-      basePath: '/assessment-component-metadata-records/test/'
+      basePath: '/assessment-component-metadata-records/test/',
+      endpoint_url: 'https://fair-tests.fairsharing.org/test/ft_f1_m_idgloballyunique',
+      endpoint_description: 'https://fair-tests.fairsharing.org/test_descriptions/ft_f1_m_idgloballyunique/api',
     }
 
     response = FtrRuby::Output.new(

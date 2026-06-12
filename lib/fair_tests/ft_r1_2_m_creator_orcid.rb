@@ -18,7 +18,9 @@ module FtR12MCreatorOrcid
       testversion: '1.0.0',
       protocol: 'https',
       host: 'ostrails.github.io',
-      basePath: '/assessment-component-metadata-records/test/'
+      basePath: '/assessment-component-metadata-records/test/',
+      endpoint_url: 'https://fair-tests.fairsharing.org/test/ft_r1_2_m_creator_orcid',
+      endpoint_description: 'https://fair-tests.fairsharing.org/test_descriptions/ft_r1_2_m_creator_orcid/api',
     }
 
     response = FtrRuby::Output.new(
