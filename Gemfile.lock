@@ -1,5 +1,5 @@
 GIT
-  remote: git@github.com:FAIRsharing/FTR-Ruby.git
+  remote: https://github.com/FAIRsharing/FTR-Ruby.git
   revision: 36ad1caf427f6f7c1ec9dc928df021833f274715
   branch: endpoint_fix
   specs:
