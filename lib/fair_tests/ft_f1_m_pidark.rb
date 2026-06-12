@@ -19,7 +19,9 @@ module FtF1MPidark
       testversion: '1.0.0',
       protocol: 'https',
       host: 'ostrails.github.io',
-      basePath: '/assessment-component-metadata-records/test/'
+      basePath: '/assessment-component-metadata-records/test/',
+      endpoint_url: 'https://fair-tests.fairsharing.org/test/ft_f1_m_pidark',
+      endpoint_description: 'https://fair-tests.fairsharing.org/test_descriptions/ft_f1_m_pidark/api',
     }
 
     response = FtrRuby::Output.new(

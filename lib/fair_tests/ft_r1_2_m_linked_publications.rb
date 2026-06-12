@@ -18,7 +18,9 @@ module FtR12MLinkedPublications
       testversion: '1.0.0',
       protocol: 'https',
       host: 'ostrails.github.io',
-      basePath: '/assessment-component-metadata-records/test/'
+      basePath: '/assessment-component-metadata-records/test/',
+      endpoint_url: 'https://fair-tests.fairsharing.org/test/ft_r1_2_m_linked_publications',
+      endpoint_description: 'https://fair-tests.fairsharing.org/test_descriptions/ft_r1_2_m_linked_publications/api',
     }
 
     response = FtrRuby::Output.new(

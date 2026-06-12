@@ -19,7 +19,9 @@ module FtR13MUsesIso639Language
       testversion: '1.0.0',
       protocol: 'https',
       host: 'ostrails.github.io',
-      basePath: '/assessment-component-metadata-records/test/'
+      basePath: '/assessment-component-metadata-records/test/',
+      endpoint_url: 'https://fair-tests.fairsharing.org/test/ft_r1_3_m_uses_iso639_language',
+      endpoint_description: 'https://fair-tests.fairsharing.org/test_descriptions/ft_r1_3_m_uses_iso639_language/api',
     }
 
     response = FtrRuby::Output.new(

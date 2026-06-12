@@ -18,7 +18,9 @@ module FtR13MRecognisedStructuredMetadata
       testversion: '1.0.0',
       protocol: 'https',
       host: 'ostrails.github.io',
-      basePath: '/assessment-component-metadata-records/test/'
+      basePath: '/assessment-component-metadata-records/test/',
+      endpoint_url: 'https://fair-tests.fairsharing.org/test/ft_r1_3_m_recognised_structured_metadata',
+      endpoint_description: 'https://fair-tests.fairsharing.org/test_descriptions/ft_r1_3_m_recognised_structured_metadata/api',
     }
 
     response = FtrRuby::Output.new(

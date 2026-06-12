@@ -18,7 +18,9 @@ module FtArkA2preservation
       testversion: '1.0.0',
       protocol: 'https',
       host: 'ostrails.github.io',
-      basePath: '/assessment-component-metadata-records/test/'
+      basePath: '/assessment-component-metadata-records/test/',
+      endpoint_url: 'https://fair-tests.fairsharing.org/test/ft_ark_a2preservation',
+      endpoint_description: 'https://fair-tests.fairsharing.org/test_descriptions/ft_ark_a2preservation/api',
     }
 
     response = FtrRuby::Output.new(
