@@ -27,22 +27,16 @@ class FairTestUtilsTest < Minitest::Test
   end
 
   def test_metadata_harvesting_returns_parsed_json
-    stub_request(:post, "https://tools.ostrails.eu/champion/harvest_only").
-      to_return(
-        status: 200,
-        body: { title: "This record passes" }.to_json,
-        headers: headers
-      )
+    stub_metadata_harvesting({ title: "This record passes" })
 
-    assert_equal({ "title" => "This record passes" },
-                 metadata_harvesting("https://example.org/records/abc123"))
+    data = metadata_harvesting("https://example.org/records/abc123")
+    assert has_matching_key_with_value?(data, %w[title])
   end
 
-  def test_metadata_harvesting_returns_nil_for_non_json
-    stub_request(:post, "https://tools.ostrails.eu/champion/harvest_only").
-      to_return(status: 200, body: "not json", headers: headers)
+  def test_metadata_harvesting_returns_empty_graph_for_empty_rdf
+    stub_metadata_harvesting({})
 
-    assert_nil metadata_harvesting("https://example.org/records/abc123")
+    assert_equal [], metadata_harvesting("https://example.org/records/abc123")
   end
 
   def test_contains_meaningful_value_covers_all_value_types

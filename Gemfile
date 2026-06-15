@@ -16,6 +16,7 @@ gem 'dotenv'
 gem 'webmock'
 gem 'ostruct'
 gem 'irb'
+gem 'fair_champion_harvester', path: '../FAIR-Champion-Harvester'
 
 
 gem 'simplecov', require: false

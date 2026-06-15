@@ -31,21 +31,14 @@ module FtR13MUsesIso639Language
 
     if record && !record.empty?
       pass = false
-      record['@graph'][0]['local:triples'].each do |triple|
-        next unless triple.has_key?('@type')
-
-        if triple['@type'].include?('http://schema.org/Language')
-          next unless triple.has_key?('http://schema.org/sameAs')
-
-          triple['http://schema.org/sameAs'].each do |sameAs|
-            next unless sameAs.is_a?(Hash) && sameAs.has_key?('@id')
-
-            if sameAs['@id'].downcase.include?('id.loc.gov/vocabulary/iso639')
-              pass = true
-              break
-            end
+      find_schema_type_objects(record, 'http://schema.org/Language').each do |language|
+        schema_object_values(language, 'sameAs').each do |same_as|
+          if same_as.downcase.include?('id.loc.gov/vocabulary/iso639')
+            pass = true
+            break
           end
         end
+        break if pass
       end
 
       if pass
@@ -61,5 +54,3 @@ module FtR13MUsesIso639Language
 
   end
 end
-
-

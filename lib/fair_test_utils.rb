@@ -5,6 +5,7 @@ require 'nokogiri'
 require 'dotenv/load'
 require 'cgi'
 require 'uri'
+require 'fair_champion_harvester'
 
 # Utility functions common to all FAIR tests.
 module FairTestUtils
@@ -12,20 +13,8 @@ module FairTestUtils
   LOCAL_TRIPLES_KEY = 'local:triples'.freeze
 
   def metadata_harvesting(url)
-    json_headers = {
-      'Accept' => 'application/json',
-      'Content-Type' => 'application/json'
-    }
-    champion_url = 'https://tools.ostrails.eu/champion/harvest_only'
-    response = HTTParty.post(champion_url,
-                             body: { resource_identifier: url }.to_json,
-                             headers: json_headers
-    )
-
-    body = response.body.to_s.strip
-    return nil if body.empty?
-
-    JSON.parse(body)
+    data = FAIRChampionHarvester::Core.resolveit(url)
+    JSON.parse(data.rdf.dump(:jsonld))
   rescue JSON::ParserError
     nil
   end
@@ -60,8 +49,16 @@ module FairTestUtils
       !value.strip.empty?
     when Numeric
       value != 0
-    when Array, Hash
-      !value.empty?
+    when Array
+      value.any? { |item| contains_meaningful_value?(item) }
+    when Hash
+      if value.key?('@value') || value.key?(:'@value')
+        contains_meaningful_value?(value['@value'] || value[:'@value'])
+      elsif value.key?('@id') || value.key?(:'@id')
+        contains_meaningful_value?(value['@id'] || value[:'@id'])
+      else
+        value.any? { |_key, item| contains_meaningful_value?(item) }
+      end
     else
       true
     end
@@ -179,9 +176,10 @@ module FairTestUtils
         triples.each do |triple|
           next unless triple.is_a?(Hash)
 
-          results << triple if Array(triple['@type'] || triple[:'@type']).include?(SCHEMA_PROPERTY_VALUE_TYPE)
+          results << triple if schema_property_value?(triple) && !results.include?(triple)
         end
       end
+      results << obj if schema_property_value?(obj) && !results.include?(obj)
 
       obj.each_value do |value|
         find_schema_property_value_triples(value, results)
@@ -190,6 +188,34 @@ module FairTestUtils
       obj.each do |item|
         find_schema_property_value_triples(item, results)
       end
+    end
+
+    results
+  end
+
+  def schema_property_value?(obj)
+    schema_type?(obj, SCHEMA_PROPERTY_VALUE_TYPE)
+  end
+
+  def schema_type?(obj, type_iri)
+    return false unless obj.is_a?(Hash)
+
+    types = Array(obj['@type'] || obj[:'@type']).flat_map { |type| jsonld_scalar_values(type) }
+    rdf_types = Array(
+      obj['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'] ||
+      obj[:'http://www.w3.org/1999/02/22-rdf-syntax-ns#type']
+    )
+
+    (types + rdf_types.flat_map { |type| jsonld_scalar_values(type) }).include?(type_iri)
+  end
+
+  def find_schema_type_objects(obj, type_iri, results = [])
+    case obj
+    when Hash
+      results << obj if schema_type?(obj, type_iri) && !results.include?(obj)
+      obj.each_value { |value| find_schema_type_objects(value, type_iri, results) }
+    when Array
+      obj.each { |item| find_schema_type_objects(item, type_iri, results) }
     end
 
     results

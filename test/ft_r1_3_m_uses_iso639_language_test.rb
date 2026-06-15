@@ -70,7 +70,12 @@ class FtR12MCreatorOrcidTest < Minitest::Test
         '@graph' => [
           {
             '@id' => 'urn:local:harvester:graph',
-            'local:triples' => []
+            'local:triples' => [
+              {
+                '@id' => 'uuid:example',
+                '@type' => ['http://schema.org/Dataset']
+              }
+            ]
           }
         ]
       }
