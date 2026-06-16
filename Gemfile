@@ -16,8 +16,8 @@ gem 'dotenv'
 gem 'webmock'
 gem 'ostruct'
 gem 'irb'
-gem 'fair_champion_harvester', path: '../FAIR-Champion-Harvester'
-
+#gem 'fair_champion_harvester', path: '../FAIR-Champion-Harvester'
+gem 'fair_champion_harvester', git: 'https://github.com/FAIRsharing/FAIR-Champion-Harvester.git', branch: 'code_cleanup'
 
 gem 'simplecov', require: false
 
