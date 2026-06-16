@@ -39,6 +39,81 @@ class FairTestUtilsTest < Minitest::Test
     assert_equal [], metadata_harvesting("https://example.org/records/abc123")
   end
 
+  def test_metadata_harvesting_returns_nil_for_invalid_jsonld
+    fake_rdf = Object.new
+    fake_rdf.define_singleton_method(:dump) { |_format| 'not json' }
+
+    fake_data = Object.new
+    fake_data.define_singleton_method(:rdf) { fake_rdf }
+
+    with_stubbed_harvester_resolveit(fake_data) do
+      assert_nil metadata_harvesting("https://example.org/records/invalid-jsonld")
+    end
+  end
+
+  def test_remote_metadata_harvesting_returns_parsed_json
+    resource_identifier = "https://example.org/records/abc123"
+
+    stub_request(:post, "https://tools.ostrails.eu/champion/harvest_only").
+      with(
+        body: { resource_identifier: resource_identifier }.to_json,
+        headers: {
+          'Accept' => 'application/json',
+          'Content-Type' => 'application/json'
+        }
+      ).
+      to_return(
+        status: 200,
+        body: { title: "Remote record passes" }.to_json,
+        headers: { 'Content-Type' => 'application/json' }
+      )
+
+    assert_equal(
+      { 'title' => 'Remote record passes' },
+      remote_metadata_harvesting(resource_identifier)
+    )
+  end
+
+  def test_remote_metadata_harvesting_returns_nil_for_empty_body
+    resource_identifier = "https://example.org/records/empty"
+
+    stub_request(:post, "https://tools.ostrails.eu/champion/harvest_only").
+      with(
+        body: { resource_identifier: resource_identifier }.to_json,
+        headers: {
+          'Accept' => 'application/json',
+          'Content-Type' => 'application/json'
+        }
+      ).
+      to_return(
+        status: 200,
+        body: "  \n",
+        headers: { 'Content-Type' => 'application/json' }
+      )
+
+    assert_nil remote_metadata_harvesting(resource_identifier)
+  end
+
+  def test_remote_metadata_harvesting_returns_nil_for_invalid_json
+    resource_identifier = "https://example.org/records/invalid-json"
+
+    stub_request(:post, "https://tools.ostrails.eu/champion/harvest_only").
+      with(
+        body: { resource_identifier: resource_identifier }.to_json,
+        headers: {
+          'Accept' => 'application/json',
+          'Content-Type' => 'application/json'
+        }
+      ).
+      to_return(
+        status: 200,
+        body: "not json",
+        headers: { 'Content-Type' => 'application/json' }
+      )
+
+    assert_nil remote_metadata_harvesting(resource_identifier)
+  end
+
   def test_contains_meaningful_value_covers_all_value_types
     refute contains_meaningful_value?(nil)
 
@@ -53,6 +128,8 @@ class FairTestUtilsTest < Minitest::Test
 
     assert contains_meaningful_value?({ title: "A title" })
     refute contains_meaningful_value?({})
+    assert contains_meaningful_value?({ '@id' => 'https://example.org/records/abc123' })
+    refute contains_meaningful_value?({ :'@id' => '  ' })
 
     assert contains_meaningful_value?(false)
   end
@@ -349,6 +426,24 @@ class FairTestUtilsTest < Minitest::Test
 
 
   private
+
+  def with_stubbed_harvester_resolveit(response)
+    harvester_singleton = FAIRChampionHarvester::Core.singleton_class
+    original_method = :__original_resolveit_for_fair_test_utils_test
+    harvester_singleton.alias_method original_method, :resolveit
+    harvester_singleton.remove_method :resolveit
+    harvester_singleton.define_method(:resolveit) do |_url|
+      response
+    end
+
+    yield
+  ensure
+    if defined?(harvester_singleton) && harvester_singleton.method_defined?(original_method)
+      harvester_singleton.remove_method :resolveit if harvester_singleton.method_defined?(:resolveit)
+      harvester_singleton.alias_method :resolveit, original_method
+      harvester_singleton.remove_method original_method
+    end
+  end
 
   def with_stubbed_httparty_get(response: nil, error: nil)
     httparty_singleton = HTTParty.singleton_class

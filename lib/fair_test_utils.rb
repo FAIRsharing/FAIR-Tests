@@ -12,9 +12,30 @@ module FairTestUtils
   SCHEMA_PROPERTY_VALUE_TYPE = 'http://schema.org/PropertyValue'.freeze
   LOCAL_TRIPLES_KEY = 'local:triples'.freeze
 
+  # This uses the installed FAIR Champion Harvester gem.
   def metadata_harvesting(url)
     data = FAIRChampionHarvester::Core.resolveit(url)
     JSON.parse(data.rdf.dump(:jsonld))
+  rescue JSON::ParserError
+    nil
+  end
+
+  # This method will connect to a remote service.
+  def remote_metadata_harvesting(url)
+    json_headers = {
+      'Accept' => 'application/json',
+      'Content-Type' => 'application/json'
+    }
+    champion_url = 'https://tools.ostrails.eu/champion/harvest_only'
+    response = HTTParty.post(champion_url,
+                             body: { resource_identifier: url }.to_json,
+                             headers: json_headers
+    )
+
+    body = response.body.to_s.strip
+    return nil if body.empty?
+
+    JSON.parse(body)
   rescue JSON::ParserError
     nil
   end
