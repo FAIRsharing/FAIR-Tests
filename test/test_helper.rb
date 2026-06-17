@@ -27,6 +27,7 @@ module TestHelper
     'Content-Type'=>'application/json',
     'User-Agent'=>'Ruby'
   }
+  ORA_RESOURCE_IDENTIFIER = "https://ora.ox.ac.uk/objects/uuid:d7998de7-1c66-443b-9df7-b19dddd256b6"
 
   def stub_metadata_harvesting(response_body, resource_identifier: "https://example.org/records/abc123")
     body = response_body.is_a?(String) ? response_body : response_body.to_json
@@ -35,6 +36,19 @@ module TestHelper
       with(
         body: { resource_identifier: resource_identifier }.to_json,
         headers: CHAMPION_HEADERS
+      ).
+      to_return(status: 200, body: body, headers: {})
+  end
+
+  def stub_request_jsonld(response_body, resource_identifier: ORA_RESOURCE_IDENTIFIER)
+    body = response_body.is_a?(String) ? response_body : response_body.to_json
+
+    stub_request(:get, resource_identifier).
+      with(
+        headers: {
+          'Accept' => 'application/ld+json',
+          'Content-Type' => 'application/ld+json'
+        }
       ).
       to_return(status: 200, body: body, headers: {})
   end
