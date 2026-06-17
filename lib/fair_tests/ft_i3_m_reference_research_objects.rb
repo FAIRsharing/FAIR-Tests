@@ -63,9 +63,16 @@ module FtI3MReferenceResearchObjects
         else
           # data will look like:
           #  [[{"@id" => "_:g465680"}, {"@id" => "_:g464640"}]]
-          #  pass should be true if there is at least one @id with a value.
-          pass = data.flatten.any? do |related_object|
-            related_object.is_a?(Hash) && related_object['@id'].to_s.strip != ''
+          #  pass should be true if there is at least one of the related elements
+          # containing type and url
+          #TODO this part can change if the harvester returns the URL field in other place
+          data[0].each do |relatedTo|
+            next unless relatedTo.is_a?(Hash) && relatedTo.include?('@id')
+
+            find_all_schema_object_key_value(record, '@id', relatedTo['@id']).each do |c|
+              pass = true if c.is_a?(Hash) && c['@type'].to_s.strip != '' && c['@url'].to_s.strip != ''
+
+            end
           end
         end
       end

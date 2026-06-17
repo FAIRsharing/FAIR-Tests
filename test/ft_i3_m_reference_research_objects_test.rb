@@ -25,6 +25,7 @@ class FtI3MReferenceResearchObjectsTest < Minitest::Test
               },
               {'@id' => '_:g46568022',
                '@type' => ['http://schema.org/CreativeWork'],
+               '@url' => '/this/is/not/url.txt',
                'http://schema.org/name' =>
                  [{'@value' =>
                      'The effect of ambient and injection pressure on droplet size of ammonia sprays in a constant volume chamber'}]
