@@ -37,11 +37,8 @@ module FtI3MReferenceResearchObjects
     if record && !record.empty?
       pass = false
 
-      if ora_format
-        fieldName = 'isPartOf'
-      else
-        fieldName = 'isRelatedTo'
-      end
+      # TODO: Could isPartOf turn up in these records, and does it also need to be checked for?
+      fieldName = 'isRelatedTo'
 
       data = find_schema_object_values(record, fieldName)
 

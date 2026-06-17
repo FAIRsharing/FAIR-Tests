@@ -58,7 +58,7 @@ class FtI3MReferenceResearchObjectsTest < Minitest::Test
         '@context' => 'https://schema.org',
         '@type' => 'Dataset',
         'name' => 'Data supporting an ORA publication',
-        'isPartOf' => [
+        'isRelatedTo' => [
           {
             '@type' => 'CreativeWork',
             'name' => 'The effect of ambient and injection pressure on droplet size of ammonia sprays',
@@ -103,7 +103,7 @@ class FtI3MReferenceResearchObjectsTest < Minitest::Test
         '@context' => 'https://schema.org',
         '@type' => 'Dataset',
         'name' => 'ORA record with incomplete related objects',
-        'isPartOf' => [
+        'isRelatedTo' => [
           {
             '@type' => 'CreativeWork',
             'name' => 'A related publication without a URL'
@@ -128,7 +128,7 @@ class FtI3MReferenceResearchObjectsTest < Minitest::Test
         '@context' => 'https://schema.org',
         '@type' => 'Dataset',
         'name' => 'ORA record with incomplete related objects',
-        'isPartOf' => [
+        'isRelatedTo' => [
           {
             'name' => 'A related publication without a type',
             'url' => '/objects/uuid:7f161a34-1d6c-40aa-9539-847a4ff00f44'
