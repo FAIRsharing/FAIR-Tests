@@ -33,7 +33,7 @@ module FtA12MRetrievalProtocolSupportsAuth
 
     if record && !record.empty?
       if record['registry'] == 'Database'
-        if record['metadata']['data_access_condition'] && record['metadata']['data_access_condition'] == 'open'
+        if record['metadata']['data_access_condition'] && record['metadata']['data_access_condition']['type'] == 'open'
           response.score = 'pass'
           response.comments << "Using FAIRsharing metadata for the database under evaluation (https://fairsharing.org/#{record['id']}), the database has open data access."
         else

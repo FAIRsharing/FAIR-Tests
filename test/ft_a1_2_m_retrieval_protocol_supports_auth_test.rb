@@ -17,7 +17,9 @@ class FtA12MRetrievalProtocolSupportsAuthTest < Minitest::Test
             "id": "123456",
             "registry": "Database",
             "metadata": {
-              "data_access_condition": "open"
+              "data_access_condition": {
+                "type": "open"
+              }
             }
           }
         }
