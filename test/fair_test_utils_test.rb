@@ -45,6 +45,20 @@ class FairTestUtilsTest < Minitest::Test
     assert_nil metadata_harvesting("https://example.org/records/abc123")
   end
 
+  def test_request_jsonld_returns_parsed_json_or_nil
+    valid_url = "https://ora.ox.ac.uk/objects/uuid:valid"
+    empty_url = "https://ora.ox.ac.uk/objects/uuid:"
+    invalid_json_url = "https://ora.ox.ac.uk/objects/uuid:invalid"
+
+    stub_request_jsonld({ title: "This ORA record passes" }, resource_identifier: valid_url)
+    stub_request_jsonld("", resource_identifier: empty_url)
+    stub_request_jsonld("not json", resource_identifier: invalid_json_url)
+
+    assert_equal({ "title" => "This ORA record passes" }, request_jsonld(valid_url))
+    assert_nil request_jsonld(empty_url)
+    assert_nil request_jsonld(invalid_json_url)
+  end
+
   def test_contains_meaningful_value_covers_all_value_types
     refute contains_meaningful_value?(nil)
 

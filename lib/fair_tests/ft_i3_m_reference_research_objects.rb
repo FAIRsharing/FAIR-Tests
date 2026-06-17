@@ -4,7 +4,13 @@ module FtI3MReferenceResearchObjects
   include FairTestUtils
 
   def ft_i3_m_reference_research_objects(url_record)
-    record = metadata_harvesting(url_record)
+    ora_format = false
+    if url_record.include? 'ora.ox.ac.uk'
+      record = request_jsonld(url_record)
+      ora_format = true
+    else
+      record = metadata_harvesting(url_record)
+    end
 
     meta = {
       testid: 'FT_I3_M_ReferenceResearchObjects.ttl',
@@ -26,17 +32,44 @@ module FtI3MReferenceResearchObjects
     response = FtrRuby::Output.new(
       testedGUID: url_record,
       meta: meta,
-      )
+    )
 
     if record && !record.empty?
       pass = false
-      isRelatedTo = find_schema_object_values(record, 'isRelatedTo')
-      if isRelatedTo.empty?
+
+      if ora_format
+        fieldName = 'isPartOf'
+      else
+        fieldName = 'isRelatedTo'
+      end
+
+      data = find_schema_object_values(record, fieldName)
+
+      if data.empty?
         response.score = 'fail'
         response.comments << 'This record does not contain references to related research objects.'
       else
-        pass = true unless isRelatedTo[0].empty?
+        if ora_format
+          # data will look like:
+          # [[{"@type" => "CreativeWork",
+          #    "name" => "The effect of ambient and injection pressure on droplet size of ammonia sprays in a constant volume chamber",
+          #    "url" => "/objects/uuid:7f161a34-1d6c-40aa-9539-847a4ff00f44"}]]
+          # pass should be true if there is at least one @type with a url value.
+          pass = data.flatten.any? do |related_object|
+            related_object.is_a?(Hash) &&
+              related_object['@type'].to_s.strip != '' &&
+              related_object['url'].to_s.strip != ''
+          end
+        else
+          # data will look like:
+          #  [[{"@id" => "_:g465680"}, {"@id" => "_:g464640"}]]
+          #  pass should be true if there is at least one @id with a value.
+          pass = data.flatten.any? do |related_object|
+            related_object.is_a?(Hash) && related_object['@id'].to_s.strip != ''
+          end
+        end
       end
+
       if pass
         response.score = 'pass'
         response.comments << 'This record contains references to related research objects.'

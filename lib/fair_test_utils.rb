@@ -30,6 +30,23 @@ module FairTestUtils
     nil
   end
 
+  # Useful for getting records from ORA when the harvester is known to be unable to parse
+  # the fields required.
+  def request_jsonld(url)
+    json_headers = {
+      'Accept' => 'application/ld+json',
+      'Content-Type' => 'application/ld+json'
+    }
+    response = HTTParty.get(url, headers: json_headers)
+
+    body = response.body.to_s.strip
+    return nil if body.empty?
+
+    JSON.parse(body)
+  rescue JSON::ParserError
+    nil
+  end
+
   # Parse the data structure returned by metadata harvesting and look for particular keys.
   # Usage: has_matching_key_with_value?(data, %w[publisher publish])
   def has_matching_key_with_value?(obj, patterns)
