@@ -65,14 +65,21 @@ For example, ft_f1_m_idgloballyunique_test.rb.
 file in this directory called "api", which should contain the OpenAPI 3.0.0 specification for the test (see 
 existing examples).
 4. Check that the test works using IRB, and that the unit tests all pass, and create a PR.
-5. ...
-6. Profit!
+5. Submit to the FAIR Wizard (see below).
+6. ...
+7. Profit!
+
+#### FAIR Wizard
+
+This is at https://ostrails-fair.fair-wizard.com/wizard.
+
+An undocumented feature is that the testid in the test must match the abbreviation in the wizard, but with .ttl 
+on the end. So, if the abbreviation is `FTARKTA2Preservation` then the testid must be `FTARKTA2Preservation.ttl`.
 
 ### Unit Tests
 
 These can be run with `bundle exec rake test`.
 
 ## Deployment
-
 
 Probably a Systemd service for fair_tests.rb, with an Nginx proxy (TODO).
