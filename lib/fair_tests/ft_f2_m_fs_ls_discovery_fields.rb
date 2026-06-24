@@ -13,7 +13,7 @@ module FtF2MFsLsDiscoveryFields
     meta = {
       testid: 'Ft_F2_M_FsLsDiscoveryFields.ttl',
       testname: 'FAIR Test - F2 - FAIRsharing metadata fields for life sciences resource discovery',
-      description: 'This metric assesses whether the FAIRsharing record contains values for the following fields: resource name, description, country, at least one subject, and at least one object type. At least one subject assigned to the record must belong to the Life Sciences hierarchy of the FAIRsharing Subject Resource Application Ontology (SRAO).',
+      description: 'This test assesses whether the FAIRsharing record contains values for the following fields: resource name, description, country, at least one subject, and at least one object type. At least one subject assigned to the record must belong to the Life Sciences hierarchy of the FAIRsharing Subject Resource Application Ontology (SRAO).',
       keywords: ['ARK', 'FAIR', 'F2', 'life sciences'],
       creator: '0000-0002-6468-9260',
       indicators: [],
