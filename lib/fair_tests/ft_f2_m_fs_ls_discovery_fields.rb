@@ -23,8 +23,8 @@ module FtF2MFsLsDiscoveryFields
       protocol: 'https',
       host: 'ostrails.github.io',
       basePath: '/assessment-component-metadata-records/test/',
-      endpoint_url: 'https://fair-tests.fairsharing.org/test/ft_f1_m_guidark',
-      endpoint_description: 'https://fair-tests.fairsharing.org/test_descriptions/ft_f1_m_guidark/api',
+      endpoint_url: 'https://fair-tests.fairsharing.org/test/ft_f2_m_fs_ls_discovery_fields',
+      endpoint_description: 'https://fair-tests.fairsharing.org/test_descriptions/ft_f2_m_fs_ls_discovery_fields/api',
     }
 
     response = FtrRuby::Output.new(
