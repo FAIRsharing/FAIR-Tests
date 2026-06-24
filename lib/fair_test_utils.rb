@@ -326,6 +326,7 @@ module FairTestUtils
           registry
           type
           metadata
+          countries { id name }
           exhaustiveLicences
           domains { id label }
           taxonomies { id label }
