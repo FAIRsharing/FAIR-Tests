@@ -12,7 +12,7 @@ module FtF3MFsIdentifierUse
       testid: 'FT_F3_M_FsIdentifierUse.ttl',
       testname: 'FAIR Test - F3 - resource identifiers in FAIRsharing metadata',
       description: 'This test assesses whether the FAIRsharing record under evaluation contains both a FAIRsharing identifier (DOI or URL) and a homepage URL for the resource it describes. This test expects as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation.',
-      keywords: ['ARK', 'FAIR', 'F1', 'FAIRsharing', 'identifier'],
+      keywords: ['ARK', 'FAIR', 'F3', 'FAIRsharing', 'identifier'],
       creator: 'https://orcid.org/0000-0002-6468-9260',
       indicators: [],
       metric: 'https://fairsharing.org/8372',
