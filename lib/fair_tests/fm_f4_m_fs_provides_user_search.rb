@@ -38,7 +38,7 @@ module FmF4MFsProvidesUserSearch
       else
         pass = false
         record['metadata']['data_processes_and_conditions'].each do |proc|
-          if Array(proc['type']).any? { |type| type.to_s.downcase.include?('read') } &&
+          if proc['type'].downcase.include?('read') &&
              proc['access_method'] == 'User interface' &&
              (proc['name'].downcase.include?('search') || proc['name'].downcase.include?('browse')) && !pass
             pass = true

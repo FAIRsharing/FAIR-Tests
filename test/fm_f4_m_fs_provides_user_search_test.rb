@@ -12,7 +12,7 @@ class FmF4MFsProvidesUserSearchTest < Minitest::Test
     stub_fairsharing_record(record_with_processes([
                                                    {
                                                      'name' => 'Search records',
-                                                     'type' => ['read'],
+                                                     'type' => 'read',
                                                      'access_method' => 'User interface'
                                                    }
                                                  ]))
@@ -32,7 +32,7 @@ class FmF4MFsProvidesUserSearchTest < Minitest::Test
     stub_fairsharing_record(record_with_processes([
                                                    {
                                                      'name' => 'Browse datasets',
-                                                     'type' => ['read/write'],
+                                                     'type' => 'read/write',
                                                      'access_method' => 'User interface'
                                                    }
                                                  ]))
@@ -65,7 +65,7 @@ class FmF4MFsProvidesUserSearchTest < Minitest::Test
     stub_fairsharing_record(record_with_processes([
                                                    {
                                                      'name' => 'Search records',
-                                                     'type' => ['read'],
+                                                     'type' => 'read',
                                                      'access_method' => 'API'
                                                    }
                                                  ]))
@@ -84,7 +84,7 @@ class FmF4MFsProvidesUserSearchTest < Minitest::Test
     stub_fairsharing_record(record_with_processes([
                                                    {
                                                      'name' => 'Search records',
-                                                     'type' => ['write'],
+                                                     'type' => 'write',
                                                      'access_method' => 'User interface'
                                                    }
                                                  ]))
