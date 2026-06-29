@@ -2,11 +2,11 @@
 
 require_relative './test_helper'
 require 'webmock/minitest'
-require_relative '../lib/fair_tests/fm_f4_m_fs_provides_user_search'
+require_relative '../lib/fair_tests/ft_f4_m_fs_provides_user_search'
 
-class FmF4MFsProvidesUserSearchTest < Minitest::Test
+class FtF4MFsProvidesUserSearchTest < Minitest::Test
   include ::TestHelper
-  include ::FmF4MFsProvidesUserSearch
+  include ::FtF4MFsProvidesUserSearch
 
   def test_passes_when_search_process_uses_user_interface_for_read
     stub_fairsharing_record(record_with_processes([
@@ -17,7 +17,7 @@ class FmF4MFsProvidesUserSearchTest < Minitest::Test
                                                    }
                                                  ]))
 
-    post '/test/fm_f4_m_fs_provides_user_search',
+    post '/test/ft_f4_m_fs_provides_user_search',
          params: { resource_identifier: 'https://fairsharing.org/1234' }.to_json,
          headers: headers
 
@@ -37,7 +37,7 @@ class FmF4MFsProvidesUserSearchTest < Minitest::Test
                                                    }
                                                  ]))
 
-    post '/test/fm_f4_m_fs_provides_user_search',
+    post '/test/ft_f4_m_fs_provides_user_search',
          params: { resource_identifier: 'https://fairsharing.org/1234' }.to_json,
          headers: headers
 
@@ -50,7 +50,7 @@ class FmF4MFsProvidesUserSearchTest < Minitest::Test
   def test_fails_when_no_data_processes_are_present
     stub_fairsharing_record(record_with_processes([]))
 
-    post '/test/fm_f4_m_fs_provides_user_search',
+    post '/test/ft_f4_m_fs_provides_user_search',
          params: { resource_identifier: 'https://fairsharing.org/1234' }.to_json,
          headers: headers
 
@@ -70,7 +70,7 @@ class FmF4MFsProvidesUserSearchTest < Minitest::Test
                                                    }
                                                  ]))
 
-    post '/test/fm_f4_m_fs_provides_user_search',
+    post '/test/ft_f4_m_fs_provides_user_search',
          params: { resource_identifier: 'https://fairsharing.org/1234' }.to_json,
          headers: headers
 
@@ -89,7 +89,7 @@ class FmF4MFsProvidesUserSearchTest < Minitest::Test
                                                    }
                                                  ]))
 
-    post '/test/fm_f4_m_fs_provides_user_search',
+    post '/test/ft_f4_m_fs_provides_user_search',
          params: { resource_identifier: 'https://fairsharing.org/1234' }.to_json,
          headers: headers
 
@@ -100,7 +100,7 @@ class FmF4MFsProvidesUserSearchTest < Minitest::Test
   end
 
   def test_fails_when_identifier_is_not_a_fairsharing_record
-    post '/test/fm_f4_m_fs_provides_user_search',
+    post '/test/ft_f4_m_fs_provides_user_search',
          params: { resource_identifier: 'https://example.org/not-a-fairsharing-record' }.to_json,
          headers: headers
 

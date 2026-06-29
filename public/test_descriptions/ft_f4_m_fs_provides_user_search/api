@@ -1,10 +1,10 @@
 openapi: 3.0.0
 info:
   version: "1.0"
-  title: "FAIR Test - F4 - has FAIRsharing record"
-  x-tests_metric: "https://fairsharing.org/8375"
+  title: "FAIR Test - F4 - provides user search"
+  x-tests_metric: "https://fairsharing.org/8376"
   description: >-
-    "This test assesses whether the identifier being evaluated corresponds to a valid FAIRsharing record. This test expects as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation."
+    "This test assesses whether the FAIRsharing record contains at least one Data Process that includes a Search or Browse function (as identified by “Search” or “Browse” within the Name field of a Data Process), uses a User Interface access method, and supports Read or Read/Write operations. The test expects as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation."
   x-applies_to_principle: "https://fairsharing.org/6278"
   contact:
     x-organization: "FAIRsharing, Oxford University"
@@ -12,7 +12,7 @@ info:
     name: "FAIRsharing Support"
     email: "contact@fairsharing.org"
 paths:
-  "/fm_f4_m_fs_has_fs_record":
+  "/ft_f4_m_fs_provides_user_search":
     post:
       requestBody:
         content:

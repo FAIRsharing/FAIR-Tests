@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
-module FmF4MFsHasFsRecord
+module FtF4MFsHasFsRecord
   require 'ftr_ruby'
   require_relative '../fair_test_utils'
   include FairTestUtils
 
-  def fm_f4_m_fs_has_fs_record(url_record)
+  def ft_f4_m_fs_has_fs_record(url_record)
     record = obtain_record_from_text(url_record)
 
     meta = {
-      testid: 'FM_F4_M_FS_hasFSrecord.ttl',
+      testid: 'FT_F4_M_FS_hasFSrecord.ttl',
       testname: 'FAIR Test - F4 - has FAIRsharing record',
       description: 'This test assesses whether the identifier being evaluated corresponds to a valid FAIRsharing record. This test expects as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation.',
       keywords: ['ARK', 'FAIR', 'F4', 'FAIRsharing'],
@@ -21,8 +21,8 @@ module FmF4MFsHasFsRecord
       protocol: 'https',
       host: 'ostrails.github.io',
       basePath: '/assessment-component-metadata-records/test/',
-      endpoint_url: 'https://fair-tests.fairsharing.org/test/',
-      endpoint_description: 'https://fair-tests.fairsharing.org/test_descriptions//api',
+      endpoint_url: 'https://fair-tests.fairsharing.org/test/ft_f4_m_fs_has_fs_record',
+      endpoint_description: 'https://fair-tests.fairsharing.org/test_descriptions/ft_f4_m_fs_has_fs_record/api',
     }
 
     response = FtrRuby::Output.new(

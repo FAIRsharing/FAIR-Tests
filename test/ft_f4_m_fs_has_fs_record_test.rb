@@ -2,16 +2,16 @@
 
 require_relative './test_helper'
 require 'webmock/minitest'
-require_relative '../lib/fair_tests/fm_f4_m_fs_has_fs_record'
+require_relative '../lib/fair_tests/ft_f4_m_fs_has_fs_record'
 
-class FmF4MFsHasFsRecordTest < Minitest::Test
+class FtF4MFsHasFsRecordTest < Minitest::Test
   include ::TestHelper
-  include ::FmF4MFsHasFsRecord
+  include ::FtF4MFsHasFsRecord
 
   def test_passes_when_identifier_resolves_to_fairsharing_record
     stub_fairsharing_record({ 'id' => '1234' })
 
-    post '/test/fm_f4_m_fs_has_fs_record',
+    post '/test/ft_f4_m_fs_has_fs_record',
          params: { resource_identifier: 'https://fairsharing.org/1234' }.to_json,
          headers: headers
 
@@ -23,7 +23,7 @@ class FmF4MFsHasFsRecordTest < Minitest::Test
   end
 
   def test_fails_when_identifier_is_not_a_fairsharing_record
-    post '/test/fm_f4_m_fs_has_fs_record',
+    post '/test/ft_f4_m_fs_has_fs_record',
          params: { resource_identifier: 'https://example.org/not-a-fairsharing-record' }.to_json,
          headers: headers
 
@@ -37,7 +37,7 @@ class FmF4MFsHasFsRecordTest < Minitest::Test
   def test_fails_when_fairsharing_lookup_returns_no_record
     stub_fairsharing_record(nil)
 
-    post '/test/fm_f4_m_fs_has_fs_record',
+    post '/test/ft_f4_m_fs_has_fs_record',
          params: { resource_identifier: 'https://fairsharing.org/1234' }.to_json,
          headers: headers
 

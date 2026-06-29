@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
-module FmF4MFsProvidesMachineSearch
+module FtF4MFsProvidesMachineSearch
   require 'ftr_ruby'
   require_relative '../fair_test_utils'
   include FairTestUtils
 
-  def fm_f4_m_fs_provides_machine_search(url_record)
+  def ft_f4_m_fs_provides_machine_search(url_record)
     record = obtain_record_from_text(url_record)
 
     meta = {
-      testid: 'FM_F4_M_FS_providesMachineSearch.ttl',
+      testid: 'FT_F4_M_FS_providesMachineSearch.ttl',
       testname: 'FAIR Test - F4 - provides machine search',
       description: 'This test assesses whether the FAIRsharing record contains at least one Data Process that includes a Search or Browse function (as identified by “Search” or “Browse” within the Name field of Data Processes), uses a non-User Interface access method, and supports Read or Read/Write operations. The test expects as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation.',
       keywords: ['ARK', 'FAIR', 'F4', 'FAIRsharing', 'machine search'],
@@ -21,8 +21,8 @@ module FmF4MFsProvidesMachineSearch
       protocol: 'https',
       host: 'ostrails.github.io',
       basePath: '/assessment-component-metadata-records/test/',
-      endpoint_url: 'https://fair-tests.fairsharing.org/test/fm_f4_m_fs_provides_machine_search',
-      endpoint_description: 'https://fair-tests.fairsharing.org/test_descriptions/fm_f4_m_fs_provides_machine_search/api',
+      endpoint_url: 'https://fair-tests.fairsharing.org/test/ft_f4_m_fs_provides_machine_search',
+      endpoint_description: 'https://fair-tests.fairsharing.org/test_descriptions/ft_f4_m_fs_provides_machine_search/api',
     }
 
     response = FtrRuby::Output.new(
