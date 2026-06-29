@@ -12,7 +12,7 @@ info:
     name: "FAIRsharing Support"
     email: "contact@fairsharing.org"
 paths:
-  "/fm_f4_m_fs_provides_machine_search":
+  "/ft_f4_m_fs_provides_machine_search":
     post:
       requestBody:
         content:
