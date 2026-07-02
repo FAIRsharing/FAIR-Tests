@@ -34,7 +34,7 @@ module FtI1MDbKnowledgeSyntactic
 
     if record
       if record['registry'] == 'Database'
-        if record['format'] == 'syntactic'
+        if record['format'].include?('syntactic')
           response.score = 'pass'
           response.comments << 'Using FAIRsharing metadata for the database under evaluation, the database uses syntactic database-level knowledge representation languages.'
         else

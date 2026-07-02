@@ -1,0 +1,38 @@
+openapi: 3.0.0
+info:
+  version: "1.0"
+  title: "FAIR Test - I1 - Metadata - Adopts Syntactic Knowledge Representation Languages"
+  x-tests_metric: "https://fairsharing.org/8401/"
+  description: >-
+        "FAIR Test - I1 - Metadata - Adopts Syntactic Knowledge Representation Languages evaluates whether the FAIRsharing record is linked to at least one model/format record classified as a syntactic knowledge representation language. This test uses the relationships provided within FAIRsharing records to determine whether the resource adopts formats that provide structured semantic representations of information as defined by FAIRsharing. Specifically, to discover a database's relationship to a Syntactic model/format, traverse the hierarchy of each model/format directly linked to the database record to identify the underlying generic format: JSON-LD, RDF, RDF/XML, TriG, N-Quads, RDFa, OWL, OBO, TTL, N-triples. To pass, a relationship with one of the previous model/format should exist, else the test will fail."
+  x-applies_to_principle: "https://doi.org/10.25504/FAIRsharing.ec5648"
+  contact:
+    x-organization: "FAIRsharing, Oxford University"
+    url: "https://fairsharing.org"
+    name: "FAIRsharing Support"
+    email: "contact@fairsharing.org"
+paths:
+  "/ft_i1_m_db_syntax_formats":
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/schemas"
+        required: true
+      responses:
+        "200":
+          description:  >-
+            The response is "pass", "fail" or "indeterminate"
+servers:
+  - url: "https://fair-tests.fairsharing.org/test"
+components:
+  schemas:
+    schemas:
+      required:
+        - resource_identifier
+      properties:
+      - resource_identifier:
+          type: string
+          description: the GUID being tested
+

@@ -33,7 +33,7 @@ module FtI1MDbKnowledgeSemantic
 
     if record
       if record['registry'] == 'Database'
-        if record['format'] == 'semantic'
+        if record['format'].include?('semantic')
           response.score = 'pass'
           response.comments << 'Using FAIRsharing metadata for the database under evaluation, the database uses semantic database-level knowledge representation languages.'
         else
