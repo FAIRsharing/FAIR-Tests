@@ -4,13 +4,7 @@ module FtI3MReferenceResearchObjects
   include FairTestUtils
 
   def ft_i3_m_reference_research_objects(url_record)
-    ora_format = false
-    if url_record.include? 'ora.ox.ac.uk'
-      record = request_jsonld(url_record)
-      ora_format = true
-    else
-      record = metadata_harvesting(url_record)
-    end
+    record = metadata_harvesting(url_record)
 
     meta = {
       testid: 'FT_I3_M_ReferenceResearchObjects.ttl',
@@ -46,30 +40,18 @@ module FtI3MReferenceResearchObjects
         response.score = 'fail'
         response.comments << 'This record does not contain references to related research objects.'
       else
-        if ora_format
-          # data will look like:
-          # [[{"@type" => "CreativeWork",
-          #    "name" => "The effect of ambient and injection pressure on droplet size of ammonia sprays in a constant volume chamber",
-          #    "url" => "/objects/uuid:7f161a34-1d6c-40aa-9539-847a4ff00f44"}]]
-          # pass should be true if there is at least one @type with a url value.
-          pass = data.flatten.any? do |related_object|
-            related_object.is_a?(Hash) &&
-              related_object['@type'].to_s.strip != '' &&
-              related_object['url'].to_s.strip != ''
-          end
-        else
-          # data will look like:
-          #  [[{"@id" => "_:g465680"}, {"@id" => "_:g464640"}]]
-          #  pass should be true if there is at least one of the related elements
-          # containing type and url
-          #TODO this part can change if the harvester returns the URL field in other place
-          data[0].each do |relatedTo|
-            next unless relatedTo.is_a?(Hash) && relatedTo.include?('@id')
+        # data will look like:
+        #  [[{"@id" => "_:g465680"}, {"@id" => "_:g464640"}]]
+        #  pass should be true if there is at least one of the related elements
+        # containing type and url
+        #TODO this part can change if the harvester returns the URL field in other place
+        data[0].each do |relatedTo|
+          next unless relatedTo.is_a?(Hash) && relatedTo.include?('@id')
 
-            find_all_schema_object_key_value(record, '@id', relatedTo['@id']).each do |c|
-              pass = true if c.is_a?(Hash) && c['@type'].to_s.strip != '' && c['@url'].to_s.strip != ''
-
-            end
+          find_all_schema_object_key_value(record, '@id', relatedTo['@id']).each do |c|
+            # @url should be a valid URL already as the linked data gem will discard it if it is not.
+            # So, its format has not been checked again here, only its presence.
+            pass = true if c.is_a?(Hash) && c['@type'].to_s.strip != '' && c['@url'].to_s.strip != ''
           end
         end
       end
