@@ -74,6 +74,11 @@ class FtI2MDbAdoptsTerminologiesTest < Minitest::Test
   end
 
   def test_fail_not_database_ft_i2_m_db_adopts_terminologies
+    stub_request(:get, 'https://doi.org/10.1234%2F5678').to_return(
+      status: 200,
+      body: "https://fairsharing.org/5678".to_json,
+      headers: headers
+    )
     stub_request(:post, "#{ENV['FAIRSHARING_API_URL']}").
       with(headers: headers).to_return(
       status: 200,
@@ -89,7 +94,7 @@ class FtI2MDbAdoptsTerminologiesTest < Minitest::Test
     )
 
     post '/test/ft_i2_m_db_adopts_terminologies',
-         params: { resource_identifier: 'https://fairsharing.org/1234' }.to_json,
+         params: { resource_identifier: 'https://doi.org/10.1234/5678' }.to_json,
          headers: headers
 
     assert last_response.ok?
