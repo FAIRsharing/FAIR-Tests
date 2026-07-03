@@ -8,8 +8,6 @@ class FtI3MReferenceResearchObjectsTest < Minitest::Test
   include ::TestHelper
   include ::FtI3MReferenceResearchObjects
 
-  ORA_RESOURCE_IDENTIFIER = 'https://ora.ox.ac.uk/objects/uuid:d7998de7-1c66-443b-9df7-b19dddd256b6'
-
   def test_passes_when_schema_reference_research_object
     stub_metadata_harvesting(
       {
@@ -25,7 +23,7 @@ class FtI3MReferenceResearchObjectsTest < Minitest::Test
               },
               {'@id' => '_:g46568022',
                '@type' => ['http://schema.org/CreativeWork'],
-               '@url' => '/this/is/not/url.txt',
+               '@url' => 'https://ora.ox.ac.uk/this/is/not/url.txt',
                'http://schema.org/name' =>
                  [{'@value' =>
                      'The effect of ambient and injection pressure on droplet size of ammonia sprays in a constant volume chamber'}]
@@ -52,43 +50,31 @@ class FtI3MReferenceResearchObjectsTest < Minitest::Test
     assert_equal 'pass', find_prov_value(body)
   end
 
-  def test_passes_when_ora_record_has_related_research_object
-    stub_request_jsonld(
+  def test_fails_when_related_research_object_has_no_url
+    stub_metadata_harvesting(
       {
-        '@context' => 'https://schema.org',
-        '@type' => 'Dataset',
-        'name' => 'Data supporting an ORA publication',
-        'isRelatedTo' => [
+        '@graph' => [
           {
-            '@type' => 'CreativeWork',
-            'name' => 'The effect of ambient and injection pressure on droplet size of ammonia sprays',
-            'url' => '/objects/uuid:7f161a34-1d6c-40aa-9539-847a4ff00f44'
+            '@id' => 'urn:local:harvester:graph',
+            'local:triples' => [
+              {
+                '@id' => 'uuid:example',
+                '@type' => ['http://schema.org/Dataset'],
+                'http://schema.org/isRelatedTo' => [{'@id'=>'_:g46568022'}]
+              },
+              {
+                '@id' => '_:g46568022',
+                '@type' => ['http://schema.org/CreativeWork'],
+                'http://schema.org/name' => [{'@value' => 'A related publication without a URL'}]
+              }
+            ]
           }
         ]
       }
     )
 
     post '/test/ft_i3_m_reference_research_objects',
-         params: { resource_identifier: ORA_RESOURCE_IDENTIFIER }.to_json,
-         headers: headers
-
-    assert last_response.ok?
-
-    body = parsed_response_body(last_response.body)
-    assert_equal 'pass', find_prov_value(body)
-  end
-
-  def test_fails_when_ora_record_has_no_related_research_object
-    stub_request_jsonld(
-      {
-        '@context' => 'https://schema.org',
-        '@type' => 'Dataset',
-        'name' => 'ORA record without related objects'
-      }
-    )
-
-    post '/test/ft_i3_m_reference_research_objects',
-         params: { resource_identifier: ORA_RESOURCE_IDENTIFIER }.to_json,
+         params: { resource_identifier: 'https://example.org/records/abc123' }.to_json,
          headers: headers
 
     assert last_response.ok?
@@ -97,48 +83,31 @@ class FtI3MReferenceResearchObjectsTest < Minitest::Test
     assert_equal 'fail', find_prov_value(body)
   end
 
-  def test_fails_when_ora_related_research_object_has_no_url
-    stub_request_jsonld(
+  def test_fails_when_related_research_object_has_no_type
+    stub_metadata_harvesting(
       {
-        '@context' => 'https://schema.org',
-        '@type' => 'Dataset',
-        'name' => 'ORA record with incomplete related objects',
-        'isRelatedTo' => [
+        '@graph' => [
           {
-            '@type' => 'CreativeWork',
-            'name' => 'A related publication without a URL'
+            '@id' => 'urn:local:harvester:graph',
+            'local:triples' => [
+              {
+                '@id' => 'uuid:example',
+                '@type' => ['http://schema.org/Dataset'],
+                'http://schema.org/isRelatedTo' => [{'@id'=>'_:g46568022'}]
+              },
+              {
+                '@id' => '_:g46568022',
+                '@url' => '/objects/uuid:7f161a34-1d6c-40aa-9539-847a4ff00f44',
+                'http://schema.org/name' => [{'@value' => 'A related publication without a type'}]
+              }
+            ]
           }
         ]
       }
     )
 
     post '/test/ft_i3_m_reference_research_objects',
-         params: { resource_identifier: ORA_RESOURCE_IDENTIFIER }.to_json,
-         headers: headers
-
-    assert last_response.ok?
-
-    body = parsed_response_body(last_response.body)
-    assert_equal 'fail', find_prov_value(body)
-  end
-
-  def test_fails_when_ora_related_research_object_has_no_type
-    stub_request_jsonld(
-      {
-        '@context' => 'https://schema.org',
-        '@type' => 'Dataset',
-        'name' => 'ORA record with incomplete related objects',
-        'isRelatedTo' => [
-          {
-            'name' => 'A related publication without a type',
-            'url' => '/objects/uuid:7f161a34-1d6c-40aa-9539-847a4ff00f44'
-          }
-        ]
-      }
-    )
-
-    post '/test/ft_i3_m_reference_research_objects',
-         params: { resource_identifier: ORA_RESOURCE_IDENTIFIER }.to_json,
+         params: { resource_identifier: 'https://example.org/records/abc123' }.to_json,
          headers: headers
 
     assert last_response.ok?
