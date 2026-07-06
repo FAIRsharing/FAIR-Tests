@@ -1,0 +1,38 @@
+openapi: 3.0.0
+info:
+  version: "1.0"
+  title: "FAIR Test - I3 - Metadata - I3 - references related databases"
+  x-tests_metric: "https://fairsharing.org/8408/"
+  description: >-
+      "This test assesses whether the FAIRsharing database record contains at least one shares_data_with or related_to relationship linking it to another FAIRsharing database record. Tests implementing this metric should expect as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation. To pass, a relationship with shares_data_with or related_to label with other database should exist, else the test will fail. This test expects as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation."
+  x-applies_to_principle: "https://doi.org/10.25504/FAIRsharing.ae22b8"
+  contact:
+    x-organization: "FAIRsharing, Oxford University"
+    url: "https://fairsharing.org"
+    name: "FAIRsharing Support"
+    email: "contact@fairsharing.org"
+paths:
+  "/ft_i3_m_fs_related_dbs":
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/schemas"
+        required: true
+      responses:
+        "200":
+          description:  >-
+            The response is "pass", "fail" or "indeterminate"
+servers:
+  - url: "https://fair-tests.fairsharing.org/test"
+components:
+  schemas:
+    schemas:
+      required:
+        - resource_identifier
+      properties:
+      - resource_identifier:
+          type: string
+          description: the GUID being tested
+
