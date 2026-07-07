@@ -5,6 +5,7 @@ require 'nokogiri'
 require 'dotenv/load'
 require 'cgi'
 require 'uri'
+require 'ftr_ruby'
 
 # Utility functions common to all FAIR tests.
 module FairTestUtils
