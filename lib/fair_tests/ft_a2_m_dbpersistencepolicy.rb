@@ -1,5 +1,4 @@
 module FtA2MDbpersistencepolicy
-  require 'ftr_ruby'
   require_relative '../fair_test_utils'
   include FairTestUtils
 
