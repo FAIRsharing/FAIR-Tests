@@ -35,10 +35,7 @@ module FtI3MReferenceResearchObjects
 
       data = find_schema_object_values(record, fieldName)
 
-      if data.empty?
-        response.score = 'fail'
-        response.comments << 'This record does not contain references to related research objects.'
-      else
+      unless data.empty?
         # data will look like:
         #  [[{"@id" => "_:g465680"}, {"@id" => "_:g464640"}]]
         #  pass should be true if there is at least one of the related elements
