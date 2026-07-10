@@ -8,7 +8,7 @@ module FtI3MReferenceResearchObjects
     meta = {
       testid: 'FT_I3_M_ReferenceResearchObjects.ttl',
       testname: 'FAIR Test - I3 - Metadata - Qualified References to Related Research Objects',
-      description: 'This test evaluates whether the metadata retrieved upon identifier resolution contains at least one qualified, semantically defined link to another research object that provides contextual information and shows connectivity to the wider research ecosystem. Implementations of this metric should test for a qualified (labelled) relationship to a related research object, such as a publication or other research output, expressed using a defined relationship type(s) (e.g., related to). A record will pass this metric if at least one such qualified, contextual reference to another research object is present in the metadata.',
+      description: 'This test evaluates whether the metadata retrieved upon identifier resolution contains at least one qualified, semantically defined link to another research object that provides contextual information and shows connectivity to the wider research ecosystem. Implementations of this metric should test for a qualified (labelled) relationship to a related research object, such as a publication or other research output, expressed using a defined relationship type(s) (e.g., subject to). A record will pass this metric if at least one such qualified, contextual reference to another research object is present in the metadata.',
       keywords: ['FAIR', 'I3', 'Related Research Objects'],
       creator: 'https://orcid.org/0000-0001-9572-0972',
       indicators: [],
@@ -31,7 +31,7 @@ module FtI3MReferenceResearchObjects
       pass = false
 
       # TODO: Could isPartOf turn up in these records, and does it also need to be checked for?
-      fieldName = 'isRelatedTo'
+      fieldName = 'subjectOf'
 
       data = find_schema_object_values(record, fieldName)
 
@@ -45,9 +45,11 @@ module FtI3MReferenceResearchObjects
           next unless relatedTo.is_a?(Hash) && relatedTo.include?('@id')
 
           find_all_schema_object_key_value(record, '@id', relatedTo['@id']).each do |c|
+            url = find_schema_object_values(c,'url')
+
             # @url should be a valid URL already as the linked data gem will discard it if it is not.
             # So, its format has not been checked again here, only its presence.
-            pass = true if c.is_a?(Hash) && c['@type'].to_s.strip != '' && c['@url'].to_s.strip != ''
+            pass = true if c.is_a?(Hash) && c['@type'].to_s.strip != '' && !url.empty?
           end
         end
       end

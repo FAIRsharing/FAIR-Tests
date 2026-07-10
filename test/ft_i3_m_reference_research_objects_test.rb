@@ -18,12 +18,12 @@ class FtI3MReferenceResearchObjectsTest < Minitest::Test
               {
                 '@id' => 'uuid:example',
                 '@type' => ['http://schema.org/Dataset'],
-                'http://schema.org/isRelatedTo' => [{'@id'=>'_:g46568022'}],
+                'http://schema.org/subjectOf' => [{'@id'=>'_:g46568022'}],
                 'http://schema.org/creator' => [{'@id'=>'_:g2763436033'}]
               },
               {'@id' => '_:g46568022',
                '@type' => ['http://schema.org/CreativeWork'],
-               '@url' => 'https://ora.ox.ac.uk/this/is/not/url.txt',
+               'http://schema.org/url' => 'https://ora.ox.ac.uk/this/is/not/url.txt',
                'http://schema.org/name' =>
                  [{'@value' =>
                      'The effect of ambient and injection pressure on droplet size of ammonia sprays in a constant volume chamber'}]
