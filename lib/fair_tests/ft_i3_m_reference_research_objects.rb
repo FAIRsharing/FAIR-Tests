@@ -53,6 +53,30 @@ module FtI3MReferenceResearchObjects
           end
         end
       end
+      unless pass
+        fieldName = 'isRelatedTo'
+
+        data = find_schema_object_values(record, fieldName)
+
+        unless data.empty?
+          # data will look like:
+          #  [[{"@id" => "_:g465680"}, {"@id" => "_:g464640"}]]
+          #  pass should be true if there is at least one of the related elements
+          # containing type and url
+          #TODO this part can change if the harvester returns the URL field in other place
+          data[0].each do |relatedTo|
+            next unless relatedTo.is_a?(Hash) && relatedTo.include?('@id')
+
+            find_all_schema_object_key_value(record, '@id', relatedTo['@id']).each do |c|
+              url = find_schema_object_values(c,'url')
+
+              # @url should be a valid URL already as the linked data gem will discard it if it is not.
+              # So, its format has not been checked again here, only its presence.
+              pass = true if c.is_a?(Hash) && c['@type'].to_s.strip != '' && !url.empty?
+            end
+          end
+        end
+      end
 
       if pass
         response.score = 'pass'
