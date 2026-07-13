@@ -8,7 +8,7 @@ module FtI3MReferenceResearchObjects
     meta = {
       testid: 'FT_I3_M_ReferenceResearchObjects.ttl',
       testname: 'FAIR Test - I3 - Metadata - Qualified References to Related Research Objects',
-      description: 'This test evaluates whether the metadata retrieved upon identifier resolution contains at least one qualified, semantically defined link to another research object that provides contextual information and shows connectivity to the wider research ecosystem. Implementations of this metric should test for a qualified (labelled) relationship to a related research object, such as a publication or other research output, expressed using a defined relationship type(s) (e.g., subject to). A record will pass this metric if at least one such qualified, contextual reference to another research object is present in the metadata.',
+      description: 'This test evaluates whether the metadata retrieved upon identifier resolution contains at least one qualified, semantically defined link to another research object that provides contextual information and shows connectivity to the wider research ecosystem. Implementations of this metric should test for a qualified (labelled) relationship to a related research object, such as a publication or other research output, expressed using a defined relationship type(s) (e.g., subject of). A record will pass this metric if at least one such qualified, contextual reference to another research object is present in the metadata.',
       keywords: ['FAIR', 'I3', 'Related Research Objects'],
       creator: 'https://orcid.org/0000-0001-9572-0972',
       indicators: [],
