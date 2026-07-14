@@ -17,7 +17,7 @@ module FtI3MFsHumanSubmission
     meta = {
       testid: 'FT_I3_M_FS_HumanSubmission.ttl',
       testname: 'FAIR Test - I3 - allows content submission by humans',
-      description: 'This test uses the structured metadata provided by FAIRsharing database records to determine whether users can submit content through human-accessible interfaces. Human-mediated content submission is an important FAIR-enabling characteristic because it supports the exchange of information between users and databases. This test assesses whether the FAIRsharing database record contains at least one Data Process with a type of Write or Read/Write that uses a User Interface access method. This testd expects as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation.',
+      description: 'This test uses the structured metadata provided by FAIRsharing database records to determine whether users can submit content through human-accessible interfaces. Human-mediated content submission is an important FAIR-enabling characteristic because it supports the exchange of information between users and databases. This test assesses whether the FAIRsharing database record contains at least one Data Process with a type of Write or Read/Write that uses a User Interface access method. This test expects as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation.',
       keywords: ['FAIR', 'I3', 'FAIRsharing', 'human content submission'],
       creator: 'https://orcid.org/0000-0001-9572-0972',
       indicators: [],
