@@ -12,7 +12,7 @@ module FtA2MFsDbpreservation
     end
 
     meta = {
-      testid: 'FM_A2_M_FS_dbPreservation.ttl',
+      testid: 'FT_A2_M_FS_dbPreservation.ttl',
       testname: 'FAIR Test - A2 - database declares preservation policy',
       description: 'This test uses the structured metadata provided by FAIRsharing database records to determine whether the database provides information describing its commitments to preservation. Preservation information is an important FAIR-enabling characteristic for understanding how a database intends to preserve its records over time. This supports FAIR Principle A2 by making preservation commitments discoverable through FAIRsharing. The presence of a Preservation Policy URL does not imply that the underlying policy is adequate, implemented, or effective; it only demonstrates that preservation information has been provided. This metric assesses whether the FAIRsharing database record contains a non-empty Preservation Policy URL. This test should expect as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation. The evaluation retrieves the FAIRsharing record for the database and checks for the presence of a value in the “Data Preservation Policy” field, as defined in the FAIRsharing database conditions documentation. The presence of a declared preservation policy in the FAIRsharing record is interpreted as evidence that the database has articulated commitments to long-term metadata availability. If a preservation policy is listed in the FAIRsharing record, the resource passes this metric; if not, it fails.',
       keywords: ['FAIR', 'A2', 'preservation policy'],
