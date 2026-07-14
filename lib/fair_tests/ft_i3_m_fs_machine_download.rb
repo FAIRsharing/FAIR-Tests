@@ -17,7 +17,7 @@ module FtI3MFsMachineDownload
     meta = {
       testid: 'FT_I3_M_FS_MachineDownload.ttl',
       testname: 'FAIR Test - I3 - allows content download by machines',
-      description: 'This test uses the structured metadata provided by FAIRsharing records to determine whether the resource under evaluation allows content to be downloaded through computational interfaces. Machine-mediated download mechanisms are important FAIR-enabling characteristics because they support the automated exchange of information between resources and external systems. This test assesses whether the FAIRsharing record contains at least one Data Process whose label contains "Download" or "Export", whose type is Read or Read/Write, and whose access method is not User Interface. The test expects as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation.',
+      description: 'This test uses the structured metadata provided by FAIRsharing records to determine whether the resource under evaluation allows content to be downloaded through computational interfaces. Machine-mediated download mechanisms are important FAIR-enabling characteristics because they support the automated exchange of information between resources and external systems. This test assesses whether the FAIRsharing record contains at least one Data Process whose label contains "Download" or "Export", whose type is Read or Read/Write, and whose access method is not User Interface. This test expects as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation.',
       keywords: ['FAIR', 'I3', 'FAIRsharing', 'machine content download'],
       creator: 'https://orcid.org/0000-0001-9572-0972',
       indicators: [],
