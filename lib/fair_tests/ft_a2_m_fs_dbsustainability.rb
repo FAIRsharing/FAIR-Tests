@@ -12,7 +12,7 @@ module FtA2MFsDbsustainability
     end
 
     meta = {
-      testid: 'FM_A2_M_FS_dbSustainability.ttl',
+      testid: 'FT_A2_M_FS_dbSustainability.ttl',
       testname: 'FAIR Test - A2 - database declares sustainability plan',
       description: 'This test assesses whether the FAIRsharing database record contains a non-empty Resource Sustainability URL. This test uses the structured metadata provided by FAIRsharing database records to determine whether the database provides information describing its long-term sustainability. Sustainability information is an important FAIR-enabling characteristic because users, funders, database managers, and assessment services need to understand how a database plans to remain available over time. This supports FAIR Principle A2 by making sustainability commitments discoverable through FAIRsharing. The presence of a Resource Sustainability URL does not imply that the underlying sustainability information is adequate, implemented, or effective; it only demonstrates that sustainability information has been provided. This test should expect as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation.',
       keywords: ['FAIR', 'A2', 'sustainability plan'],
