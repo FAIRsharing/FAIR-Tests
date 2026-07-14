@@ -1,4 +1,4 @@
-module FtA2MFsDbPreservation
+module FtA2MFsDbpreservation
   require_relative '../fair_test_utils'
   include FairTestUtils
 

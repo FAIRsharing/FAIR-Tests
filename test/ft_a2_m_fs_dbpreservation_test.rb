@@ -3,9 +3,9 @@ require_relative './test_helper'
 require 'webmock/minitest'
 require_relative '../lib/fair_tests/ft_a2_m_fs_dbpreservation'
 
-class FtA2MFsDbPreservationTest < Minitest::Test
+class FtA2MFsDbpreservationTest < Minitest::Test
   include ::TestHelper
-  include ::FtA2MFsDbPreservation
+  include ::FtA2MFsDbpreservation
 
   def test_ft_a2_m_fs_dbpreservation_passes
     stub_request(:post, "#{ENV['FAIRSHARING_API_URL']}").
