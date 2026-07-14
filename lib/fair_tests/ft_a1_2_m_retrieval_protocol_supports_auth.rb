@@ -6,7 +6,12 @@ module FtA12MRetrievalProtocolSupportsAuth
 
   def ft_a1_2_m_retrieval_protocol_supports_auth(url_record)
     # In this case we're looking up the record in FAIRsharing via its homepage.
-    record = get_fairsharing_record(url_record)
+    if url_record.include? 'doi.org'
+      record = get_fairsharing_record(resolve_doi(url_record))
+    else
+      record = get_fairsharing_record(url_record)
+    end
+
 
     meta = {
       testid: 'FT_A1-2_M_Auth.ttl',
