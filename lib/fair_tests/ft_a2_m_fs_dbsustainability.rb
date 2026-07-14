@@ -1,4 +1,4 @@
-module FtA2MFsDbSustainability
+module FtA2MFsDbsustainability
   require_relative '../fair_test_utils'
   include FairTestUtils
 
