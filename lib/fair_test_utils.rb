@@ -464,4 +464,14 @@ module FairTestUtils
     end
   end
 
+  def valid_url?(url)
+    value = url.to_s.strip
+    return false if value.empty?
+
+    uri = URI.parse(value)
+    %w[http https].include?(uri.scheme) && !uri.host.to_s.empty?
+  rescue URI::InvalidURIError
+    false
+  end
+
 end
