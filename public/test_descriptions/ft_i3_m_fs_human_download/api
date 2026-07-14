@@ -4,7 +4,7 @@ info:
   title: "FAIR Test - I3 - allows content download by humans"
   x-tests_metric: "https://fairsharing.org/8414/"
   description: >-
-      "This test uses the structured metadata provided by FAIRsharing records to determine whether the resource under evaluation allows content to be downloaded through human-accessible interfaces. Human-mediated download mechanisms are important FAIR-enabling characteristics because they support the exchange of information between resources and users. This test assesses whether the FAIRsharing database record contains at least one Data Process whose label contains Download or Export, whose type is Read or Read/Write, and whose access method is User Interface. The test expects as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation."
+      "This test uses the structured metadata provided by FAIRsharing records to determine whether the resource under evaluation allows content to be downloaded through human-accessible interfaces. Human-mediated download mechanisms are important FAIR-enabling characteristics because they support the exchange of information between resources and users. This test assesses whether the FAIRsharing database record contains at least one Data Process whose label contains Download or Export, whose type is Read or Read/Write, and whose access method is User Interface. This test expects as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation."
   x-applies_to_principle: "https://doi.org/10.25504/FAIRsharing.ae22b8"
   contact:
     x-organization: "FAIRsharing, Oxford University"
