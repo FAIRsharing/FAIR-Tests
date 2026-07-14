@@ -1,5 +1,4 @@
 module FtI3MFsRelatedDbs
-  require 'ftr_ruby'
   require_relative '../fair_test_utils'
   include FairTestUtils
 
