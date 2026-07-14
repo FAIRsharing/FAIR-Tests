@@ -1,0 +1,37 @@
+openapi: 3.0.0
+info:
+  version: "1.0"
+  title: "FAIR Test - A1 - Metadata - database open access"
+  x-tests_metric: "https://fairsharing.org/8381"
+  description: "This testassesses whether the FAIRsharing database record has its Data Access Condition set to Open or Partially Open. Tests implementing this metric should expect as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation. "
+  x-applies_to_principle: "https://fairsharing.org/6293"
+  contact:
+    x-organization: "FAIRsharing, Oxford University"
+    url: "https://fairsharing.org"
+    name: "FAIRsharing Support"
+    email: "contact@fairsharing.org"
+paths:
+  "/ft_a1_m_fs_db_open_access":
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/schemas"
+        required: true
+      responses:
+        "200":
+          description:  >-
+            The response is "pass", "fail" or "indeterminate"
+servers:
+  - url: "https://fair-tests.fairsharing.org/test"
+components:
+  schemas:
+    schemas:
+      required:
+        - resource_identifier
+      properties:
+      - resource_identifier:
+          type: string
+          description: the GUID being tested
+
