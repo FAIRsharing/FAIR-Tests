@@ -1,6 +1,5 @@
 
 module FtI3MFsMachineSubmission
-  require 'ftr_ruby'
   require_relative '../fair_test_utils'
   include FairTestUtils
 
