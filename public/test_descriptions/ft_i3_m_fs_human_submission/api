@@ -4,7 +4,7 @@ info:
   title: "FAIR Test - I3 - allows content submission by humans"
   x-tests_metric: "https://fairsharing.org/8410/"
   description: >-
-      "This test uses the structured metadata provided by FAIRsharing database records to determine whether users can submit content through human-accessible interfaces. Human-mediated content submission is an important FAIR-enabling characteristic because it supports the exchange of information between users and databases. This test assesses whether the FAIRsharing database record contains at least one Data Process with a type of Write or Read/Write that uses a User Interface access method. This testd expects as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation."
+      "This test uses the structured metadata provided by FAIRsharing database records to determine whether users can submit content through human-accessible interfaces. Human-mediated content submission is an important FAIR-enabling characteristic because it supports the exchange of information between users and databases. This test assesses whether the FAIRsharing database record contains at least one Data Process with a type of Write or Read/Write that uses a User Interface access method. This test expects as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation."
   x-applies_to_principle: "https://doi.org/10.25504/FAIRsharing.ae22b8"
   contact:
     x-organization: "FAIRsharing, Oxford University"
