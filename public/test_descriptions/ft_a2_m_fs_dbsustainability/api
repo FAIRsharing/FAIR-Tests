@@ -1,0 +1,37 @@
+openapi: 3.0.0
+info:
+  version: "1.0"
+  title: "FAIR Test - A2 - database declares sustainability plan"
+  x-tests_metric: "https://fairsharing.org/8387"
+  description: >-
+    "This test assesses whether the FAIRsharing database record contains a non-empty Resource Sustainability URL. This test uses the structured metadata provided by FAIRsharing database records to determine whether the database provides information describing its long-term sustainability. Sustainability information is an important FAIR-enabling characteristic because users, funders, database managers, and assessment services need to understand how a database plans to remain available over time. This supports FAIR Principle A2 by making sustainability commitments discoverable through FAIRsharing. The presence of a Resource Sustainability URL does not imply that the underlying sustainability information is adequate, implemented, or effective; it only demonstrates that sustainability information has been provided. This test should expect as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation.",
+  x-applies_to_principle: "https://fairsharing.org/10.25504/FAIRsharing.7c4d7f"
+  contact:
+    x-organization: "FAIRsharing, Oxford University"
+    url: "https://fairsharing.org"
+    name: "FAIRsharing Support"
+    email: "contact_fairsharing.org"
+paths:
+  "/ft_a2_m_fs_dbsustainability":
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/schemas"
+        required: true
+      responses:
+        "200":
+          description:  >-
+            The response is "pass", "fail" or "indeterminate"
+servers:
+  - url: "https://fair-tests.fairsharing.org/test"
+components:
+  schemas:
+    schemas:
+      required:
+        - resource_identifier
+      properties:
+      - resource_identifier:
+          type: string
+          description: the GUID being tested
