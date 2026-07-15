@@ -15,7 +15,7 @@ module FtI3MFsDbVersionedContent
 
 
     meta = {
-      testid: 'FM_I3_M_FS_DbVersionedContent.ttl',
+      testid: 'FT_I3_M_FS_DbVersionedContent.ttl',
       testname: 'FAIR Test - I3 - database supports versioned content',
       description: 'This test uses the structured metadata provided by FAIRsharing database records to determine whether the database supports versioned content. Versioning is an important FAIR-enabling characteristic because it provides explicit relationships between different states of content over time, helping users and systems understand how content changes and evolves.  This test assesses whether the FAIRsharing database record has Data Versioning set to "yes". This test expects as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation.',
       keywords: ['FAIR', 'I3', 'FAIRsharing', 'supports versioned content'],
