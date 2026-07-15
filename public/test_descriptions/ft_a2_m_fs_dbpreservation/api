@@ -1,0 +1,37 @@
+openapi: 3.0.0
+info:
+  version: "1.0"
+  title: "FAIR Test - A2 - database declares preservation policy"
+  x-tests_metric: "https://fairsharing.org/8383"
+  description: >-
+    "This test uses the structured metadata provided by FAIRsharing database records to determine whether the database provides information describing its commitments to preservation. Preservation information is an important FAIR-enabling characteristic for understanding how a database intends to preserve its records over time. This supports FAIR Principle A2 by making preservation commitments discoverable through FAIRsharing. The presence of a Preservation Policy URL does not imply that the underlying policy is adequate, implemented, or effective; it only demonstrates that preservation information has been provided. This metric assesses whether the FAIRsharing database record contains a non-empty Preservation Policy URL. This test should expect as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation. The evaluation retrieves the FAIRsharing record for the database and checks for the presence of a value in the “Data Preservation Policy” field, as defined in the FAIRsharing database conditions documentation. The presence of a declared preservation policy in the FAIRsharing record is interpreted as evidence that the database has articulated commitments to long-term metadata availability. If a preservation policy is listed in the FAIRsharing record, the resource passes this metric; if not, it fails.",
+  x-applies_to_principle: "https://fairsharing.org/10.25504/FAIRsharing.7c4d7f"
+  contact:
+    x-organization: "FAIRsharing, Oxford University"
+    url: "https://fairsharing.org"
+    name: "FAIRsharing Support"
+    email: "contact_fairsharing.org"
+paths:
+  "/ft_a2_m_fs_dbpreservation":
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/schemas"
+        required: true
+      responses:
+        "200":
+          description:  >-
+            The response is "pass", "fail" or "indeterminate"
+servers:
+  - url: "https://fair-tests.fairsharing.org/test"
+components:
+  schemas:
+    schemas:
+      required:
+        - resource_identifier
+      properties:
+      - resource_identifier:
+          type: string
+          description: the GUID being tested
