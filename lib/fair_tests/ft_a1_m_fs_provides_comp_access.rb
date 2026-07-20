@@ -10,7 +10,7 @@ module FtA1MFsProvidesCompAccess
     meta = {
       testid: 'FT_A1_M_FS_providesCompAccess.ttl',
       testname: 'FAIR Test - A1 - Metadata - provides computational access',
-      description: 'This test assesses whether the FAIRsharing record contains at least one Data Process that uses an access method other than User Interface and whose process type includes Read or Read/Write. Tests implementing this metric should expect as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation.',
+      description: 'This test assesses whether the FAIRsharing record contains at least one Data Process that uses an access method other than User Interface and whose process type includes Read or Read/Write. Expected input is the FAIRsharing DOI or URL for the FAIRsharing record under evaluation.',
       keywords: ['ARK', 'FAIR', 'A1', 'FAIRsharing', 'computational access'],
       creator: 'https://orcid.org/0000-0002-6468-9260',
       indicators: [],

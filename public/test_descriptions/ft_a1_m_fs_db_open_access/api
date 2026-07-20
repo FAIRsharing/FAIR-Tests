@@ -3,7 +3,7 @@ info:
   version: "1.0"
   title: "FAIR Test - A1 - Metadata - database open access"
   x-tests_metric: "https://fairsharing.org/8381"
-  description: "This testassesses whether the FAIRsharing database record has its Data Access Condition set to Open or Partially Open. Tests implementing this metric should expect as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation. "
+  description: "This testassesses whether the FAIRsharing database record has its Data Access Condition set to Open or Partially Open. Expected input is the FAIRsharing DOI or URL for the FAIRsharing record under evaluation. "
   x-applies_to_principle: "https://fairsharing.org/6293"
   contact:
     x-organization: "FAIRsharing, Oxford University"

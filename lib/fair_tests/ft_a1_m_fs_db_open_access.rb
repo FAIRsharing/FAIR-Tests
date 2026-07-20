@@ -16,7 +16,7 @@ module FtA1MFsDbOpenAccess
     meta = {
       testid: 'FT_A1_M_FS_dbOpenAccess.ttl',
       testname: 'FAIR Test - A1 - Metadata - database open access',
-      description: 'This test assesses whether the FAIRsharing database record has its Data Access Condition set to Open or Partially Open. Tests implementing this metric should expect as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation.',
+      description: 'This test assesses whether the FAIRsharing database record has its Data Access Condition set to Open or Partially Open. Expected input is the FAIRsharing DOI or URL for the FAIRsharing record under evaluation.',
       keywords: ['ARK', 'FAIR', 'A1', 'FAIRsharing', 'database', 'open access'],
       creator: 'https://orcid.org/0000-0002-6468-9260',
       indicators: [],
