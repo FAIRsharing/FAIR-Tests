@@ -8,7 +8,7 @@ module FtF1MMetadataIdUnique
     meta = {
       testid: 'FT_F1_M_MetadataIdUnique.ttl',
       testname: 'FAIR Test – F1 – Metadata - Metadata contains identifier that is guaranteed globally unique',
-      description: "This metric evaluates whether the metadata retrieved from the provided URI contains an identifier that satisfies the FAIRsharing definition of guaranteed global uniqueness, as aligned with the EOSC PID Policy. Note that it assesses the metadata retrieved from the URI rather than the URI itself. During assessment, the provided URI is resolved in accordance with FAIRsharing’s identifier resolution best practices. If the record contains DOI or ARK identifiers it will pass. If any identifier URLs can be determined as globally unique via FAIRsharing data the test will also pass. Otherwise, it will fail.",
+      description: "This metric evaluates whether the metadata retrieved from the provided URI contains an identifier that satisfies the FAIRsharing definition of guaranteed global uniqueness, as aligned with the EOSC PID Policy. Note that it assesses the metadata retrieved from the URI rather than the URI itself. During assessment, the provided URI is resolved in accordance with FAIRsharing’s identifier resolution best practices. If the record contains DOI or ARK identifiers it will pass. If any identifier URLs can be determined as globally unique via FAIRsharing data the test will also pass. Otherwise, it will fail. Expected input is the FAIRsharing DOI or URL for the FAIRsharing record under evaluation.",
       keywords: ['FAIR', 'F1', 'GUID', 'unique identifiers'],
       creator: 'https://orcid.org/0000-0002-6468-9260',
       indicators: [],

@@ -4,7 +4,7 @@ info:
   title: "FAIR Test – R1.3 - Metadata – use of ISO 639 language"
   x-tests_metric: "https://fairsharing.org/8019"
   description: >-
-    "This test evaluates whether the metadata for the digital object includes at least one resolvable language attribute defined by the ISO 639 standard. It evaluates the value held in the language field against the official ISO 639 registry, searching for a valid, standardised code (specifically 639-2 / 639:2023) or a URI pointing to an ISO term."
+    "This test evaluates whether the metadata for the digital object includes at least one resolvable language attribute defined by the ISO 639 standard. It evaluates the value held in the language field against the official ISO 639 registry, searching for a valid, standardised code (specifically 639-2 / 639:2023) or a URI pointing to an ISO term. Expected input is the FAIRsharing DOI or URL for the FAIRsharing record under evaluation."
   x-applies_to_principle: "https://fairsharing.org/7598"
   contact:
     x-organization: "FAIRsharing, Oxford University"

@@ -18,7 +18,7 @@ module FtF2MDiscoveryfields
     meta = {
       testid: 'FT_F2_M_Discoveryfields.ttl',
       testname: 'FAIR Test - F2 - Metadata - Discovery-Oriented Metadata Fields',
-      description: "FAIR Test - F2 - Metadata - Discovery-Oriented Metadata Fields evaluates whether a metadata record includes a core set of mandatory descriptive elements that are essential for basic discovery. Specifically, it checks the resolved metadata for the presence of the following four fields: title, contributor names, summary/abstract/description, and publication date (defined as the date the record was first made publicly available). To pass, all of these fields must be present and populated within a structured, common format such as schema.org JSON-LD, DataCite XML, or Dublin Core XML. If any of these fields are empty, the evaluation is expected to fail.",
+      description: "FAIR Test - F2 - Metadata - Discovery-Oriented Metadata Fields evaluates whether a metadata record includes a core set of mandatory descriptive elements that are essential for basic discovery. Specifically, it checks the resolved metadata for the presence of the following four fields: title, contributor names, summary/abstract/description, and publication date (defined as the date the record was first made publicly available). To pass, all of these fields must be present and populated within a structured, common format such as schema.org JSON-LD, DataCite XML, or Dublin Core XML. If any of these fields are empty, the evaluation is expected to fail. Expected input is the FAIRsharing DOI or URL for the FAIRsharing record under evaluation.",
       keywords: ['FAIR', 'F2', 'discovery metadata'],
       creator: 'https://orcid.org/0000-0002-6468-9260',
       indicators: [],

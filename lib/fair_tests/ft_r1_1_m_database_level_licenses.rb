@@ -14,7 +14,7 @@ module FtR11MDatabaseLevelLicenses
     meta = {
       testid: 'FT_R1_1_M_DatabaseLevelLicenses.ttl',
       testname: 'FAIR Test - R1.1 - Metadata - Database-level licenses',
-      description: "R1.1 requires that metadata be released with a clear and accessible data usage licence. The purpose of this principle is to ensure that reuse conditions are explicitly stated and legally unambiguous. This test evaluates whether there is at least one licence declared at the database level in the FAIRsharing registry record associated with the identifier under evaluation.",
+      description: "R1.1 requires that metadata be released with a clear and accessible data usage licence. The purpose of this principle is to ensure that reuse conditions are explicitly stated and legally unambiguous. This test evaluates whether there is at least one licence declared at the database level in the FAIRsharing registry record associated with the identifier under evaluation. Expected input is the FAIRsharing DOI or URL for the FAIRsharing record under evaluation.",
       keywords: %w[FAIR R.1.1 licenses],
       creator: 'https://orcid.org/0000-0002-6468-9260',
       indicators: [],

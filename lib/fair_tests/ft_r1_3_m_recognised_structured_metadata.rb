@@ -8,7 +8,7 @@ module FtR13MRecognisedStructuredMetadata
     meta = {
       testid: 'FT_R1_3_M_UseStuctGenericFormat.ttl',
       testname: 'FAIR Test – R1.3 - Metadata – use of recognised and structured generic metadata format',
-      description: 'This metric evaluates whether the dataset metadata is structured according to predefined, widely adopted metadata schemas appropriate to institutional repositories and other generalist contexts, such as schema.org (JSON-LD) or DataCite. It checks the record’s landing page for embedded or linked structured data that can be successfully parsed against the declared community schema. Finding JSON+LD or XML formats will result in a pass; otherwise, the test will fail.',
+      description: 'This metric evaluates whether the dataset metadata is structured according to predefined, widely adopted metadata schemas appropriate to institutional repositories and other generalist contexts, such as schema.org (JSON-LD) or DataCite. It checks the record’s landing page for embedded or linked structured data that can be successfully parsed against the declared community schema. Finding JSON+LD or XML formats will result in a pass; otherwise, the test will fail. Expected input is the FAIRsharing DOI or URL for the FAIRsharing record under evaluation.',
       keywords: ['FAIR', 'R1.3', 'recognised structured metadata'],
       creator: 'https://orcid.org/0000-0002-6468-9260',
       indicators: [],

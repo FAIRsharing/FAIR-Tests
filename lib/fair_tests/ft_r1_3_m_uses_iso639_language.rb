@@ -9,7 +9,7 @@ module FtR13MUsesIso639Language
     meta = {
       testid: 'FT_R1.3_M_UsesISO639.ttl',
       testname: 'FAIR Test – R1.3 - Metadata – use of ISO 639 language', # FM:R1.3:M:UseISO639
-      description: 'This test evaluates whether the metadata for the digital object includes at least one resolvable language attribute defined by the ISO 639 standard. It evaluates the value held in the language field against the official ISO 639 registry, searching for a valid, standardised code (specifically 639-2 / 639:2023) or a URI pointing to an ISO term.',
+      description: 'This test evaluates whether the metadata for the digital object includes at least one resolvable language attribute defined by the ISO 639 standard. It evaluates the value held in the language field against the official ISO 639 registry, searching for a valid, standardised code (specifically 639-2 / 639:2023) or a URI pointing to an ISO term. Expected input is the FAIRsharing DOI or URL for the FAIRsharing record under evaluation.',
       keywords: %w[FAIR R1.3 ISO639],
       creator: 'https://orcid.org/0000-0002-6468-9260',
       indicators: [],

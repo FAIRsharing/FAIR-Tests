@@ -6,7 +6,7 @@ module FtA11MHttpsRetrievalProtocol
     meta = {
       testid: 'FT_A1.1_M_HTTPSRetrievalProtocol.ttl',
       testname: 'FAIR Metric – A1.1 – Metadata - HTTP(S) retrieval protocol',
-      description: "This metric evaluates whether the protocol used to retrieve metadata referenced by the provided identifier is either HTTP or HTTPS and therefore openly specified, free to implement, and universally implementable.",
+      description: "This metric evaluates whether the protocol used to retrieve metadata referenced by the provided identifier is either HTTP or HTTPS and therefore openly specified, free to implement, and universally implementable. Expected input is the FAIRsharing DOI or URL for the FAIRsharing record under evaluation.",
       keywords: ['FAIR', 'A1.1', 'https'],
       creator: 'https://orcid.org/0000-0002-6468-9260',
       indicators: [],

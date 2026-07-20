@@ -18,7 +18,7 @@ module FtF2MDiscoverypublisher
     meta = {
       testid: 'FT_F2_M_Discoverypublisher.ttl',
       testname: 'FAIR Test - F2 - Metadata - Has Publisher Information',
-      description: "FAIR Test - F2 - Metadata - Has Publisher Information evaluates whether the metadata includes explicit information regarding the organisation responsible for publishing the metadata record. It looks for a structured “publisher” field within the record. In the context of an institutional repository, this is typically the institution itself, or an external repository (like Zenodo) if the record is registering an object hosted elsewhere. The test will fail if this value is not present.",
+      description: "FAIR Test - F2 - Metadata - Has Publisher Information evaluates whether the metadata includes explicit information regarding the organisation responsible for publishing the metadata record. It looks for a structured “publisher” field within the record. In the context of an institutional repository, this is typically the institution itself, or an external repository (like Zenodo) if the record is registering an object hosted elsewhere. The test will fail if this value is not present. Expected input is the FAIRsharing DOI or URL for the FAIRsharing record under evaluation.",
       keywords: ['FAIR', 'F2', 'publisher metadata'],
       creator: 'https://orcid.org/0000-0002-6468-9260',
       indicators: [],

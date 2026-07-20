@@ -4,7 +4,7 @@ info:
   title: "FAIR Test - F3 - resource identifiers in FAIRsharing metadata"
   x-tests_metric: "https://fairsharing.org/8372"
   description: >-
-    "This test assesses whether the FAIRsharing record under evaluation contains both a FAIRsharing identifier (DOI or URL) and a homepage URL for the resource it describes. This test expects as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation."
+    "This test assesses whether the FAIRsharing record under evaluation contains both a FAIRsharing identifier (DOI or URL) and a homepage URL for the resource it describes. Expected input is the FAIRsharing DOI or URL for the FAIRsharing record under evaluation or the homepage of the record it describes."
   x-applies_to_principle: "https://fairsharing.org/6277"
   contact:
     x-organization: "FAIRsharing, Oxford University"
