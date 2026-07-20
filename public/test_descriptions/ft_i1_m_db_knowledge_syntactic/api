@@ -4,7 +4,7 @@ info:
   title: "FAIR Test - I1 - Metadata - Database-level knowledge representation languages (syntactic)"
   x-tests_metric: "https://fairsharing.org/7836"
   description: >-
-    "The 'FAIR Test - I1 - Metadata - Database-level knowledge representation languages (syntactic)' is a database-level test that checks for relationships between the FAIRSharing metadata record and any model/format records with a syntactic format. Expected input is the homepage URL of a resource which has a record in FAIRsharing."
+    "The 'FAIR Test - I1 - Metadata - Database-level knowledge representation languages (syntactic)' is a database-level test that checks for relationships between the FAIRSharing metadata record and any model/format records with a syntactic format. Expected input is the FAIRsharing DOI or URL for the FAIRsharing record under evaluation."
   x-applies_to_principle: "https://fairsharing.org/10.25504/FAIRsharing.5f33dd"
   contact:
     x-organization: "FAIRsharing, Oxford University"
