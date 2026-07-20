@@ -8,7 +8,7 @@ module FtR12MCreatorOrcid
     meta = {
       testid: 'FT_R1_2_M_CreatorORCID.ttl',
       testname: 'FAIR Test - R1.2 - Metadata - Creator ORCIDs',
-      description: 'This test evaluates whether the metadata includes at least one qualified reference to ORCID for a contributor with a ‘creator’ role. The presence of ORCIDs linked to individuals, together with the defined ‘creator’ role, constitutes a qualified provenance reference. If the record contains a creator and this creator has an ORCID ID it will pass; otherwise, the test will fail.',
+      description: 'This test evaluates whether the metadata includes at least one qualified reference to ORCID for a contributor with a ‘creator’ role. The presence of ORCIDs linked to individuals, together with the defined ‘creator’ role, constitutes a qualified provenance reference. If the record contains a creator and this creator has an ORCID ID it will pass; otherwise, the test will fail. Expected input is the FAIRsharing DOI or URL for the FAIRsharing record under evaluation.',
       keywords: ['FAIR', 'R1.2', 'creator orcid'],
       creator: 'https://orcid.org/0000-0001-9572-0972',
       indicators: [],

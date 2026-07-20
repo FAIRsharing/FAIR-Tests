@@ -4,7 +4,7 @@ info:
   title: "FAIR Test - F2 - Metadata - Has Publisher Information"
   x-tests_metric: "https://fairsharing.org/8022"
   description: >-
-    "FAIR Test - F2 - Metadata - Has Publisher Information evaluates whether the metadata includes explicit information regarding the organisation responsible for publishing the metadata record. It looks for a structured “publisher” field within the record. In the context of an institutional repository, this is typically the institution itself, or an external repository (like Zenodo) if the record is registering an object hosted elsewhere. The test will fail if this value is not present."
+    "FAIR Test - F2 - Metadata - Has Publisher Information evaluates whether the metadata includes explicit information regarding the organisation responsible for publishing the metadata record. It looks for a structured “publisher” field within the record. In the context of an institutional repository, this is typically the institution itself, or an external repository (like Zenodo) if the record is registering an object hosted elsewhere. The test will fail if this value is not present. Expected input is the FAIRsharing DOI or URL for the FAIRsharing record under evaluation."
   x-applies_to_principle: "https://fairsharing.org/6276"
   contact:
     x-organization: "FAIRsharing, Oxford University"

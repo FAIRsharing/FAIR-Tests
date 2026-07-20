@@ -10,7 +10,7 @@ module FtF4MFsHasFsRecord
     meta = {
       testid: 'FT_F4_M_FS_hasFSrecord.ttl',
       testname: 'FAIR Test - F4 - has FAIRsharing record',
-      description: 'This test assesses whether the identifier being evaluated corresponds to a valid FAIRsharing record. This test expects as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation.',
+      description: 'This test assesses whether the identifier being evaluated corresponds to a valid FAIRsharing record. Expected input is the FAIRsharing DOI or URL for the FAIRsharing record under evaluation.',
       keywords: ['ARK', 'FAIR', 'F4', 'FAIRsharing'],
       creator: 'https://orcid.org/0000-0002-6468-9260',
       indicators: [],

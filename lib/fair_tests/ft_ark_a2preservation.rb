@@ -8,7 +8,7 @@ module FtArkA2preservation
     meta = {
       testid: 'FTARKTA2Preservation.ttl',
       testname: 'FAIR Test - ARK T-A2 - Database has a preservation policy',
-      description: 'This test checks that the database requires the presence of a data preservation policy for the database being evaluated. FM ARK A2-Preservation expects a FAIRsharing URL or DOI as its input and evaluates the database described by the FAIRsharing record.',
+      description: 'This test checks that the database requires the presence of a data preservation policy for the database being evaluated. Expected input is the FAIRsharing DOI or URL for the FAIRsharing record under evaluation.',
       keywords: ['ARK', 'FAIR', 'A2', 'preservation policy'],
       creator: 'https://orcid.org/0000-0001-9572-0972',
       indicators: [],

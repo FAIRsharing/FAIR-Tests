@@ -4,7 +4,7 @@ info:
   title: "FAIR Test - I3 - Metadata - Qualified References to Related Research Objects"
   x-tests_metric: "https://doi.org/10.25504/FAIRsharing.6cb5e5"
   description: >-
-      "This test evaluates whether the metadata retrieved upon identifier resolution contains at least one qualified, semantically defined link to another research object that provides contextual information and shows connectivity to the wider research ecosystem. Implementations of this metric should test for a qualified (labelled) relationship to a related research object, such as a publication or other research output, expressed using a defined relationship type(s) (e.g., subject of). A record will pass this metric if at least one such qualified, contextual reference to another research object is present in the metadata."
+      "This test evaluates whether the metadata retrieved upon identifier resolution contains at least one qualified, semantically defined link to another research object that provides contextual information and shows connectivity to the wider research ecosystem. Implementations of this metric should test for a qualified (labelled) relationship to a related research object, such as a publication or other research output, expressed using a defined relationship type(s) (e.g., subject of). A record will pass this metric if at least one such qualified, contextual reference to another research object is present in the metadata. Expected input is the FAIRsharing DOI or URL for the FAIRsharing record under evaluation."
   x-applies_to_principle: "https://doi.org/10.25504/FAIRsharing.ae22b8"
   contact:
     x-organization: "FAIRsharing, Oxford University"
