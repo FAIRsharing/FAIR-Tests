@@ -18,7 +18,7 @@ class FtR12MLinkedPublicationsTest < Minitest::Test
               {
                 '@id' => 'uuid:example',
                 '@type' => ['http://schema.org/Dataset'],
-                'http://schema.org/isRelatedTo' => [{'@id'=>'_:g46568022'}],
+                'http://schema.org/subjectOf' => [{'@id'=>'_:g46568022'}],
                 'http://schema.org/creator' => [{'@id'=>'_:g2763436033'}]
               },
               {'@id' => '_:g46568022',
@@ -88,7 +88,7 @@ class FtR12MLinkedPublicationsTest < Minitest::Test
               {
                 '@id' => 'uuid:example',
                 '@type' => ['http://schema.org/Dataset'],
-                'http://schema.org/isRelatedTo' => [{'@id'=>'_:g46568022'}],
+                'http://schema.org/subjectOf' => [{'@id'=>'_:g46568022'}],
                 'http://schema.org/creator' => [{'@id'=>'_:g2763436033'}]
               },
               {'@id' => '_:g46568022',

@@ -29,7 +29,7 @@ module FtR12MLinkedPublications
 
     if record && !record.empty?
       pass = false
-      isRelatedTo = find_schema_object_values(record, 'isRelatedTo')
+      isRelatedTo = find_schema_object_values(record, 'subjectOf')
       if isRelatedTo.empty?
         response.score = 'fail'
         response.comments << 'This record does not contain a linked publication.'
