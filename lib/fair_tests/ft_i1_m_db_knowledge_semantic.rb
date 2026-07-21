@@ -12,7 +12,7 @@ module FtI1MDbKnowledgeSemantic
     meta = {
       testid: 'FT_I1_M_DbKnowledgeSemantic.ttl',
       testname: 'FAIR Test - I1 – Metadata - Database-level knowledge representation languages (semantic)',
-      description: "This test checks whether the hosting database declares support for metadata formats that are semantically grounded (grounded/linked data), as recorded in its FAIRsharing registry entry.",
+      description: "This test checks whether the hosting database declares support for metadata formats that are semantically grounded (grounded/linked data), as recorded in its FAIRsharing registry entry. Expected input is the FAIRsharing DOI or URL for the FAIRsharing record under evaluation.",
       keywords: ['FAIR', 'I1', 'semantic'],
       creator: 'https://orcid.org/0000-0002-6468-9260',
       indicators: [],
@@ -33,7 +33,7 @@ module FtI1MDbKnowledgeSemantic
 
     if record
       if record['registry'] == 'Database'
-        if record['format'] == 'semantic'
+        if record['format'].include?('semantic')
           response.score = 'pass'
           response.comments << 'Using FAIRsharing metadata for the database under evaluation, the database uses semantic database-level knowledge representation languages.'
         else

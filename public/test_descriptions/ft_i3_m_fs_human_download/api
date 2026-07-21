@@ -1,0 +1,38 @@
+openapi: 3.0.0
+info:
+  version: "1.0"
+  title: "FAIR Test - I3 - allows content download by humans"
+  x-tests_metric: "https://fairsharing.org/8414/"
+  description: >-
+      "This test uses the structured metadata provided by FAIRsharing records to determine whether the resource under evaluation allows content to be downloaded through human-accessible interfaces. Human-mediated download mechanisms are important FAIR-enabling characteristics because they support the exchange of information between resources and users. This test assesses whether the FAIRsharing database record contains at least one Data Process whose label contains Download or Export, whose type is Read or Read/Write, and whose access method is User Interface. This test expects as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation."
+  x-applies_to_principle: "https://doi.org/10.25504/FAIRsharing.ae22b8"
+  contact:
+    x-organization: "FAIRsharing, Oxford University"
+    url: "https://fairsharing.org"
+    name: "FAIRsharing Support"
+    email: "contact@fairsharing.org"
+paths:
+  "/ft_i3_m_fs_human_download":
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/schemas"
+        required: true
+      responses:
+        "200":
+          description:  >-
+            The response is "pass", "fail" or "indeterminate"
+servers:
+  - url: "https://fair-tests.fairsharing.org/test"
+components:
+  schemas:
+    schemas:
+      required:
+        - resource_identifier
+      properties:
+      - resource_identifier:
+          type: string
+          description: the GUID being tested
+

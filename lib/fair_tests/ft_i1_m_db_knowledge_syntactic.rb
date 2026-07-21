@@ -12,7 +12,7 @@ module FtI1MDbKnowledgeSyntactic
     meta = {
       testid: 'FT_I1_M_DbKnowledgeSyntactic.ttl',
       testname: 'FAIR Test - I1 – Metadata - Database-level knowledge representation languages (syntactic)',
-      description: "This test checks whether the hosting database declares support for metadata formats that are syntactically structured, as recorded in its FAIRsharing registry entry.",
+      description: "This test checks whether the hosting database declares support for metadata formats that are syntactically structured, as recorded in its FAIRsharing registry entry. Expected input is the FAIRsharing DOI or URL for the FAIRsharing record under evaluation.",
       keywords: ['FAIR', 'I1', 'syntactic'],
       creator: 'https://orcid.org/0000-0002-6468-9260',
       indicators: [],
@@ -34,7 +34,7 @@ module FtI1MDbKnowledgeSyntactic
 
     if record
       if record['registry'] == 'Database'
-        if record['format'] == 'syntactic'
+        if record['format'].include?('syntactic')
           response.score = 'pass'
           response.comments << 'Using FAIRsharing metadata for the database under evaluation, the database uses syntactic database-level knowledge representation languages.'
         else

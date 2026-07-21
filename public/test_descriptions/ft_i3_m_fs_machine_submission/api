@@ -1,0 +1,38 @@
+openapi: 3.0.0
+info:
+  version: "1.0"
+  title: "FAIR Test - I3 - allows content submission by machines"
+  x-tests_metric: "https://fairsharing.org/8411/"
+  description: >-
+      "This test uses the structured metadata provided by FAIRsharing records to determine whether machines can submit content through computational interfaces. Machine-mediated content submission is an important FAIR-enabling characteristic because it supports the automated exchange of information between resources and external systems. This test assesses whether the FAIRsharing record contains at least one Data Process with a type of Write or Read/Write that uses a non-User Interface access method. This test expects as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation."
+  x-applies_to_principle: "https://doi.org/10.25504/FAIRsharing.ae22b8"
+  contact:
+    x-organization: "FAIRsharing, Oxford University"
+    url: "https://fairsharing.org"
+    name: "FAIRsharing Support"
+    email: "contact@fairsharing.org"
+paths:
+  "/ft_i3_m_fs_machine_submission":
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/schemas"
+        required: true
+      responses:
+        "200":
+          description:  >-
+            The response is "pass", "fail" or "indeterminate"
+servers:
+  - url: "https://fair-tests.fairsharing.org/test"
+components:
+  schemas:
+    schemas:
+      required:
+        - resource_identifier
+      properties:
+      - resource_identifier:
+          type: string
+          description: the GUID being tested
+

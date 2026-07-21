@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 module FtR13MUsesIso639Language
-  require 'ftr_ruby'
   require_relative '../fair_test_utils'
   include FairTestUtils
 
@@ -61,5 +60,3 @@ module FtR13MUsesIso639Language
 
   end
 end
-
-
