@@ -10,7 +10,7 @@ module FtI2MDbAdoptsTerminologies
     end
 
     meta = {
-      testid: 'FT_I2_M_DBAdoptsTerminologies.ttl',
+      testid: 'FT_I2_M_DB_adoptsTerminologies.ttl',
       testname: 'FAIR Test - I2 - adopts FAIR-supporting terminologies',
       description: 'This test assesses whether the FAIRsharing record is linked to at least one FAIRsharing terminology artefact record. Expected input is the FAIRsharing DOI or URL for the FAIRsharing record under evaluation.',
       keywords: ['FAIR', 'I2', 'supporting terminologies'],
