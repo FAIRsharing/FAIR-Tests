@@ -1,11 +1,11 @@
 openapi: 3.0.0
 info:
   version: "1.0"
-  title: "FAIR Test - I2 - Metadata - "
-  x-tests_metric: ""
+  title: "FAIR Test - I2 - adopts FAIR-supporting terminologies"
+  x-tests_metric: "https://fairsharing.org/8403/"
   description: >-
-        ""
-  x-applies_to_principle: ""
+        "This test assesses whether the FAIRsharing record is linked to at least one FAIRsharing terminology artefact record. Tests implementing this metric should expect as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation."
+  x-applies_to_principle: "https://doi.org/10.25504/FAIRsharing.96d4af"
   contact:
     x-organization: "FAIRsharing, Oxford University"
     url: "https://fairsharing.org"

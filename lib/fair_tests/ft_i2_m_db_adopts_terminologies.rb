@@ -11,12 +11,12 @@ module FtI2MDbAdoptsTerminologies
 
     meta = {
       testid: 'FT_I2_M_DBAdoptsTerminologies.ttl',
-      testname: '',
-      description: "",
-      keywords: ['FAIR', 'I2'],
+      testname: 'FAIR Test - I2 - adopts FAIR-supporting terminologies',
+      description: 'This test assesses whether the FAIRsharing record is linked to at least one FAIRsharing terminology artefact record. Tests implementing this metric should expect as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation.',
+      keywords: ['FAIR', 'I2', 'supporting terminologies'],
       creator: 'https://orcid.org/0000-0001-9572-0972',
       indicators: [],
-      metric: 'https://doi.org/10.25504/FAIRsharing.9114a7',
+      metric: 'https://fairsharing.org/8403',
       license: 'https://creativecommons.org/licenses/by/4.0/',
       testversion: '1.0.0',
       protocol: 'https',
