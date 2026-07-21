@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 require 'webmock/minitest'
 require_relative './test_helper'
-require_relative '../lib/fair_tests/ft_i1_m_db_knowledge_semantic'
+require_relative '../lib/fair_tests/ft_i1_m_db_sem_formats'
 
-class FtI1MDbKnowledgeSemanticTest < Minitest::Test
+class FtI1MDbSemFormatsTest < Minitest::Test
   include ::TestHelper
-  include ::FtI1MDbKnowledgeSemantic
+  include ::FtI1MDbSemFormats
 
   # TODO: These tests do not check for DOI resolution.
   # TODO: DOIs have been revised in https://github.com/FAIRsharing/FAIR-Tests/pull/36 which has not yet been merged.
@@ -17,17 +17,17 @@ class FtI1MDbKnowledgeSemanticTest < Minitest::Test
       body: {
         "data": {
           "fairsharingRecord": {
-            "id": "1234",
+            "id": "123456",
             "registry": "Database",
-            "format": "semantic"
+            "format": "syntactic+semantic"
           }
         }
       }.to_json,
       headers: headers
     )
 
-    post '/test/ft_i1_m_db_knowledge_semantic',
-         params: { resource_identifier: 'https://example.org/1234' }.to_json,
+    post '/test/ft_i1_m_db_sem_formats',
+         params: { resource_identifier: 'https://example.org/123456' }.to_json,
          headers: headers
 
     assert last_response.ok?
@@ -52,8 +52,8 @@ class FtI1MDbKnowledgeSemanticTest < Minitest::Test
       headers: headers
     )
 
-    post '/test/ft_i1_m_db_knowledge_semantic',
-         params: { resource_identifier: 'https://example.org/1234' }.to_json,
+    post '/test/ft_i1_m_db_sem_formats',
+         params: { resource_identifier: 'https://example.org/123456' }.to_json,
          headers: headers
 
     assert last_response.ok?
@@ -78,8 +78,8 @@ class FtI1MDbKnowledgeSemanticTest < Minitest::Test
       headers: headers
     )
 
-    post '/test/ft_i1_m_db_knowledge_semantic',
-         params: { resource_identifier: 'https://example.org/1234' }.to_json,
+    post '/test/ft_i1_m_db_sem_formats',
+         params: { resource_identifier: 'https://example.org/123456' }.to_json,
          headers: headers
 
     assert last_response.ok?
@@ -98,8 +98,8 @@ class FtI1MDbKnowledgeSemanticTest < Minitest::Test
       headers: headers
     )
 
-    post '/test/ft_i1_m_db_knowledge_semantic',
-         params: { resource_identifier: 'https://example.org/1234' }.to_json,
+    post '/test/ft_i1_m_db_sem_formats',
+         params: { resource_identifier: 'https://example.org/123456' }.to_json,
          headers: headers
 
     assert last_response.ok?
@@ -128,7 +128,7 @@ class FtI1MDbKnowledgeSemanticTest < Minitest::Test
       headers: headers
     )
 
-    post '/test/ft_i1_m_db_knowledge_semantic',
+    post '/test/ft_i1_m_db_sem_formats',
          params: { resource_identifier: 'https://doi.org/10.1234/5678' }.to_json,
          headers: headers
 
