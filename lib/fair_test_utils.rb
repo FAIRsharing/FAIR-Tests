@@ -503,4 +503,19 @@ module FairTestUtils
     digits[-1] == expected
   end
 
+  def valid_ror_id?(value)
+    value.to_s.strip.match?(/\A0[a-hj-km-np-tv-z0-9]{6}\d{2}\z/)
+  end
+
+  def valid_ror_url?(value)
+    return false unless valid_url?(value)
+
+    uri = URI.parse(value.to_s.strip)
+    uri.scheme == 'https' &&
+      uri.host.to_s.downcase == 'ror.org' &&
+      valid_ror_id?(uri.path.delete_prefix('/')) &&
+      uri.query.nil? &&
+      uri.fragment.nil?
+  end
+
 end

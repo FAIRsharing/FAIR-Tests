@@ -103,6 +103,19 @@ class FairTestUtilsTest < Minitest::Test
     refute valid_orcid_id?(nil)
   end
 
+  def test_validates_ror_ids_and_urls
+    assert valid_ror_id?('0439y7842')
+    refute valid_ror_id?('invalid-ror')
+    refute valid_ror_id?(nil)
+
+    assert valid_ror_url?('https://ror.org/0439y7842')
+    refute valid_ror_url?('http://ror.org/0439y7842')
+    refute valid_ror_url?('https://example.org/0439y7842')
+    refute valid_ror_url?('https://ror.org/invalid-ror')
+    refute valid_ror_url?('https://ror.org/0439y7842?source=test')
+    refute valid_ror_url?(nil)
+  end
+
   def test_finds_schema_property_value_triples
     data = {
       '@graph' => [
