@@ -7,27 +7,19 @@ class FtF1MMetadataIdResolvableTest < Minitest::Test
   include ::TestHelper
   include ::FtF1MMetadataIdResolvable
 
-  def test_passes_when_schema_property_value_triple_contains_doi
-    stub_metadata_harvesting(
+  def test_passes_when_identifier_contains_doi_with_valid_url
+    stub_request_jsonld(
       {
-        '@graph' => [
+        'identifier' => [
           {
-            '@id' => 'urn:local:harvester:graph',
-            'local:triples' => [
-              {
-                '@id' => 'uuid:example',
-                '@type' => ['http://schema.org/Dataset']
-              },
-              {
-                '@id' => '_:identifier',
-                '@type' => ['http://schema.org/PropertyValue'],
-                'http://schema.org/propertyID' => [{ '@value' => 'DOI' }],
-                'http://schema.org/url' => [{ '@id' => 'https://doi.org/10.1234/example' }]
-              }
-            ]
+            '@type' => 'PropertyValue',
+            'propertyID' => 'DOI',
+            'value' => '10.1234/example',
+            'url' => 'https://doi.org/10.1234/example'
           }
         ]
-      }
+      },
+      resource_identifier: 'https://example.org/records/abc123'
     )
 
     post '/test/ft_f1_m_metadata_id_resolvable',
@@ -40,27 +32,43 @@ class FtF1MMetadataIdResolvableTest < Minitest::Test
     assert_equal 'pass', find_prov_value(body)
   end
 
-  def test_passes_when_schema_property_value_not_labelled_as_doi
-    stub_metadata_harvesting(
+  def test_passes_when_identifier_contains_ark_with_valid_url
+    stub_request_jsonld(
       {
-        '@graph' => [
+        'identifier' => [
           {
-            '@id' => 'urn:local:harvester:graph',
-            'local:triples' => [
-              {
-                '@id' => 'uuid:example',
-                '@type' => ['http://schema.org/Dataset']
-              },
-              {
-                '@id' => '_:identifier',
-                '@type' => ['http://schema.org/PropertyValue'],
-                'http://schema.org/propertyID' => [{ '@value' => 'UNKNOWN' }],
-                'http://schema.org/url' => [{ '@id' => 'https://doi.org/10.1234/example' }]
-              }
-            ]
+            '@type' => 'PropertyValue',
+            'propertyID' => 'ARK',
+            'value' => 'ark:/12345/example',
+            'url' => 'https://n2t.net/ark:/12345/example'
           }
         ]
-      }
+      },
+      resource_identifier: 'https://example.org/records/abc123'
+    )
+
+    post '/test/ft_f1_m_metadata_id_resolvable',
+         params: { resource_identifier: 'https://example.org/records/abc123' }.to_json,
+         headers: headers
+
+    assert last_response.ok?
+
+    body = parsed_response_body(last_response.body)
+    assert_equal 'pass', find_prov_value(body)
+  end
+
+  def test_passes_when_identifier_is_not_labelled_as_doi_but_fairsharing_marks_it_resolvable
+    stub_request_jsonld(
+      {
+        'identifier' => [
+          {
+            '@type' => 'PropertyValue',
+            'propertyID' => 'UNKNOWN',
+            'url' => 'https://doi.org/10.1234/example'
+          }
+        ]
+      },
+      resource_identifier: 'https://example.org/records/abc123'
     )
     stub_request(:post, "#{ENV['FAIRSHARING_API_URL']}").
       with(headers: headers).to_return(
@@ -92,21 +100,10 @@ class FtF1MMetadataIdResolvableTest < Minitest::Test
     assert_equal 'pass', find_prov_value(body)
   end
 
-  def test_fails_when_no_schema_property_value_triples_exist
-    stub_metadata_harvesting(
-      {
-        '@graph' => [
-          {
-            '@id' => 'urn:local:harvester:graph',
-            'local:triples' => [
-              {
-                '@id' => 'uuid:example',
-                '@type' => ['http://schema.org/Dataset']
-              }
-            ]
-          }
-        ]
-      }
+  def test_fails_when_no_identifiers_exist
+    stub_request_jsonld(
+      { 'name' => 'Example record' },
+      resource_identifier: 'https://example.org/records/abc123'
     )
 
     post '/test/ft_f1_m_metadata_id_resolvable',
@@ -119,39 +116,19 @@ class FtF1MMetadataIdResolvableTest < Minitest::Test
     assert_equal 'fail', find_prov_value(body)
   end
 
-  def test_fails_when_schema_property_value_not_labelled_as_and_not_doi
-    stub_metadata_harvesting(
+  def test_fails_when_doi_identifier_has_an_invalid_url
+    stub_request_jsonld(
       {
-        '@graph' => [
+        'identifier' => [
           {
-            '@id' => 'urn:local:harvester:graph',
-            'local:triples' => [
-              {
-                '@id' => 'uuid:example',
-                '@type' => ['http://schema.org/Dataset']
-              },
-              {
-                '@id' => '_:identifier',
-                '@type' => ['http://schema.org/PropertyValue'],
-                'http://schema.org/propertyID' => [{ '@value' => 'UNKNOWN' }],
-                'http://schema.org/url' => [{ '@id' => 'https://example.com/not_a_doi' }]
-              }
-            ]
+            '@type' => 'PropertyValue',
+            'propertyID' => 'DOI',
+            'value' => '10.1234/example',
+            'url' => 'not a URL'
           }
         ]
-      }
-    )
-    stub_request(:post, "#{ENV['FAIRSHARING_API_URL']}").
-      with(headers: headers).to_return(
-      status: 200,
-      body: {
-        "data": {
-          "regex": {
-            "records": []
-          }
-        }
-      }.to_json,
-      headers: headers
+      },
+      resource_identifier: 'https://example.org/records/abc123'
     )
 
     post '/test/ft_f1_m_metadata_id_resolvable',
