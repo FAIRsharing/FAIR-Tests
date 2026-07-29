@@ -230,7 +230,7 @@ class FtF2MDiscoveryfieldsTest < Minitest::Test
   # Tests with ORA data #
   #######################
   def test_ora_data_passes
-    json_file = JSON.load_file('ora_record.json')
+    json_file = JSON.load_file('./test/fixtures/ora_record.json')
     stub_request_jsonld(
       json_file,
       resource_identifier: 'https://example.org/records/abc123'
