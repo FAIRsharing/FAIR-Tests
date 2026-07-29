@@ -53,6 +53,17 @@ module TestHelper
       to_return(status: 200, body: body, headers: {})
   end
 
+  def stub_request_xml(response_body, resource_identifier: ORA_RESOURCE_IDENTIFIER)
+    stub_request(:get, resource_identifier).
+      with(
+        headers: {
+          'Accept' => 'text/xml',
+          'Content-Type' => 'text/xml'
+        }
+      ).
+      to_return(status: 200, body: response_body.to_s, headers: {})
+  end
+
   def headers
     {
       'Content-Type' => 'application/json',

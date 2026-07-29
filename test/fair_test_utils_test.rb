@@ -59,6 +59,31 @@ class FairTestUtilsTest < Minitest::Test
     assert_nil request_jsonld(invalid_json_url)
   end
 
+  def test_validates_xml
+    assert valid_xml?('<resource><title>A title</title></resource>')
+
+    refute valid_xml?('<resource>')
+    refute valid_xml?('')
+    refute valid_xml?(nil)
+  end
+
+  def test_request_xml_returns_content_or_nil
+    valid_url = 'https://example.org/valid.xml'
+    invalid_url = 'https://example.org/invalid.xml'
+    empty_url = 'https://example.org/empty.xml'
+    error_url = 'https://example.org/error.xml'
+
+    stub_request_xml('<resource />', resource_identifier: valid_url)
+    stub_request_xml('<resource>', resource_identifier: invalid_url)
+    stub_request_xml('', resource_identifier: empty_url)
+    stub_request(:get, error_url).to_raise(StandardError)
+
+    assert_equal '<resource />', request_xml(valid_url)
+    assert_nil request_xml(invalid_url)
+    assert_nil request_xml(empty_url)
+    assert_nil request_xml(error_url)
+  end
+
   def test_contains_meaningful_value_covers_all_value_types
     refute contains_meaningful_value?(nil)
 

@@ -48,6 +48,31 @@ module FairTestUtils
     nil
   end
 
+  def request_xml(url)
+    xml_headers = {
+      'Accept' => 'text/xml',
+      'Content-Type' => 'text/xml'
+    }
+    response = HTTParty.get(url, headers: xml_headers)
+
+    body = response.body.to_s.strip
+    return nil if body.empty?
+    return nil unless valid_xml?(body)
+
+    body
+  rescue StandardError
+    nil
+  end
+
+  def valid_xml?(value)
+    return false unless value.is_a?(String) && !value.strip.empty?
+
+    document = Nokogiri::XML(value) { |config| config.strict.nonet }
+    !document.root.nil?
+  rescue Nokogiri::XML::SyntaxError
+    false
+  end
+
   # Parse the data structure returned by metadata harvesting and look for particular keys.
   # Usage: has_matching_key_with_value?(data, %w[publisher publish])
   def has_matching_key_with_value?(obj, patterns)
