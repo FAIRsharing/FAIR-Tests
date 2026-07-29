@@ -98,6 +98,8 @@ module FairTestUtils
     end
   end
 
+
+
   # TODO:
   # This should be able to get JSON-formatted data from a DOI.
   # It may be that we replace this at a later date with Mark's system, or
@@ -485,6 +487,20 @@ module FairTestUtils
     %w[http https].include?(uri.scheme) && !uri.host.to_s.empty?
   rescue URI::InvalidURIError
     false
+  end
+
+  def valid_orcid_id?(value)
+    orcid_id = value.to_s.strip
+    return false unless orcid_id.match?(/\A\d{4}-\d{4}-\d{4}-\d{3}[\dX]\z/)
+
+    digits = orcid_id.delete('-')
+    total = digits[0, 15].each_char.reduce(0) do |sum, digit|
+      (sum + digit.to_i) * 2
+    end
+    check_digit = (12 - (total % 11)) % 11
+    expected = check_digit == 10 ? 'X' : check_digit.to_s
+
+    digits[-1] == expected
   end
 
 end

@@ -94,6 +94,15 @@ class FairTestUtilsTest < Minitest::Test
     refute has_top_level_jsonld_discovery_field?(nil, fields)
   end
 
+  def test_validates_orcid_ids
+    assert valid_orcid_id?('0000-0002-1668-1029')
+    assert valid_orcid_id?('0000-0002-9079-593X')
+
+    refute valid_orcid_id?('0000-0002-1668-1028')
+    refute valid_orcid_id?('0000000216681029')
+    refute valid_orcid_id?(nil)
+  end
+
   def test_finds_schema_property_value_triples
     data = {
       '@graph' => [
