@@ -248,7 +248,7 @@ module FairTestUtils
       end
     end
 
-    results
+    results.flatten
   end
 
   # This will look through the output of the metadata harvester and find all hash tables H

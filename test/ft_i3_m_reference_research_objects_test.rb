@@ -8,36 +8,18 @@ class FtI3MReferenceResearchObjectsTest < Minitest::Test
   include ::TestHelper
   include ::FtI3MReferenceResearchObjects
 
-  def test_passes_when_schema_reference_research_object
-    stub_metadata_harvesting(
+  def test_passes_when_subject_of_contains_a_creative_work
+    stub_request_jsonld(
       {
-        '@graph' => [
+        'subjectOf' => [
           {
-            '@id' => 'urn:local:harvester:graph',
-            'local:triples' => [
-              {
-                '@id' => 'uuid:example',
-                '@type' => ['http://schema.org/Dataset'],
-                'http://schema.org/subjectOf' => [{'@id'=>'_:g46568022'}],
-                'http://schema.org/creator' => [{'@id'=>'_:g2763436033'}]
-              },
-              {'@id' => '_:g46568022',
-               '@type' => ['http://schema.org/CreativeWork'],
-               'http://schema.org/url' => 'https://ora.ox.ac.uk/this/is/not/url.txt',
-               'http://schema.org/name' =>
-                 [{'@value' =>
-                     'The effect of ambient and injection pressure on droplet size of ammonia sprays in a constant volume chamber'}]
-              },
-              {'@id' => '_:g2763436033',
-               '@type' => ['http://schema.org/Person'],
-               'http://schema.org/affiliation' => [{'@id'=>'_:g27634380'}],
-               'http://schema.org/identifier' => [{'@id'=>'_:g27634400'}],
-               'http://schema.org/name' => [{'@value'=>'Smith, S'}]
-              }
-            ]
+            '@type' => 'CreativeWork',
+            'name' => 'A related research object',
+            'url' => 'https://ora.ox.ac.uk/objects/uuid:related'
           }
         ]
-      }
+      },
+      resource_identifier: 'https://example.org/records/abc123'
     )
 
     post '/test/ft_i3_m_reference_research_objects',
@@ -51,36 +33,18 @@ class FtI3MReferenceResearchObjectsTest < Minitest::Test
   end
 
 
-  def test_passes_when_schema_reference_research_object_isRelatedTo
-    stub_metadata_harvesting(
+  def test_passes_when_is_related_to_contains_a_scholarly_article
+    stub_request_jsonld(
       {
-        '@graph' => [
+        'isRelatedTo' => [
           {
-            '@id' => 'urn:local:harvester:graph',
-            'local:triples' => [
-              {
-                '@id' => 'uuid:example',
-                '@type' => ['http://schema.org/Dataset'],
-                'http://schema.org/isRelatedTo' => [{'@id'=>'_:g46568022'}],
-                'http://schema.org/creator' => [{'@id'=>'_:g2763436033'}]
-              },
-              {'@id' => '_:g46568022',
-               '@type' => ['http://schema.org/CreativeWork'],
-               'http://schema.org/url' => 'https://ora.ox.ac.uk/this/is/not/url.txt',
-               'http://schema.org/name' =>
-                 [{'@value' =>
-                     'The effect of ambient and injection pressure on droplet size of ammonia sprays in a constant volume chamber'}]
-              },
-              {'@id' => '_:g2763436033',
-               '@type' => ['http://schema.org/Person'],
-               'http://schema.org/affiliation' => [{'@id'=>'_:g27634380'}],
-               'http://schema.org/identifier' => [{'@id'=>'_:g27634400'}],
-               'http://schema.org/name' => [{'@value'=>'Smith, S'}]
-              }
-            ]
+            '@type' => 'ScholarlyArticle',
+            'name' => 'A related publication',
+            'url' => 'https://ora.ox.ac.uk/objects/uuid:publication'
           }
         ]
-      }
+      },
+      resource_identifier: 'https://example.org/records/abc123'
     )
 
     post '/test/ft_i3_m_reference_research_objects',
@@ -94,26 +58,16 @@ class FtI3MReferenceResearchObjectsTest < Minitest::Test
   end
 
   def test_fails_when_related_research_object_has_no_url
-    stub_metadata_harvesting(
+    stub_request_jsonld(
       {
-        '@graph' => [
+        'isRelatedTo' => [
           {
-            '@id' => 'urn:local:harvester:graph',
-            'local:triples' => [
-              {
-                '@id' => 'uuid:example',
-                '@type' => ['http://schema.org/Dataset'],
-                'http://schema.org/isRelatedTo' => [{'@id'=>'_:g46568022'}]
-              },
-              {
-                '@id' => '_:g46568022',
-                '@type' => ['http://schema.org/CreativeWork'],
-                'http://schema.org/name' => [{'@value' => 'A related publication without a URL'}]
-              }
-            ]
+            '@type' => 'CreativeWork',
+            'name' => 'A related publication without a URL'
           }
         ]
-      }
+      },
+      resource_identifier: 'https://example.org/records/abc123'
     )
 
     post '/test/ft_i3_m_reference_research_objects',
@@ -127,26 +81,16 @@ class FtI3MReferenceResearchObjectsTest < Minitest::Test
   end
 
   def test_fails_when_related_research_object_has_no_type
-    stub_metadata_harvesting(
+    stub_request_jsonld(
       {
-        '@graph' => [
+        'isRelatedTo' => [
           {
-            '@id' => 'urn:local:harvester:graph',
-            'local:triples' => [
-              {
-                '@id' => 'uuid:example',
-                '@type' => ['http://schema.org/Dataset'],
-                'http://schema.org/isRelatedTo' => [{'@id'=>'_:g46568022'}]
-              },
-              {
-                '@id' => '_:g46568022',
-                '@url' => '/objects/uuid:7f161a34-1d6c-40aa-9539-847a4ff00f44',
-                'http://schema.org/name' => [{'@value' => 'A related publication without a type'}]
-              }
-            ]
+            'name' => 'A related publication without a type',
+            'url' => 'https://ora.ox.ac.uk/objects/uuid:related'
           }
         ]
-      }
+      },
+      resource_identifier: 'https://example.org/records/abc123'
     )
 
     post '/test/ft_i3_m_reference_research_objects',
@@ -160,20 +104,9 @@ class FtI3MReferenceResearchObjectsTest < Minitest::Test
   end
 
   def test_fails_when_no_reference_research_object
-    stub_metadata_harvesting(
-      {
-        '@graph' => [
-          {
-            '@id' => 'urn:local:harvester:graph',
-            'local:triples' => [
-              {
-                '@id' => 'uuid:example',
-                '@type' => ['http://schema.org/Dataset']
-              }
-            ]
-          }
-        ]
-      }
+    stub_request_jsonld(
+      { '@type' => 'Dataset', 'name' => 'An unconnected research object' },
+      resource_identifier: 'https://example.org/records/abc123'
     )
 
     post '/test/ft_i3_m_reference_research_objects',
@@ -186,23 +119,10 @@ class FtI3MReferenceResearchObjectsTest < Minitest::Test
     assert_equal 'fail', find_prov_value(body)
   end
 
-  def test_fails_when_schema_no_reference_research_object_fill
-    stub_metadata_harvesting(
-      {
-        '@graph' => [
-          {
-            '@id' => 'urn:local:harvester:graph',
-            'local:triples' => [
-              {
-                '@id' => 'uuid:example',
-                '@type' => ['http://schema.org/Dataset'],
-                'http://schema.org/isRelatedTo' => [],
-                'http://schema.org/creator' => [{'@id'=>'_:g2763436033'}]
-              }
-            ]
-          }
-        ]
-      }
+  def test_fails_when_related_research_object_field_is_empty
+    stub_request_jsonld(
+      { '@type' => 'Dataset', 'isRelatedTo' => [] },
+      resource_identifier: 'https://example.org/records/abc123'
     )
 
     post '/test/ft_i3_m_reference_research_objects',

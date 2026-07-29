@@ -145,9 +145,9 @@ class FairTestUtilsTest < Minitest::Test
 
     matches = find_schema_object_values(data,'@id')
 
-    assert_equal 4, matches.length
-    assert_equal [1, 2], matches[1]
-    assert_equal 'https://doi.org/10.1234/example', matches[3]
+    assert_equal 5, matches.length
+    assert_equal [1, 2], matches[1, 2]
+    assert_equal 'https://doi.org/10.1234/example', matches[4]
   end
 
   def test_find_all_schema_object_key_value
