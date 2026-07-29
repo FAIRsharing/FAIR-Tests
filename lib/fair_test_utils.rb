@@ -85,6 +85,19 @@ module FairTestUtils
     end
   end
 
+  def has_top_level_jsonld_discovery_field?(record, fields)
+    return false unless record.is_a?(Hash)
+
+    fields.any? do |field|
+      [
+        record[field],
+        record[field.to_sym],
+        record["schema:#{field}"],
+        record["http://schema.org/#{field}"]
+      ].any? { |value| contains_meaningful_value?(value) }
+    end
+  end
+
   # TODO:
   # This should be able to get JSON-formatted data from a DOI.
   # It may be that we replace this at a later date with Mark's system, or

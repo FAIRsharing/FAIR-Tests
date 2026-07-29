@@ -77,6 +77,23 @@ class FairTestUtilsTest < Minitest::Test
     assert contains_meaningful_value?(false)
   end
 
+  def test_finds_top_level_jsonld_discovery_fields
+    fields = %w(name creator contributor datePublished)
+
+    assert has_top_level_jsonld_discovery_field?({ 'name' => 'A title' }, fields)
+    assert has_top_level_jsonld_discovery_field?({ creator: [{ name: 'A creator' }] }, fields)
+    assert has_top_level_jsonld_discovery_field?({ 'schema:contributor' => ['A contributor'] }, fields)
+    assert has_top_level_jsonld_discovery_field?(
+      { 'http://schema.org/datePublished' => '2026-07-29' },
+      fields
+    )
+
+    refute has_top_level_jsonld_discovery_field?({ 'codename' => 'Not a title' }, fields)
+    refute has_top_level_jsonld_discovery_field?({ 'name' => '  ' }, fields)
+    refute has_top_level_jsonld_discovery_field?({ 'publisher' => { 'name' => 'Nested' } }, fields)
+    refute has_top_level_jsonld_discovery_field?(nil, fields)
+  end
+
   def test_finds_schema_property_value_triples
     data = {
       '@graph' => [
