@@ -128,6 +128,17 @@ class FairTestUtilsTest < Minitest::Test
     refute valid_orcid_id?(nil)
   end
 
+  def test_validates_iso639_2_urls
+    assert valid_iso639_2_url?('http://id.loc.gov/vocabulary/iso639-2/eng')
+    assert valid_iso639_2_url?('https://id.loc.gov/vocabulary/iso639-2/FRE')
+
+    refute valid_iso639_2_url?('https://example.org/vocabulary/iso639-2/eng')
+    refute valid_iso639_2_url?('https://id.loc.gov/vocabulary/iso639-1/en')
+    refute valid_iso639_2_url?('https://id.loc.gov/vocabulary/iso639-2/english')
+    refute valid_iso639_2_url?('https://id.loc.gov/vocabulary/iso639-2/eng?source=test')
+    refute valid_iso639_2_url?(nil)
+  end
+
   def test_validates_ror_ids_and_urls
     assert valid_ror_id?('0439y7842')
     refute valid_ror_id?('invalid-ror')

@@ -4,7 +4,7 @@ module FtR13MUsesIso639Language
   include FairTestUtils
 
   def ft_r1_3_m_uses_iso639_language(url_record)
-    record = metadata_harvesting(url_record)
+    record = request_jsonld(url_record)
 
     meta = {
       testid: 'FT_R1.3_M_UsesISO639.ttl',
@@ -28,22 +28,24 @@ module FtR13MUsesIso639Language
       meta: meta,
     )
 
+    # Example data:
+    #   "inLanguage": [
+    #     {
+    #       "@type": "Language",
+    #       "name": "English",
+    #       "alternateName": "eng",
+    #       "sameAs": "http://id.loc.gov/vocabulary/iso639-2/eng"
+    #     }
+    #   ]
+
     if record && !record.empty?
-      pass = false
-      record['@graph'][0]['local:triples'].each do |triple|
-        next unless triple.has_key?('@type')
+      languages = find_schema_object_values(record, 'inLanguage')
+      pass = languages.any? do |language|
+        next false unless language.is_a?(Hash)
+        next false unless schema_object_values(language, '@type').include?('Language')
 
-        if triple['@type'].include?('http://schema.org/Language')
-          next unless triple.has_key?('http://schema.org/sameAs')
-
-          triple['http://schema.org/sameAs'].each do |sameAs|
-            next unless sameAs.is_a?(Hash) && sameAs.has_key?('@id')
-
-            if sameAs['@id'].downcase.include?('id.loc.gov/vocabulary/iso639')
-              pass = true
-              break
-            end
-          end
+        schema_object_values(language, 'sameAs').any? do |same_as|
+          valid_iso639_2_url?(same_as)
         end
       end
 

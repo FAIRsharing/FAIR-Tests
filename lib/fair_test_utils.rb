@@ -514,6 +514,16 @@ module FairTestUtils
     false
   end
 
+  def valid_iso639_2_url?(value)
+    return false unless valid_url?(value)
+
+    uri = URI.parse(value.to_s.strip)
+    uri.host.to_s.downcase == 'id.loc.gov' &&
+      uri.path.match?(%r{\A/vocabulary/iso639-2/[a-z]{3}\z}i) &&
+      uri.query.nil? &&
+      uri.fragment.nil?
+  end
+
   def valid_orcid_id?(value)
     orcid_id = value.to_s.strip
     return false unless orcid_id.match?(/\A\d{4}-\d{4}-\d{4}-\d{3}[\dX]\z/)
