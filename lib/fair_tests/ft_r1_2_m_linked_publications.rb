@@ -2,8 +2,12 @@ module FtR12MLinkedPublications
   require_relative '../fair_test_utils'
   include FairTestUtils
 
+  PERMITTED_PUBLICATION_TYPES = %w[
+    ScholarlyArticle Thesis Book Chapter CreativeWork
+  ].freeze
+
   def ft_r1_2_m_linked_publications(url_record)
-    record = metadata_harvesting(url_record)
+    record = request_jsonld(url_record)
 
     meta = {
       testid: 'FT_R1_2_M_LinkedPublications.ttl',
@@ -25,29 +29,29 @@ module FtR12MLinkedPublications
     response = FtrRuby::Output.new(
       testedGUID: url_record,
       meta: meta,
-      )
+    )
+
+    # The relevant field in record should be as follows:
+    # "subjectOf" =>
+    #   [{"@type" => "ScholarlyArticle",
+    #     "name" => "The effect of ambient and injection pressure on droplet size of ammonia sprays in a constant volume chamber",
+    #     "url" => "https://ora.ox.ac.uk/objects/uuid:7f161a34-1d6c-40aa-9539-847a4ff00f44"}]
+    #  Type could be: ScholarlyArticle, Thesis, Book, Chapter or CreativeWork.
 
     if record && !record.empty?
-      pass = false
-      isRelatedTo = find_schema_object_values(record, 'isRelatedTo')
-      if isRelatedTo.empty?
-        response.score = 'fail'
-        response.comments << 'This record does not contain a linked publication.'
-      else
-        isRelatedTo.each do |relatedTo|
-          next unless relatedTo.is_a?(Hash) && relatedTo.include?('@id')
+      publications = find_schema_object_values(record, 'subjectOf')
+      pass = publications.any? do |publication|
+        next false unless publication.is_a?(Hash)
 
-          find_all_schema_object_key_value(record, '@id', relatedTo['@id']).each do |c|
-            type = schema_object_values(c, '@type')
-            if (type & %w[http://schema.org/ScholarlyArticle http://schema.org/Thesis http://schema.org/Book http://schema.org/Chapter http://schema.org/CreativeWork]).any?
-              pass = true
-              break
-            end
-            break if pass
-          end
-          break if pass
-        end
+        types = schema_object_values(publication, '@type')
+        names = schema_object_values(publication, 'name')
+        urls = schema_object_values(publication, 'url')
+
+        (types & PERMITTED_PUBLICATION_TYPES).any? &&
+          names.any? { |name| contains_meaningful_value?(name) } &&
+          urls.any? { |url| valid_url?(url) }
       end
+
       if pass
         response.score = 'pass'
         response.comments << 'This record contains a linked publication.'
