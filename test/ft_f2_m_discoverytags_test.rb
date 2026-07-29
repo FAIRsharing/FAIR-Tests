@@ -37,9 +37,10 @@ class FtF2MDiscoverytagsTest < Minitest::Test
         body: "https://example.org/records/abc123".to_json,
         headers: headers
       )
-    stub_metadata_harvesting({
-      keywords: %w[This record passes]
-    })
+    stub_request_jsonld(
+      { keywords: %w[This record passes] },
+      resource_identifier: 'https://example.org/records/abc123'
+    )
 
     post '/test/ft_f2_m_discoverytags',
          params: { resource_identifier: 'https://doi.org/10.25504/FAIRsharing.9kahy4'}.to_json,
@@ -68,9 +69,10 @@ class FtF2MDiscoverytagsTest < Minitest::Test
         body: "https://example.org/records/abc123".to_json,
         headers: headers
       )
-    stub_metadata_harvesting({
-      keywords: %w[This record passes]
-    })
+    stub_request_jsonld(
+      { keywords: %w[This record passes] },
+      resource_identifier: 'https://example.org/records/abc123'
+    )
 
     post '/test/ft_f2_m_discoverytags',
          params: { resource_identifier: 'https://doi.org/10.1234/FAIRsharing.123456' }.to_json,
@@ -99,7 +101,7 @@ class FtF2MDiscoverytagsTest < Minitest::Test
         body: "https://example.org/records/abc123".to_json,
         headers: headers
       )
-    stub_metadata_harvesting({})
+    stub_request_jsonld({}, resource_identifier: 'https://example.org/records/abc123')
 
     post '/test/ft_f2_m_discoverytags',
          params: { resource_identifier: 'https://doi.org/10.1234/FAIRsharing.123456' }.to_json,
@@ -112,9 +114,17 @@ class FtF2MDiscoverytagsTest < Minitest::Test
   end
 
   def test_non_doi_passes
-    stub_metadata_harvesting({
-      keywords: %w[This record passes]
-    })
+    stub_request_jsonld(
+      {
+        about: [
+          {
+            '@type' => 'DefinedTerm',
+            name: 'This record passes'
+          }
+        ]
+      },
+      resource_identifier: 'https://example.org/records/abc123'
+    )
 
     post '/test/ft_f2_m_discoverytags',
          params: { resource_identifier: 'https://example.org/records/abc123'}.to_json,
@@ -146,9 +156,10 @@ class FtF2MDiscoverytagsTest < Minitest::Test
         body: "https://example.org/records/abc123".to_json,
         headers: headers
       )
-    stub_metadata_harvesting({
-      codename: "This record fails"
-    })
+    stub_request_jsonld(
+      { codename: "This record fails" },
+      resource_identifier: 'https://example.org/records/abc123'
+    )
 
     post '/test/ft_f2_m_discoverytags',
          params: { resource_identifier: 'https://doi.org/10.1234/FAIRsharing.123456' }.to_json,
@@ -162,9 +173,10 @@ class FtF2MDiscoverytagsTest < Minitest::Test
 
   def test_is_not_doi_and_fails
 
-    stub_metadata_harvesting({
-      codename: "This record fails"
-    })
+    stub_request_jsonld(
+      { codename: "This record fails" },
+      resource_identifier: 'https://example.org/records/abc123'
+    )
 
     post '/test/ft_f2_m_discoverytags',
          params: { resource_identifier: 'https://example.org/records/abc123' }.to_json,
@@ -194,7 +206,7 @@ class FtF2MDiscoverytagsTest < Minitest::Test
         body: "https://example.org/records/abc123".to_json,
         headers: headers
       )
-    stub_metadata_harvesting({})
+    stub_request_jsonld({}, resource_identifier: 'https://example.org/records/abc123')
 
     post '/test/ft_f2_m_discoverytags',
          params: { resource_identifier: 'https://doi.org/10.1234/FAIRsharing.123456' }.to_json,
@@ -208,7 +220,7 @@ class FtF2MDiscoverytagsTest < Minitest::Test
 
   def test_is_not_doi_and_indeterminate
 
-    stub_metadata_harvesting({})
+    stub_request_jsonld({}, resource_identifier: 'https://example.org/records/abc123')
 
     post '/test/ft_f2_m_discoverytags',
          params: { resource_identifier: 'https://example.org/records/abc123' }.to_json,
@@ -224,8 +236,11 @@ class FtF2MDiscoverytagsTest < Minitest::Test
   # Tests with ORA data #
   #######################
   def test_ora_data_passes
-    json_file = JSON.load_file('test/fixtures/example_pass_fixture.json')
-    stub_metadata_harvesting(json_file)
+    json_file = JSON.load_file('test/fixtures/ora_record.json')
+    stub_request_jsonld(
+      json_file,
+      resource_identifier: 'https://example.org/records/abc123'
+    )
 
     post '/test/ft_f2_m_discoverytags',
          params: { resource_identifier: 'https://example.org/records/abc123' }.to_json,
@@ -238,8 +253,14 @@ class FtF2MDiscoverytagsTest < Minitest::Test
   end
 
   def test_ora_data_fails
-    json_file = JSON.load_file('test/fixtures/example_fail_discoverytags_fixture.json')
-    stub_metadata_harvesting(json_file)
+    stub_request_jsonld(
+      {
+        '@context' => 'http://schema.org',
+        '@type' => 'Dataset',
+        'name' => 'Record without discovery tags'
+      },
+      resource_identifier: 'https://example.org/records/abc123'
+    )
 
     post '/test/ft_f2_m_discoverytags',
          params: { resource_identifier: 'https://example.org/records/abc123' }.to_json,
