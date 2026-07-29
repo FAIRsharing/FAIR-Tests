@@ -26,25 +26,6 @@ class FairTestUtilsTest < Minitest::Test
     assert_equal res[:error].include?("Error parsing DOI metadata"), true
   end
 
-  def test_metadata_harvesting_returns_parsed_json
-    stub_request(:post, "https://tools.ostrails.eu/champion/harvest_only").
-      to_return(
-        status: 200,
-        body: { title: "This record passes" }.to_json,
-        headers: headers
-      )
-
-    assert_equal({ "title" => "This record passes" },
-                 metadata_harvesting("https://example.org/records/abc123"))
-  end
-
-  def test_metadata_harvesting_returns_nil_for_non_json
-    stub_request(:post, "https://tools.ostrails.eu/champion/harvest_only").
-      to_return(status: 200, body: "not json", headers: headers)
-
-    assert_nil metadata_harvesting("https://example.org/records/abc123")
-  end
-
   def test_request_jsonld_returns_parsed_json_or_nil
     valid_url = "https://ora.ox.ac.uk/objects/uuid:valid"
     empty_url = "https://ora.ox.ac.uk/objects/uuid:"
@@ -152,34 +133,6 @@ class FairTestUtilsTest < Minitest::Test
     refute valid_ror_url?(nil)
   end
 
-  def test_finds_schema_property_value_triples
-    data = {
-      '@graph' => [
-        {
-          '@id' => 'urn:local:harvester:graph',
-          'local:triples' => [
-            {
-              '@id' => 'uuid:example',
-              '@type' => ['http://schema.org/Dataset']
-            },
-            {
-              '@id' => '_:identifier',
-              '@type' => ['http://schema.org/PropertyValue'],
-              'http://schema.org/propertyID' => [{ '@value' => 'DOI' }],
-              'http://schema.org/url' => [{ '@id' => 'https://doi.org/10.1234/example' }]
-            }
-          ]
-        }
-      ]
-    }
-
-    matches = find_schema_property_value_triples(data)
-
-    assert_equal 1, matches.length
-    assert_equal ['DOI'], schema_object_values(matches.first, 'propertyID')
-    assert_equal ['https://doi.org/10.1234/example'], schema_object_values(matches.first, 'url')
-  end
-
   def test_find_schema_object_values
     data = {
       '@graph' => [
@@ -206,34 +159,6 @@ class FairTestUtilsTest < Minitest::Test
     assert_equal 5, matches.length
     assert_equal [1, 2], matches[1, 2]
     assert_equal 'https://doi.org/10.1234/example', matches[4]
-  end
-
-  def test_find_all_schema_object_key_value
-    data = {
-      '@graph' => [
-        {
-          '@id' => 'urn:local:harvester:graph',
-          'local:triples' => [
-            {
-              '@id' => [1, 2],
-              '@type' => ['http://schema.org/Dataset']
-            },
-            {
-              '@id' => '_:identifier',
-              '@type' => ['http://schema.org/PropertyValue'],
-              'http://schema.org/propertyID' => [{ '@value' => 'DOI' }],
-              'http://schema.org/url' => [{ '@id' => '_:identifier' }]
-            }
-          ]
-        }
-      ]
-    }
-
-    matches = find_all_schema_object_key_value(data,'@id', '_:identifier')
-
-    assert_equal 2, matches.length
-    assert_equal ['http://schema.org/PropertyValue'], matches[0]['@type']
-    assert_equal 1, matches[1].keys.length
   end
 
   def test_jsonld_scalar_values_covers_supported_shapes

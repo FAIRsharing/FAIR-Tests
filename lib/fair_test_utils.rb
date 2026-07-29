@@ -9,27 +9,25 @@ require 'ftr_ruby'
 
 # Utility functions common to all FAIR tests.
 module FairTestUtils
-  SCHEMA_PROPERTY_VALUE_TYPE = 'http://schema.org/PropertyValue'.freeze
-  LOCAL_TRIPLES_KEY = 'local:triples'.freeze
-
-  def metadata_harvesting(url)
-    json_headers = {
-      'Accept' => 'application/json',
-      'Content-Type' => 'application/json'
-    }
-    champion_url = 'https://tools.ostrails.eu/champion/harvest_only'
-    response = HTTParty.post(champion_url,
-                             body: { resource_identifier: url }.to_json,
-                             headers: json_headers
-    )
-
-    body = response.body.to_s.strip
-    return nil if body.empty?
-
-    JSON.parse(body)
-  rescue JSON::ParserError
-    nil
-  end
+  # Deprecated 29/7/26 due to unreliability.
+  #def metadata_harvesting(url)
+  #  json_headers = {
+  #    'Accept' => 'application/json',
+  #    'Content-Type' => 'application/json'
+  #  }
+  #  champion_url = 'https://tools.ostrails.eu/champion/harvest_only'
+  #  response = HTTParty.post(champion_url,
+  #                           body: { resource_identifier: url }.to_json,
+  #                           headers: json_headers
+  #  )
+  #
+  #  body = response.body.to_s.strip
+  #  return nil if body.empty?
+  #
+  #  JSON.parse(body)
+  #rescue JSON::ParserError
+  #  nil
+  #end
 
   # Useful for getting records from ORA when the harvester is known to be unable to parse
   # the fields required.
@@ -227,33 +225,6 @@ module FairTestUtils
   end
 
   # This will look through the output of the metadata harvester and find all objects
-  # which include an ID; these IDs can then be checked directly (e.g. are they DOIs, ARKs etc.)
-  # or sent to FAIRsharing to match their URLs.
-  def find_schema_property_value_triples(obj, results = [])
-    case obj
-    when Hash
-      triples = obj[LOCAL_TRIPLES_KEY] || obj[LOCAL_TRIPLES_KEY.to_sym]
-      if triples.is_a?(Array)
-        triples.each do |triple|
-          next unless triple.is_a?(Hash)
-
-          results << triple if Array(triple['@type'] || triple[:'@type']).include?(SCHEMA_PROPERTY_VALUE_TYPE)
-        end
-      end
-
-      obj.each_value do |value|
-        find_schema_property_value_triples(value, results)
-      end
-    when Array
-      obj.each do |item|
-        find_schema_property_value_triples(item, results)
-      end
-    end
-
-    results
-  end
-
-  # This will look through the output of the metadata harvester and find all objects
   # that were in a hash element that the key matches val_keys based on property
   # For example, find_schema_object_values({"a1" :{"a2": [v1, v2]}, "a2": "text"}, "a2")
   # will return [[v1, v2], "text"]
@@ -276,26 +247,6 @@ module FairTestUtils
     end
 
     results.flatten
-  end
-
-  # This will look through the output of the metadata harvester and find all hash tables H
-  # that have a key equal to "key_name" and H[key] is equal to value_to_match
-  def find_all_schema_object_key_value(obj, key_name, value_to_match, results = [])
-
-    case obj
-    when Hash
-      obj.each do |key, value|
-        results << obj if key_name.to_s == key.downcase && value.is_a?(String) && value == value_to_match
-
-        find_all_schema_object_key_value(value, key_name, value_to_match, results)
-      end
-    when Array
-      obj.each do |item|
-        find_all_schema_object_key_value(item, key_name, value_to_match, results)
-      end
-    end
-
-    results
   end
 
   def schema_object_values(obj, property_name)
@@ -473,34 +424,6 @@ module FairTestUtils
       {
         message: "Error getting record from FAIRsharing API: #{response.code}, #{response.message}",
       }
-    end
-  end
-
-  # Recursively traverse a parsed JSON-LD structure and return prov:value's @value.
-  def find_prov_value(obj)
-    case obj
-    when Hash
-      prov_value = obj['prov:value'] || obj[:'prov:value']
-      if prov_value.is_a?(Hash)
-        value = prov_value['@value'] || prov_value[:'@value']
-        return value unless value.nil?
-      end
-
-      obj.each_value do |value|
-        result = find_prov_value(value)
-        return result unless result.nil?
-      end
-
-      nil
-    when Array
-      obj.each do |item|
-        result = find_prov_value(item)
-        return result unless result.nil?
-      end
-
-      nil
-    else
-      nil
     end
   end
 
