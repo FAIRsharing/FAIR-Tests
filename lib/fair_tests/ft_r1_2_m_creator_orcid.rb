@@ -3,7 +3,7 @@ module FtR12MCreatorOrcid
   include FairTestUtils
 
   def ft_r1_2_m_creator_orcid(url_record)
-    record = metadata_harvesting(url_record)
+    record = request_jsonld(url_record)
 
     meta = {
       testid: 'FT_R1_2_M_CreatorORCID.ttl',
@@ -27,44 +27,53 @@ module FtR12MCreatorOrcid
       meta: meta,
     )
 
+    # Data will look like this:
+    # "creator" =>
+    #   [{"@type" => "Person",
+    #     "name" => "Garnett, A",
+    #     "identifier" =>
+    #      {"@type" => "PropertyValue",
+    #       "propertyID" => "ORCID",
+    #       "value" => "0000-0002-1668-1029",
+    #       "url" => "https://orcid.org/0000-0002-1668-1029"}
+    #    ]
+
     if record && !record.empty?
-      pass = false
-      identifiers = find_schema_property_value_triples(record)
       creators = find_schema_object_values(record, 'creator')
-      # con_ids will contain the ID of an element that is connected to the creators.
-      # These elements need to be checked if it is ORCID
-      con_ids = []
-      unless creators.empty?
-        find_schema_object_values(creators[0], '@id').each do |id_c|
-          next unless id_c.is_a?(String)
 
-          find_all_schema_object_key_value(record, '@id', id_c).each do |c|
-            schema_object_values(c, 'identifier').each do |d|
-              next unless d.is_a?(String)
+      pass = creators.any? do |creator|
+        next false unless creator.is_a?(Hash)
 
-              con_ids << d unless d.empty?
+        identifiers = [
+          creator['identifier'],
+          creator[:identifier],
+          creator['schema:identifier'],
+          creator[:'schema:identifier'],
+          creator['http://schema.org/identifier'],
+          creator[:'http://schema.org/identifier']
+        ].compact.flat_map { |identifier| identifier.is_a?(Array) ? identifier : [identifier] }
+
+        identifiers.any? do |identifier|
+          next false unless identifier.is_a?(Hash)
+          next false unless schema_object_values(identifier, 'propertyID').include?('ORCID')
+
+          schema_object_values(identifier, 'value').any? do |orcid_id|
+            next false unless valid_orcid_id?(orcid_id)
+
+            expected_url = "https://orcid.org/#{orcid_id}"
+            schema_object_values(identifier, 'url').any? do |url|
+              valid_url?(url) && url == expected_url
             end
           end
         end
       end
-      if identifiers.empty? || creators.empty? || con_ids.empty?
+
+      if pass
+        response.score = 'pass'
+        response.comments << 'This record contains a creator with ORCID ID.'
+      else
         response.score = 'fail'
         response.comments << 'This record does not contain a creator with ORCID ID.'
-      else
-        identifiers.each do |identifier|
-          property_ids = schema_object_values(identifier, 'propertyID')
-          if (property_ids & %w[ORCID]).any? && identifier.include?('@id') && con_ids.include?(identifier['@id'])
-            pass = true
-            break
-          end
-        end
-        if pass
-          response.score = 'pass'
-          response.comments << 'This record contains a creator with ORCID ID.'
-        else
-          response.score = 'fail'
-          response.comments << 'This record does not contain a creator with ORCID ID.'
-        end
       end
     end
 

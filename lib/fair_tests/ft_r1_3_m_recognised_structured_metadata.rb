@@ -3,7 +3,8 @@ module FtR13MRecognisedStructuredMetadata
   include FairTestUtils
 
   def ft_r1_3_m_recognised_structured_metadata(url_record)
-    record = metadata_harvesting(url_record)
+    json_record = request_jsonld(url_record)
+    xml_record = request_xml(url_record)
 
     meta = {
       testid: 'FT_R1_3_M_UseStuctGenericFormat.ttl',
@@ -27,37 +28,15 @@ module FtR13MRecognisedStructuredMetadata
       meta: meta,
     )
 
-    # Parse the harvester's logs to see if it finds data in an acceptable format.
-    acceptable_formats = [
-      'Found jsonld application/ld+json type of content',
-      'Found xml text/xml type of content'
-    ]
-    pass = false
-    if record && !record.empty?
-      info = nil
-      record['@graph'].each do |g|
-        next unless g.has_key?('local:comments')
+    json_present = (json_record.is_a?(Hash) || json_record.is_a?(Array)) && !json_record.empty?
+    xml_present = !xml_record.nil?
 
-        info = g
-      end
-      info['local:comments'].each do |line|
-        next unless line.include?('INFO')
-
-        acceptable_formats.each do |format|
-          next unless line.include?(format)
-
-          pass = true
-          response.score = 'pass'
-          response.comments << 'Using the FAIR Champion metadata harvester evaluation, the record has a recognised structured metadata format.'
-        end
-      end
-
-      unless pass
-        response.score = 'fail'
-        response.comments << 'Using the FAIR Champion metadata harvester evaluation, the record does not have a recognised structured metadata format.'
-      end
+    if json_present || xml_present
+      response.score = 'pass'
+      response.comments << 'The record has a recognised structured metadata format.'
     else
-      response.comments << 'No record was found matching the provided identifier.'
+      response.score = 'fail'
+      response.comments << 'The record does not have a recognised structured metadata format.'
     end
 
     response.createEvaluationResponse

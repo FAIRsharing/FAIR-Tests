@@ -3,7 +3,7 @@ module FtI3MReferenceResearchObjects
   include FairTestUtils
 
   def ft_i3_m_reference_research_objects(url_record)
-    record = metadata_harvesting(url_record)
+    record = request_jsonld(url_record)
 
     meta = {
       testid: 'FT_I3_M_ReferenceResearchObjects.ttl',
@@ -31,49 +31,25 @@ module FtI3MReferenceResearchObjects
       pass = false
 
       # TODO: Could isPartOf turn up in these records, and does it also need to be checked for?
-      fieldName = 'subjectOf'
+      fieldNames = %w[subjectOf isRelatedTo]
 
-      data = find_schema_object_values(record, fieldName)
 
-      unless data.empty?
-        # data will look like:
-        #  [[{"@id" => "_:g465680"}, {"@id" => "_:g464640"}]]
-        #  pass should be true if there is at least one of the related elements
-        # containing type and url
-        #TODO this part can change if the harvester returns the URL field in other place
-        data[0].each do |relatedTo|
-          next unless relatedTo.is_a?(Hash) && relatedTo.include?('@id')
+      # data will look like:
+      #"isRelatedTo" =>
+      #  [{"@type" => "ScholarlyArticle",  # type could also be "CreativeWork"
+      #    "name" => "name here",
+      #    "url" => "https://ora.ox.ac.uk/objects/uuid:uuid-goes-here"}
+      #  ]
 
-          find_all_schema_object_key_value(record, '@id', relatedTo['@id']).each do |c|
-            url = find_schema_object_values(c,'url')
-
-            # @url should be a valid URL already as the linked data gem will discard it if it is not.
-            # So, its format has not been checked again here, only its presence.
-            pass = true if c.is_a?(Hash) && c['@type'].to_s.strip != '' && !url.empty?
-          end
-        end
-      end
-      unless pass
-        fieldName = 'isRelatedTo'
-
+      fieldNames.each do |fieldName|
         data = find_schema_object_values(record, fieldName)
-
         unless data.empty?
-          # data will look like:
-          #  [[{"@id" => "_:g465680"}, {"@id" => "_:g464640"}]]
-          #  pass should be true if there is at least one of the related elements
-          # containing type and url
-          #TODO this part can change if the harvester returns the URL field in other place
-          data[0].each do |relatedTo|
-            next unless relatedTo.is_a?(Hash) && relatedTo.include?('@id')
+          data.each do |relatedTo|
+            next if pass
+            next unless relatedTo.is_a?(Hash) && relatedTo.include?('@type')
 
-            find_all_schema_object_key_value(record, '@id', relatedTo['@id']).each do |c|
-              url = find_schema_object_values(c,'url')
-
-              # @url should be a valid URL already as the linked data gem will discard it if it is not.
-              # So, its format has not been checked again here, only its presence.
-              pass = true if c.is_a?(Hash) && c['@type'].to_s.strip != '' && !url.empty?
-            end
+            pass = true if %w[ScholarlyArticle CreativeWork].include?(relatedTo['@type'].to_s.strip) &&
+                           valid_url?(relatedTo['url'])
           end
         end
       end

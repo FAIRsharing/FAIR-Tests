@@ -4,6 +4,7 @@ module FtF2MDiscoveryfields
 
   # Fields matching or similar to these will be selected.
   @@required_fields = %w(title contributors contributor_names summary abstract description)
+  @@jsonld_required_fields = %w(name creator contributor datePublished)
 
   def ft_f2_m_discoveryfields(url_record)
     # 1. If a DOI, get metadata from Datacite.
@@ -49,7 +50,7 @@ module FtF2MDiscoveryfields
         else
           # If DOI metadata fails, resolve DOI and test the resolved target.
           real_url = resolve_doi(original_url)
-          record = metadata_harvesting(real_url)
+          record = request_jsonld(real_url)
           if record && !record.empty?
             response = perform_ft_f2_m_discoveryfields(record, response)
             return response.createEvaluationResponse
@@ -58,14 +59,14 @@ module FtF2MDiscoveryfields
         return response.createEvaluationResponse
       else # Try content negotiation
         real_url = resolve_doi(original_url)
-        record = metadata_harvesting(real_url)
+        record = request_jsonld(real_url)
         if record && !record.empty?
           response = perform_ft_f2_m_discoveryfields(record, response)
           return response.createEvaluationResponse
         end
       end
     else # Try content negotiation
-      record = metadata_harvesting(url_record)
+      record = request_jsonld(url_record)
       if record && !record.empty?
         response = perform_ft_f2_m_discoveryfields(record, response)
         return response.createEvaluationResponse
@@ -77,12 +78,15 @@ module FtF2MDiscoveryfields
 
   # This method will perform the actual tests to avoid repetition above.
   def perform_ft_f2_m_discoveryfields(record, response)
-    if has_matching_key_with_value?(record, @@required_fields)
+    required_fields = @@required_fields + @@jsonld_required_fields
+
+    if has_matching_key_with_value?(record, @@required_fields) ||
+       has_top_level_jsonld_discovery_field?(record, @@jsonld_required_fields)
       response.score = 'pass'
-      response.comments << "The record contains at least one of the required fields: #{@@required_fields.join(', ')}."
+      response.comments << "The record contains at least one of the required fields: #{required_fields.join(', ')}."
     else
       response.score = 'fail'
-      response.comments << "The record does not contain at least one of the required fields: #{@@required_fields.join(', ')}."
+      response.comments << "The record does not contain at least one of the required fields: #{required_fields.join(', ')}."
     end
 
     response
