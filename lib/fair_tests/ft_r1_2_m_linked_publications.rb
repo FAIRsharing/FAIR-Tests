@@ -5,6 +5,7 @@ module FtR12MLinkedPublications
   PERMITTED_PUBLICATION_TYPES = %w[
     ScholarlyArticle Thesis Book Chapter CreativeWork
   ].freeze
+  PUBLICATION_RELATIONSHIP_FIELDS = %w[subjectOf isRelatedTo].freeze
 
   def ft_r1_2_m_linked_publications(url_record)
     record = request_jsonld(url_record)
@@ -31,7 +32,7 @@ module FtR12MLinkedPublications
       meta: meta,
     )
 
-    # The relevant field in record should be as follows:
+    # The relevant subjectOf or isRelatedTo field in record should be as follows:
     # "subjectOf" =>
     #   [{"@type" => "ScholarlyArticle",
     #     "name" => "The effect of ambient and injection pressure on droplet size of ammonia sprays in a constant volume chamber",
@@ -39,7 +40,9 @@ module FtR12MLinkedPublications
     #  Type could be: ScholarlyArticle, Thesis, Book, Chapter or CreativeWork.
 
     if record && !record.empty?
-      publications = find_schema_object_values(record, 'subjectOf')
+      publications = PUBLICATION_RELATIONSHIP_FIELDS.flat_map do |field|
+        find_schema_object_values(record, field)
+      end
       pass = publications.any? do |publication|
         next false unless publication.is_a?(Hash)
 

@@ -43,7 +43,22 @@ class FtR12MLinkedPublicationsTest < Minitest::Test
     assert_metric_score 'pass'
   end
 
-  def test_fails_when_subject_of_is_missing
+  def test_passes_when_is_related_to_contains_a_valid_linked_publication
+    stub_linked_publications(
+      'isRelatedTo',
+      [
+        {
+          '@type' => 'ScholarlyArticle',
+          'name' => 'A related publication',
+          'url' => 'https://ora.ox.ac.uk/objects/uuid:publication'
+        }
+      ]
+    )
+
+    assert_metric_score 'pass'
+  end
+
+  def test_fails_when_relationship_fields_are_missing
     stub_request_jsonld(
       { '@type' => 'Dataset', 'name' => 'A record without linked publications' },
       resource_identifier: 'https://example.org/records/abc123'
@@ -97,10 +112,14 @@ class FtR12MLinkedPublicationsTest < Minitest::Test
   private
 
   def stub_subject_of(publications)
+    stub_linked_publications('subjectOf', publications)
+  end
+
+  def stub_linked_publications(field, publications)
     stub_request_jsonld(
       {
         '@type' => 'Dataset',
-        'subjectOf' => publications
+        field => publications
       },
       resource_identifier: 'https://example.org/records/abc123'
     )
