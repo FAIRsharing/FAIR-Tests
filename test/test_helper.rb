@@ -53,6 +53,17 @@ module TestHelper
       to_return(status: 200, body: body, headers: {})
   end
 
+  def stub_request_xml(response_body, resource_identifier: ORA_RESOURCE_IDENTIFIER)
+    stub_request(:get, resource_identifier).
+      with(
+        headers: {
+          'Accept' => 'text/xml',
+          'Content-Type' => 'text/xml'
+        }
+      ).
+      to_return(status: 200, body: response_body.to_s, headers: {})
+  end
+
   def headers
     {
       'Content-Type' => 'application/json',
@@ -68,6 +79,34 @@ module TestHelper
   def parsed_response_body(body)
     body = JSON.parse(body)
     body.is_a?(String) ? JSON.parse(body) : body
+  end
+
+  # Recursively traverse a parsed JSON-LD structure and return prov:value's @value.
+  def find_prov_value(obj)
+    case obj
+    when Hash
+      prov_value = obj['prov:value'] || obj[:'prov:value']
+      if prov_value.is_a?(Hash)
+        value = prov_value['@value'] || prov_value[:'@value']
+        return value unless value.nil?
+      end
+
+      obj.each_value do |value|
+        result = find_prov_value(value)
+        return result unless result.nil?
+      end
+
+      nil
+    when Array
+      obj.each do |item|
+        result = find_prov_value(item)
+        return result unless result.nil?
+      end
+
+      nil
+    else
+      nil
+    end
   end
 
 end

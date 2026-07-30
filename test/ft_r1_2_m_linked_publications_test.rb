@@ -8,113 +8,105 @@ class FtR12MLinkedPublicationsTest < Minitest::Test
   include ::TestHelper
   include ::FtR12MLinkedPublications
 
-  def test_passes_when_schema_property_value_triple_linked_publications
-    stub_metadata_harvesting(
-      {
-        '@graph' => [
+  def test_passes_for_each_permitted_publication_type
+    FtR12MLinkedPublications::PERMITTED_PUBLICATION_TYPES.each do |type|
+      stub_subject_of(
+        [
           {
-            '@id' => 'urn:local:harvester:graph',
-            'local:triples' => [
-              {
-                '@id' => 'uuid:example',
-                '@type' => ['http://schema.org/Dataset'],
-                'http://schema.org/isRelatedTo' => [{'@id'=>'_:g46568022'}],
-                'http://schema.org/creator' => [{'@id'=>'_:g2763436033'}]
-              },
-              {'@id' => '_:g46568022',
-               '@type' => ['http://schema.org/CreativeWork'],
-               'http://schema.org/name' =>
-                 [{'@value' =>
-                     'The effect of ambient and injection pressure on droplet size of ammonia sprays in a constant volume chamber'}]
-              },
-              {'@id' => '_:g2763436033',
-               '@type' => ['http://schema.org/Person'],
-               'http://schema.org/affiliation' => [{'@id'=>'_:g27634380'}],
-               'http://schema.org/identifier' => [{'@id'=>'_:g27634400'}],
-               'http://schema.org/name' => [{'@value'=>'Smith, S'}]
-              }
-            ]
+            '@type' => type,
+            'name' => "A linked #{type}",
+            'url' => 'https://ora.ox.ac.uk/objects/uuid:publication'
           }
         ]
-      }
-    )
+      )
 
-    post '/test/ft_r1_2_m_linked_publications',
-         params: { resource_identifier: 'https://example.org/records/abc123' }.to_json,
-         headers: headers
-
-    assert last_response.ok?
-
-    body = parsed_response_body(last_response.body)
-    assert_equal 'pass', find_prov_value(body)
+      assert_metric_score 'pass'
+    end
   end
 
-
-
-  def test_fails_when_no_schema_property_value_triples_exist
-    stub_metadata_harvesting(
-      {
-        '@graph' => [
-          {
-            '@id' => 'urn:local:harvester:graph',
-            'local:triples' => [
-              {
-                '@id' => 'uuid:example',
-                '@type' => ['http://schema.org/Dataset']
-              }
-            ]
-          }
-        ]
-      }
+  def test_passes_when_any_subject_is_a_valid_linked_publication
+    stub_subject_of(
+      [
+        {
+          '@type' => 'WebPage',
+          'name' => 'Not a permitted publication',
+          'url' => 'https://example.org/page'
+        },
+        {
+          '@type' => 'ScholarlyArticle',
+          'name' => 'A linked publication',
+          'url' => 'https://ora.ox.ac.uk/objects/uuid:publication'
+        }
+      ]
     )
 
-    post '/test/ft_r1_2_m_linked_publications',
-         params: { resource_identifier: 'https://example.org/records/abc123' }.to_json,
-         headers: headers
-
-    assert last_response.ok?
-
-    body = parsed_response_body(last_response.body)
-    assert_equal 'fail', find_prov_value(body)
+    assert_metric_score 'pass'
   end
 
-  def test_fails_when_schema_property_value_and_no_linked_valid_publications
-    stub_metadata_harvesting(
-      {
-        '@graph' => [
-          {
-            '@id' => 'urn:local:harvester:graph',
-            'local:triples' => [
-              {
-                '@id' => 'uuid:example',
-                '@type' => ['http://schema.org/Dataset'],
-                'http://schema.org/isRelatedTo' => [{'@id'=>'_:g46568022'}],
-                'http://schema.org/creator' => [{'@id'=>'_:g2763436033'}]
-              },
-              {'@id' => '_:g46568022',
-               '@type' => ['http://schema.org/OtherThing'],
-               'http://schema.org/name' =>
-                 [{'@value' =>
-                 'The effect of ambient and injection pressure on droplet size of ammonia sprays in a constant volume chamber'}]
-              },
-              {'@id' => '_:g2763436033',
-               '@type' => ['http://schema.org/Person'],
-               'http://schema.org/affiliation' => [{'@id'=>'_:g27634380'}],
-               'http://schema.org/identifier' => [{'@id'=>'_:g27634400'}],
-               'http://schema.org/name' => [{'@value'=>'Smith, S'}]
-              },
-              {'@id' => '_:g276344001',
-               '@type' => ['http://schema.org/PropertyValue'],
-               'http://schema.org/propertyID' => [{'@value'=>'ORCID'}],
-               'http://schema.org/url' => [{'@id'=>'https://orcid.org/0000-0002-2780-7819'}],
-               'http://schema.org/value' => [{'@value'=>'0000-0002-2780-7819'}]
-              }
-            ]
-          }
-        ]
-      }
+  def test_fails_when_subject_of_is_missing
+    stub_request_jsonld(
+      { '@type' => 'Dataset', 'name' => 'A record without linked publications' },
+      resource_identifier: 'https://example.org/records/abc123'
     )
 
+    assert_metric_score 'fail'
+  end
+
+  def test_fails_when_publication_type_is_not_permitted
+    stub_subject_of(
+      [
+        {
+          '@type' => 'WebPage',
+          'name' => 'An unsupported related object',
+          'url' => 'https://example.org/page'
+        }
+      ]
+    )
+
+    assert_metric_score 'fail'
+  end
+
+  def test_fails_when_publication_name_is_blank
+    stub_subject_of(
+      [
+        {
+          '@type' => 'CreativeWork',
+          'name' => '  ',
+          'url' => 'https://example.org/publication'
+        }
+      ]
+    )
+
+    assert_metric_score 'fail'
+  end
+
+  def test_fails_when_publication_url_is_invalid
+    stub_subject_of(
+      [
+        {
+          '@type' => 'Book',
+          'name' => 'A linked book',
+          'url' => 'not a URL'
+        }
+      ]
+    )
+
+    assert_metric_score 'fail'
+  end
+
+  private
+
+  def stub_subject_of(publications)
+    stub_request_jsonld(
+      {
+        '@type' => 'Dataset',
+        'subjectOf' => publications
+      },
+      resource_identifier: 'https://example.org/records/abc123'
+    )
+  end
+
+  def assert_metric_score(expected_score)
     post '/test/ft_r1_2_m_linked_publications',
          params: { resource_identifier: 'https://example.org/records/abc123' }.to_json,
          headers: headers
@@ -122,6 +114,6 @@ class FtR12MLinkedPublicationsTest < Minitest::Test
     assert last_response.ok?
 
     body = parsed_response_body(last_response.body)
-    assert_equal 'fail', find_prov_value(body)
+    assert_equal expected_score, find_prov_value(body)
   end
 end

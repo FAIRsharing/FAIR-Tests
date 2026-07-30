@@ -3,7 +3,7 @@ module FtF1MMetadataIdResolvable
   include FairTestUtils
 
   def ft_f1_m_metadata_id_resolvable(url_record)
-    record = metadata_harvesting(url_record)
+    record = request_jsonld(url_record)
 
     meta = {
       testid: 'FT_F1_M_MetadataIdResolvable.ttl',
@@ -29,7 +29,9 @@ module FtF1MMetadataIdResolvable
 
     if record && !record.empty?
       pass = false
-      identifiers = find_schema_property_value_triples(record)
+      identifiers = find_schema_object_values(record, 'identifier').
+        flat_map { |value| value.is_a?(Array) ? value : [value] }.
+        select { |value| value.is_a?(Hash) }
       if identifiers.empty?
         response.score = 'fail'
         response.comments << 'This record does not contain any resolvable identifiers.'
@@ -37,15 +39,16 @@ module FtF1MMetadataIdResolvable
         identifiers.each do |identifier|
           property_ids = schema_object_values(identifier, 'propertyID')
           urls = schema_object_values(identifier, 'url')
+          valid_urls = urls.select { |identifier_url| valid_url?(identifier_url) }
 
           # A DOI will pass, but if it's not marked as such then it needs to be sent to FAIRsharing
           # to test for matches to an appropriate identifier.
-          if (property_ids & %w[DOI ARK]).any?
+          if (property_ids & %w[DOI ARK]).any? && !valid_urls.empty?
             pass = true
             break
-          elsif !urls.empty?
+          elsif !valid_urls.empty?
             # Send the URL to FAIRsharing.
-            urls.each do |identifier_url|
+            valid_urls.each do |identifier_url|
               records = find_by_regex(identifier_url)['records'] || []
               records.each do |r|
                 next unless r.dig('metadata', 'resolvable') && !pass

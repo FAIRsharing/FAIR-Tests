@@ -9,27 +9,25 @@ require 'ftr_ruby'
 
 # Utility functions common to all FAIR tests.
 module FairTestUtils
-  SCHEMA_PROPERTY_VALUE_TYPE = 'http://schema.org/PropertyValue'.freeze
-  LOCAL_TRIPLES_KEY = 'local:triples'.freeze
-
-  def metadata_harvesting(url)
-    json_headers = {
-      'Accept' => 'application/json',
-      'Content-Type' => 'application/json'
-    }
-    champion_url = 'https://tools.ostrails.eu/champion/harvest_only'
-    response = HTTParty.post(champion_url,
-                             body: { resource_identifier: url }.to_json,
-                             headers: json_headers
-    )
-
-    body = response.body.to_s.strip
-    return nil if body.empty?
-
-    JSON.parse(body)
-  rescue JSON::ParserError
-    nil
-  end
+  # Deprecated 29/7/26 due to unreliability.
+  #def metadata_harvesting(url)
+  #  json_headers = {
+  #    'Accept' => 'application/json',
+  #    'Content-Type' => 'application/json'
+  #  }
+  #  champion_url = 'https://tools.ostrails.eu/champion/harvest_only'
+  #  response = HTTParty.post(champion_url,
+  #                           body: { resource_identifier: url }.to_json,
+  #                           headers: json_headers
+  #  )
+  #
+  #  body = response.body.to_s.strip
+  #  return nil if body.empty?
+  #
+  #  JSON.parse(body)
+  #rescue JSON::ParserError
+  #  nil
+  #end
 
   # Useful for getting records from ORA when the harvester is known to be unable to parse
   # the fields required.
@@ -46,6 +44,31 @@ module FairTestUtils
     JSON.parse(body)
   rescue JSON::ParserError
     nil
+  end
+
+  def request_xml(url)
+    xml_headers = {
+      'Accept' => 'text/xml',
+      'Content-Type' => 'text/xml'
+    }
+    response = HTTParty.get(url, headers: xml_headers)
+
+    body = response.body.to_s.strip
+    return nil if body.empty?
+    return nil unless valid_xml?(body)
+
+    body
+  rescue StandardError
+    nil
+  end
+
+  def valid_xml?(value)
+    return false unless value.is_a?(String) && !value.strip.empty?
+
+    document = Nokogiri::XML(value) { |config| config.strict.nonet }
+    !document.root.nil?
+  rescue Nokogiri::XML::SyntaxError
+    false
   end
 
   # Parse the data structure returned by metadata harvesting and look for particular keys.
@@ -103,6 +126,21 @@ module FairTestUtils
       contains_meaningful_value?(value)
     end
   end
+  
+  def has_top_level_jsonld_discovery_field?(record, fields)
+    return false unless record.is_a?(Hash)
+
+    fields.any? do |field|
+      [
+        record[field],
+        record[field.to_sym],
+        record["schema:#{field}"],
+        record["http://schema.org/#{field}"]
+      ].any? { |value| contains_meaningful_value?(value) }
+    end
+  end
+
+
 
   # TODO:
   # This should be able to get JSON-formatted data from a DOI.
@@ -206,33 +244,6 @@ module FairTestUtils
   end
 
   # This will look through the output of the metadata harvester and find all objects
-  # which include an ID; these IDs can then be checked directly (e.g. are they DOIs, ARKs etc.)
-  # or sent to FAIRsharing to match their URLs.
-  def find_schema_property_value_triples(obj, results = [])
-    case obj
-    when Hash
-      triples = obj[LOCAL_TRIPLES_KEY] || obj[LOCAL_TRIPLES_KEY.to_sym]
-      if triples.is_a?(Array)
-        triples.each do |triple|
-          next unless triple.is_a?(Hash)
-
-          results << triple if Array(triple['@type'] || triple[:'@type']).include?(SCHEMA_PROPERTY_VALUE_TYPE)
-        end
-      end
-
-      obj.each_value do |value|
-        find_schema_property_value_triples(value, results)
-      end
-    when Array
-      obj.each do |item|
-        find_schema_property_value_triples(item, results)
-      end
-    end
-
-    results
-  end
-
-  # This will look through the output of the metadata harvester and find all objects
   # that were in a hash element that the key matches val_keys based on property
   # For example, find_schema_object_values({"a1" :{"a2": [v1, v2]}, "a2": "text"}, "a2")
   # will return [[v1, v2], "text"]
@@ -254,27 +265,7 @@ module FairTestUtils
       end
     end
 
-    results
-  end
-
-  # This will look through the output of the metadata harvester and find all hash tables H
-  # that have a key equal to "key_name" and H[key] is equal to value_to_match
-  def find_all_schema_object_key_value(obj, key_name, value_to_match, results = [])
-
-    case obj
-    when Hash
-      obj.each do |key, value|
-        results << obj if key_name.to_s == key.downcase && value.is_a?(String) && value == value_to_match
-
-        find_all_schema_object_key_value(value, key_name, value_to_match, results)
-      end
-    when Array
-      obj.each do |item|
-        find_all_schema_object_key_value(item, key_name, value_to_match, results)
-      end
-    end
-
-    results
+    results.flatten
   end
 
   def schema_object_values(obj, property_name)
@@ -455,34 +446,6 @@ module FairTestUtils
     end
   end
 
-  # Recursively traverse a parsed JSON-LD structure and return prov:value's @value.
-  def find_prov_value(obj)
-    case obj
-    when Hash
-      prov_value = obj['prov:value'] || obj[:'prov:value']
-      if prov_value.is_a?(Hash)
-        value = prov_value['@value'] || prov_value[:'@value']
-        return value unless value.nil?
-      end
-
-      obj.each_value do |value|
-        result = find_prov_value(value)
-        return result unless result.nil?
-      end
-
-      nil
-    when Array
-      obj.each do |item|
-        result = find_prov_value(item)
-        return result unless result.nil?
-      end
-
-      nil
-    else
-      nil
-    end
-  end
-
   def valid_url?(url)
     value = url.to_s.strip
     return false if value.empty?
@@ -491,6 +454,45 @@ module FairTestUtils
     %w[http https].include?(uri.scheme) && !uri.host.to_s.empty?
   rescue URI::InvalidURIError
     false
+  end
+
+  def valid_iso639_2_url?(value)
+    return false unless valid_url?(value)
+
+    uri = URI.parse(value.to_s.strip)
+    uri.host.to_s.downcase == 'id.loc.gov' &&
+      uri.path.match?(%r{\A/vocabulary/iso639-2/[a-z]{3}\z}i) &&
+      uri.query.nil? &&
+      uri.fragment.nil?
+  end
+
+  def valid_orcid_id?(value)
+    orcid_id = value.to_s.strip
+    return false unless orcid_id.match?(/\A\d{4}-\d{4}-\d{4}-\d{3}[\dX]\z/)
+
+    digits = orcid_id.delete('-')
+    total = digits[0, 15].each_char.reduce(0) do |sum, digit|
+      (sum + digit.to_i) * 2
+    end
+    check_digit = (12 - (total % 11)) % 11
+    expected = check_digit == 10 ? 'X' : check_digit.to_s
+
+    digits[-1] == expected
+  end
+
+  def valid_ror_id?(value)
+    value.to_s.strip.match?(/\A0[a-hj-km-np-tv-z0-9]{6}\d{2}\z/)
+  end
+
+  def valid_ror_url?(value)
+    return false unless valid_url?(value)
+
+    uri = URI.parse(value.to_s.strip)
+    uri.scheme == 'https' &&
+      uri.host.to_s.downcase == 'ror.org' &&
+      valid_ror_id?(uri.path.delete_prefix('/')) &&
+      uri.query.nil? &&
+      uri.fragment.nil?
   end
 
 end

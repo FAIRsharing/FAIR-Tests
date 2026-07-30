@@ -3,7 +3,7 @@ module FtR12MRorIdForFunder
   include FairTestUtils
 
   def ft_r1_2_m_ror_id_for_funder(url_record)
-    record = metadata_harvesting(url_record)
+    record = request_jsonld(url_record)
 
     meta = {
       testid: 'FT_R1_2_M_FundROR.ttl',
@@ -25,31 +25,52 @@ module FtR12MRorIdForFunder
     response = FtrRuby::Output.new(
       testedGUID: url_record,
       meta: meta,
-      )
+    )
+
+    # Example data:
+    # "funding" =>
+    #   [{"@type" => "Grant",
+    #     "identifier" => "EP/V04673X/1",
+    #     "funder" =>
+    #      {"@type" => "Organization",
+    #       "name" => "Engineering and Physical Sciences Research Council",
+    #       "identifier" =>
+    #        {"@type" => "PropertyValue",
+    #         "propertyID" => "ROR",
+    #         "value" => "https://ror.org/0439y7842",
+    #         "url" => "https://ror.org/0439y7842"}}}]
 
     if record && !record.empty?
-      pass = false
-      identifiers = find_schema_property_value_triples(record)
-      if identifiers.empty?
-        response.score = 'fail'
-        response.comments << 'This record does not contain ROR identifiers.'
-      else
-        identifiers.each do |identifier|
-          property_ids = schema_object_values(identifier, 'propertyID')
+      grants = find_schema_object_values(record, 'funding')
+      pass = grants.any? do |grant|
+        next false unless grant.is_a?(Hash)
+        next false unless schema_object_values(grant, '@type').include?('Grant')
 
-          if (property_ids & %w[ROR]).any?
-            pass = true
-            break
+        find_schema_object_values(grant, 'funder').any? do |funder|
+          next false unless funder.is_a?(Hash)
+          next false unless schema_object_values(funder, 'name').any? do |name|
+            contains_meaningful_value?(name)
+          end
+
+          find_schema_object_values(funder, 'identifier').any? do |identifier|
+            next false unless identifier.is_a?(Hash)
+            next false unless schema_object_values(identifier, 'propertyID').include?('ROR')
+
+            values = schema_object_values(identifier, 'value')
+            urls = schema_object_values(identifier, 'url')
+
+            values.any? { |value| valid_ror_id?(value) || valid_ror_url?(value) } ||
+              urls.any? { |url| valid_ror_url?(url) }
           end
         end
+      end
 
-        if pass
-          response.score = 'pass'
-          response.comments << 'This record contains ROR identifiers.'
-        else
-          response.score = 'fail'
-          response.comments << 'This record does not contain ROR identifiers.'
-        end
+      if pass
+        response.score = 'pass'
+        response.comments << 'This record contains ROR identifiers.'
+      else
+        response.score = 'fail'
+        response.comments << 'This record does not contain ROR identifiers.'
       end
     end
 

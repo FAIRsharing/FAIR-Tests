@@ -26,25 +26,6 @@ class FairTestUtilsTest < Minitest::Test
     assert_equal res[:error].include?("Error parsing DOI metadata"), true
   end
 
-  def test_metadata_harvesting_returns_parsed_json
-    stub_request(:post, "https://tools.ostrails.eu/champion/harvest_only").
-      to_return(
-        status: 200,
-        body: { title: "This record passes" }.to_json,
-        headers: headers
-      )
-
-    assert_equal({ "title" => "This record passes" },
-                 metadata_harvesting("https://example.org/records/abc123"))
-  end
-
-  def test_metadata_harvesting_returns_nil_for_non_json
-    stub_request(:post, "https://tools.ostrails.eu/champion/harvest_only").
-      to_return(status: 200, body: "not json", headers: headers)
-
-    assert_nil metadata_harvesting("https://example.org/records/abc123")
-  end
-
   def test_request_jsonld_returns_parsed_json_or_nil
     valid_url = "https://ora.ox.ac.uk/objects/uuid:valid"
     empty_url = "https://ora.ox.ac.uk/objects/uuid:"
@@ -57,6 +38,31 @@ class FairTestUtilsTest < Minitest::Test
     assert_equal({ "title" => "This ORA record passes" }, request_jsonld(valid_url))
     assert_nil request_jsonld(empty_url)
     assert_nil request_jsonld(invalid_json_url)
+  end
+
+  def test_validates_xml
+    assert valid_xml?('<resource><title>A title</title></resource>')
+
+    refute valid_xml?('<resource>')
+    refute valid_xml?('')
+    refute valid_xml?(nil)
+  end
+
+  def test_request_xml_returns_content_or_nil
+    valid_url = 'https://example.org/valid.xml'
+    invalid_url = 'https://example.org/invalid.xml'
+    empty_url = 'https://example.org/empty.xml'
+    error_url = 'https://example.org/error.xml'
+
+    stub_request_xml('<resource />', resource_identifier: valid_url)
+    stub_request_xml('<resource>', resource_identifier: invalid_url)
+    stub_request_xml('', resource_identifier: empty_url)
+    stub_request(:get, error_url).to_raise(StandardError)
+
+    assert_equal '<resource />', request_xml(valid_url)
+    assert_nil request_xml(invalid_url)
+    assert_nil request_xml(empty_url)
+    assert_nil request_xml(error_url)
   end
 
   def test_contains_meaningful_value_covers_all_value_types
@@ -77,32 +83,54 @@ class FairTestUtilsTest < Minitest::Test
     assert contains_meaningful_value?(false)
   end
 
-  def test_finds_schema_property_value_triples
-    data = {
-      '@graph' => [
-        {
-          '@id' => 'urn:local:harvester:graph',
-          'local:triples' => [
-            {
-              '@id' => 'uuid:example',
-              '@type' => ['http://schema.org/Dataset']
-            },
-            {
-              '@id' => '_:identifier',
-              '@type' => ['http://schema.org/PropertyValue'],
-              'http://schema.org/propertyID' => [{ '@value' => 'DOI' }],
-              'http://schema.org/url' => [{ '@id' => 'https://doi.org/10.1234/example' }]
-            }
-          ]
-        }
-      ]
-    }
+  def test_finds_top_level_jsonld_discovery_fields
+    fields = %w(name creator contributor datePublished)
 
-    matches = find_schema_property_value_triples(data)
+    assert has_top_level_jsonld_discovery_field?({ 'name' => 'A title' }, fields)
+    assert has_top_level_jsonld_discovery_field?({ creator: [{ name: 'A creator' }] }, fields)
+    assert has_top_level_jsonld_discovery_field?({ 'schema:contributor' => ['A contributor'] }, fields)
+    assert has_top_level_jsonld_discovery_field?(
+      { 'http://schema.org/datePublished' => '2026-07-29' },
+      fields
+    )
 
-    assert_equal 1, matches.length
-    assert_equal ['DOI'], schema_object_values(matches.first, 'propertyID')
-    assert_equal ['https://doi.org/10.1234/example'], schema_object_values(matches.first, 'url')
+    refute has_top_level_jsonld_discovery_field?({ 'codename' => 'Not a title' }, fields)
+    refute has_top_level_jsonld_discovery_field?({ 'name' => '  ' }, fields)
+    refute has_top_level_jsonld_discovery_field?({ 'publisher' => { 'name' => 'Nested' } }, fields)
+    refute has_top_level_jsonld_discovery_field?(nil, fields)
+  end
+
+  def test_validates_orcid_ids
+    assert valid_orcid_id?('0000-0002-1668-1029')
+    assert valid_orcid_id?('0000-0002-9079-593X')
+
+    refute valid_orcid_id?('0000-0002-1668-1028')
+    refute valid_orcid_id?('0000000216681029')
+    refute valid_orcid_id?(nil)
+  end
+
+  def test_validates_iso639_2_urls
+    assert valid_iso639_2_url?('http://id.loc.gov/vocabulary/iso639-2/eng')
+    assert valid_iso639_2_url?('https://id.loc.gov/vocabulary/iso639-2/FRE')
+
+    refute valid_iso639_2_url?('https://example.org/vocabulary/iso639-2/eng')
+    refute valid_iso639_2_url?('https://id.loc.gov/vocabulary/iso639-1/en')
+    refute valid_iso639_2_url?('https://id.loc.gov/vocabulary/iso639-2/english')
+    refute valid_iso639_2_url?('https://id.loc.gov/vocabulary/iso639-2/eng?source=test')
+    refute valid_iso639_2_url?(nil)
+  end
+
+  def test_validates_ror_ids_and_urls
+    assert valid_ror_id?('0439y7842')
+    refute valid_ror_id?('invalid-ror')
+    refute valid_ror_id?(nil)
+
+    assert valid_ror_url?('https://ror.org/0439y7842')
+    refute valid_ror_url?('http://ror.org/0439y7842')
+    refute valid_ror_url?('https://example.org/0439y7842')
+    refute valid_ror_url?('https://ror.org/invalid-ror')
+    refute valid_ror_url?('https://ror.org/0439y7842?source=test')
+    refute valid_ror_url?(nil)
   end
 
   def test_find_schema_object_values
@@ -128,37 +156,9 @@ class FairTestUtilsTest < Minitest::Test
 
     matches = find_schema_object_values(data,'@id')
 
-    assert_equal 4, matches.length
-    assert_equal [1, 2], matches[1]
-    assert_equal 'https://doi.org/10.1234/example', matches[3]
-  end
-
-  def test_find_all_schema_object_key_value
-    data = {
-      '@graph' => [
-        {
-          '@id' => 'urn:local:harvester:graph',
-          'local:triples' => [
-            {
-              '@id' => [1, 2],
-              '@type' => ['http://schema.org/Dataset']
-            },
-            {
-              '@id' => '_:identifier',
-              '@type' => ['http://schema.org/PropertyValue'],
-              'http://schema.org/propertyID' => [{ '@value' => 'DOI' }],
-              'http://schema.org/url' => [{ '@id' => '_:identifier' }]
-            }
-          ]
-        }
-      ]
-    }
-
-    matches = find_all_schema_object_key_value(data,'@id', '_:identifier')
-
-    assert_equal 2, matches.length
-    assert_equal ['http://schema.org/PropertyValue'], matches[0]['@type']
-    assert_equal 1, matches[1].keys.length
+    assert_equal 5, matches.length
+    assert_equal [1, 2], matches[1, 2]
+    assert_equal 'https://doi.org/10.1234/example', matches[4]
   end
 
   def test_jsonld_scalar_values_covers_supported_shapes

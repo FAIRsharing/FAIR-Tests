@@ -3,14 +3,15 @@ module FtF2MDiscoverypublisher
   include FairTestUtils
 
   # Fields matching or similar to these will be selected.
-  @@required_fields = %w(publisher publication)
+  @@required_fields = %w(publication)
+  @@jsonld_required_fields = %w(publisher)
 
   def ft_f2_m_discoverypublisher(url_record)
     # 1. If a DOI, get metadata from Datacite.
     # 2. Run tests.
-    # 3. If fail, try metadata harvesting.
+    # 3. If fail, try content negotiation.
     # 4. Run tests again.
-    # 5. If not DOI, try metadata harvesting.
+    # 5. If not DOI, try content negotiation.
 
     # SimpleDOI may mutate the passed string, so keep an immutable copy.
     original_url = url_record&.dup
@@ -49,23 +50,23 @@ module FtF2MDiscoverypublisher
         else
           # If DOI metadata fails, resolve DOI and test the resolved target.
           real_url = resolve_doi(original_url)
-          record = metadata_harvesting(real_url)
+          record = request_jsonld(real_url)
           if record && !record.empty?
             response = perform_ft_f2_m_discoverypublisher(record, response)
             return response.createEvaluationResponse
           end
         end
         return response.createEvaluationResponse
-      else # Try metadata harvesting
+      else # Try content negotiation
         real_url = resolve_doi(original_url)
-        record = metadata_harvesting(real_url)
+        record = request_jsonld(real_url)
         if record && !record.empty?
           response = perform_ft_f2_m_discoverypublisher(record, response)
           return response.createEvaluationResponse
         end
       end
-    else # Try metadata harvesting
-      record = metadata_harvesting(url_record)
+    else # Try content negotiation
+      record = request_jsonld(url_record)
       if record && !record.empty?
         response = perform_ft_f2_m_discoverypublisher(record, response)
         return response.createEvaluationResponse
@@ -77,12 +78,15 @@ module FtF2MDiscoverypublisher
 
   # This method will perform the actual tests to avoid repetition above.
   def perform_ft_f2_m_discoverypublisher(record, response)
-    if has_matching_key_with_value?(record, @@required_fields)
+    required_fields = @@required_fields + @@jsonld_required_fields
+
+    if has_matching_key_with_value?(record, @@required_fields) ||
+       has_top_level_jsonld_discovery_field?(record, @@jsonld_required_fields)
       response.score = 'pass'
-      response.comments << "The record contains at least one of the required fields: #{@@required_fields.join(', ')}."
+      response.comments << "The record contains at least one of the required fields: #{required_fields.join(', ')}."
     else
       response.score = 'fail'
-      response.comments << "The record does not contain at least one of the required fields: #{@@required_fields.join(', ')}."
+      response.comments << "The record does not contain at least one of the required fields: #{required_fields.join(', ')}."
     end
 
     response
