@@ -108,6 +108,25 @@ module FairTestUtils
     end
   end
 
+  def funding_defined?(record)
+    funding = record['funding']
+
+    funding.is_a?(Array) && funding.any? do |funding_entry|
+      funding_entry.is_a?(Hash) && funding_value_present?(funding_entry)
+    end
+  end
+
+  def funding_value_present?(value)
+    case value
+    when Hash
+      value.values.any? { |nested_value| funding_value_present?(nested_value) }
+    when Array
+      value.any? { |nested_value| funding_value_present?(nested_value) }
+    else
+      contains_meaningful_value?(value)
+    end
+  end
+  
   def has_top_level_jsonld_discovery_field?(record, fields)
     return false unless record.is_a?(Hash)
 
