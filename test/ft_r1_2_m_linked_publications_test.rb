@@ -9,12 +9,37 @@ class FtR12MLinkedPublicationsTest < Minitest::Test
   include ::FtR12MLinkedPublications
 
   def test_passes_for_each_permitted_publication_type
-    FtR12MLinkedPublications::PERMITTED_PUBLICATION_TYPES.each do |type|
-      stub_subject_of(
+    FtR12MLinkedPublications::PUBLICATION_RELATIONSHIP_FIELDS.each do |field|
+      FtR12MLinkedPublications::PERMITTED_PUBLICATION_TYPES.each do |type|
+        stub_permitted_fields(
+          field,
+          [
+            {
+              '@type' => type,
+              'name' => "A linked #{type}",
+              'url' => 'https://ora.ox.ac.uk/objects/uuid:publication'
+            }
+          ]
+        )
+
+        assert_metric_score 'pass'
+      end
+    end
+  end
+
+  def test_passes_when_any_relationship_is_a_valid_linked_publication
+    FtR12MLinkedPublications::PUBLICATION_RELATIONSHIP_FIELDS.each do |field|
+      stub_permitted_fields(
+        field,
         [
           {
-            '@type' => type,
-            'name' => "A linked #{type}",
+            '@type' => 'WebPage',
+            'name' => 'Not a permitted publication',
+            'url' => 'https://example.org/page'
+          },
+          {
+            '@type' => 'ScholarlyArticle',
+            'name' => 'A linked publication',
             'url' => 'https://ora.ox.ac.uk/objects/uuid:publication'
           }
         ]
@@ -24,26 +49,7 @@ class FtR12MLinkedPublicationsTest < Minitest::Test
     end
   end
 
-  def test_passes_when_any_subject_is_a_valid_linked_publication
-    stub_subject_of(
-      [
-        {
-          '@type' => 'WebPage',
-          'name' => 'Not a permitted publication',
-          'url' => 'https://example.org/page'
-        },
-        {
-          '@type' => 'ScholarlyArticle',
-          'name' => 'A linked publication',
-          'url' => 'https://ora.ox.ac.uk/objects/uuid:publication'
-        }
-      ]
-    )
-
-    assert_metric_score 'pass'
-  end
-
-  def test_fails_when_subject_of_is_missing
+  def test_fails_when_relationship_fields_are_missing
     stub_request_jsonld(
       { '@type' => 'Dataset', 'name' => 'A record without linked publications' },
       resource_identifier: 'https://example.org/records/abc123'
@@ -53,54 +59,62 @@ class FtR12MLinkedPublicationsTest < Minitest::Test
   end
 
   def test_fails_when_publication_type_is_not_permitted
-    stub_subject_of(
-      [
-        {
-          '@type' => 'WebPage',
-          'name' => 'An unsupported related object',
-          'url' => 'https://example.org/page'
-        }
-      ]
-    )
+    FtR12MLinkedPublications::PUBLICATION_RELATIONSHIP_FIELDS.each do |field|
+      stub_permitted_fields(
+        field,
+        [
+          {
+            '@type' => 'WebPage',
+            'name' => 'An unsupported related object',
+            'url' => 'https://example.org/page'
+          }
+        ]
+      )
 
-    assert_metric_score 'fail'
+      assert_metric_score 'fail'
+    end
   end
 
   def test_fails_when_publication_name_is_blank
-    stub_subject_of(
-      [
-        {
-          '@type' => 'CreativeWork',
-          'name' => '  ',
-          'url' => 'https://example.org/publication'
-        }
-      ]
-    )
+    FtR12MLinkedPublications::PUBLICATION_RELATIONSHIP_FIELDS.each do |field|
+      stub_permitted_fields(
+        field,
+        [
+          {
+            '@type' => 'CreativeWork',
+            'name' => '  ',
+            'url' => 'https://example.org/publication'
+          }
+        ]
+      )
 
-    assert_metric_score 'fail'
+      assert_metric_score 'fail'
+    end
   end
 
   def test_fails_when_publication_url_is_invalid
-    stub_subject_of(
-      [
-        {
-          '@type' => 'Book',
-          'name' => 'A linked book',
-          'url' => 'not a URL'
-        }
-      ]
-    )
+    FtR12MLinkedPublications::PUBLICATION_RELATIONSHIP_FIELDS.each do |field|
+      stub_permitted_fields(
+        field,
+        [
+          {
+            '@type' => 'Book',
+            'name' => 'A linked book',
+            'url' => 'not a URL'
+          }
+        ]
+      )
 
-    assert_metric_score 'fail'
+      assert_metric_score 'fail'
+    end
   end
 
   private
 
-  def stub_subject_of(publications)
+  def stub_permitted_fields(field, publications)
     stub_request_jsonld(
       {
-        '@type' => 'Dataset',
-        'subjectOf' => publications
+        field => publications
       },
       resource_identifier: 'https://example.org/records/abc123'
     )

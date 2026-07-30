@@ -83,6 +83,15 @@ class FairTestUtilsTest < Minitest::Test
     assert contains_meaningful_value?(false)
   end
 
+  def test_funding_value_present_covers_nested_hashes_arrays_and_values
+    assert funding_value_present?(
+      { 'funder' => [nil, { 'name' => 'Engineering and Physical Sciences Research Council' }] }
+    )
+    refute funding_value_present?(
+      { 'funder' => [nil, { 'name' => '  ' }] }
+    )
+  end
+
   def test_finds_top_level_jsonld_discovery_fields
     fields = %w(name creator contributor datePublished)
 
