@@ -126,7 +126,7 @@ module FairTestUtils
       contains_meaningful_value?(value)
     end
   end
-  
+
   def has_top_level_jsonld_discovery_field?(record, fields)
     return false unless record.is_a?(Hash)
 
