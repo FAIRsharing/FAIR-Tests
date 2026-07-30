@@ -9,7 +9,7 @@ module FtR12MFundingDefinedInMetadata
     meta = {
       testid: 'FT_R1_2_M_FundingDefinedInMetadata.ttl',
       testname: 'FAIR Test - R1.2 - Metadata - Funding information is defined in metadata',
-      description: 'This metric evaluates whether the metadata includes explicit details regarding the funding associated with the research object. The assessment checks for structured funding references within both the landing page metadata and the central records held by DOI registration agencies (such as DataCite or Crossref). Specifically, it verifies that fields such as fundingReferences (DataCite) or funder (Crossref) are populated with at least a funder name and, ideally, an award number or a persistent identifier for the funding body (e.g., a ROR ID or Crossref Funder ID). Expected input is the identifier of the record to be tested.',
+      description: 'This test evaluates whether the metadata includes explicit details regarding the funding associated with the research object. Specifically, it checks for at least one funder name within the funding.funder data structure. Expected input is the identifier of the record to be tested.',
       keywords: ['FAIR', 'R1.2', 'funding'],
       creator: 'https://orcid.org/0000-0002-6468-9260',
       indicators: [],
