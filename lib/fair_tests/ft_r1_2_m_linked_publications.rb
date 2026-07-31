@@ -62,6 +62,9 @@ module FtR12MLinkedPublications
         response.score = 'fail'
         response.comments << 'This record does not contain a linked publication.'
       end
+    else
+      response.score = 'indeterminate'
+      response.comments << 'No record was found matching the provided identifier.'
     end
 
     response.createEvaluationResponse

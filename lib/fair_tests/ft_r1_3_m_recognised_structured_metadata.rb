@@ -31,13 +31,19 @@ module FtR13MRecognisedStructuredMetadata
     json_present = (json_record.is_a?(Hash) || json_record.is_a?(Array)) && !json_record.empty?
     xml_present = !xml_record.nil?
 
-    if json_present || xml_present
-      response.score = 'pass'
-      response.comments << 'The record has a recognised structured metadata format.'
+    if json_record.nil? && xml_record.nil?
+      response.score = 'indeterminate'
+      response.comments << 'No record matching the provided identifier was found.'
     else
-      response.score = 'fail'
-      response.comments << 'The record does not have a recognised structured metadata format.'
+      if json_present || xml_present
+        response.score = 'pass'
+        response.comments << 'The record has a recognised structured metadata format.'
+      else
+        response.score = 'fail'
+        response.comments << 'The record does not have a recognised structured metadata format.'
+      end
     end
+
 
     response.createEvaluationResponse
   end

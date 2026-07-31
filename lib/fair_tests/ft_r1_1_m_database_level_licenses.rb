@@ -34,7 +34,7 @@ module FtR11MDatabaseLevelLicenses
       )
 
 
-    if record
+    if record && !record.empty?
       if record['registry'] == 'Database'
         licences = record['licences'] || record.dig('metadata', 'licences') || []
         if licences.empty?

@@ -73,6 +73,10 @@ module FtF2MDiscoveryfields
       end
     end
 
+    if response.score == 'indeterminate'
+      response.comments << 'No record matching the provided identifier was found.'
+    end
+
     response.createEvaluationResponse
   end
 

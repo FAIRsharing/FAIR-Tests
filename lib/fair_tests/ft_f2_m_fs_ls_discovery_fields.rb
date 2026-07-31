@@ -78,7 +78,9 @@ module FtF2MFsLsDiscoveryFields
         response.score = 'pass'
         response.comments << 'This record contains the required life science fields.'
       end
-
+    else
+      response.score = 'indeterminate'
+      response.comments << 'No record matching the provided identifier was found.'
     end
 
     response.createEvaluationResponse

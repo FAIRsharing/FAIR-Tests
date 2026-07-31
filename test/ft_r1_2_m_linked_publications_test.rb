@@ -109,6 +109,15 @@ class FtR12MLinkedPublicationsTest < Minitest::Test
     end
   end
 
+  def test_indeterminate_when_no_record_found
+    stub_request_jsonld(
+      '',
+      resource_identifier: 'https://example.org/records/abc123'
+    )
+
+    assert_metric_score 'indeterminate'
+  end
+
   private
 
   def stub_permitted_fields(field, publications)

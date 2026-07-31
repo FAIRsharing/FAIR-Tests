@@ -72,6 +72,9 @@ module FtR12MRorIdForFunder
         response.score = 'fail'
         response.comments << 'This record does not contain ROR identifiers.'
       end
+    else
+      response.score = 'indeterminate'
+      response.comments << 'No record was found matching the provided identifier.'
     end
 
     response.createEvaluationResponse
