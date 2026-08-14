@@ -1,0 +1,38 @@
+openapi: 3.0.0
+info:
+  version: "1.0"
+  title: "FAIR Test - R1.1 - Metadata - Resource declares a usage licence"
+  x-tests_metric: "https://fairsharing.org/7843"
+  description: >-
+      "R1.1 requires that (meta)data are released with a clear and accessible usage licence. This metric uses the structured metadata provided within FAIRsharing records to determine whether the resource declares one or more usage licences. This test evaluates whether the database, standard or policy resource declares a usage licence. In FAIRsharing, this corresponds to the presence of one or more usage licences associated with the resource. Expected input is the DOI or URL of the registry (e.g. FAIRsharing) record under evaluation."
+  x-applies_to_principle: "https://doi.org/10.25504/FAIRsharing.aff99f"
+  contact:
+    x-organization: "FAIRsharing, Oxford University"
+    url: "https://fairsharing.org"
+    name: "FAIRsharing Support"
+    email: "contact@fairsharing.org"
+paths:
+  "/ft_r1_1_m_fs_usage_licences":
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/schemas"
+        required: true
+      responses:
+        "200":
+          description:  >-
+            The response is "pass", "fail" or "indeterminate"
+servers:
+  - url: "https://fair-tests.fairsharing.org/test"
+components:
+  schemas:
+    schemas:
+      required:
+        - resource_identifier
+      properties:
+      - resource_identifier:
+          type: string
+          description: the GUID being tested
+
