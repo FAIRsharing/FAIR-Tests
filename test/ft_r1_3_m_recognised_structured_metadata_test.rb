@@ -52,7 +52,7 @@ class FtR13MRecognisedStructuredMetadataTest < Minitest::Test
     stub_request_jsonld('', resource_identifier: RESOURCE_IDENTIFIER)
     stub_request_xml('', resource_identifier: RESOURCE_IDENTIFIER)
 
-    assert_metric_score 'fail'
+    assert_metric_score 'indeterminate'
   end
 
   private

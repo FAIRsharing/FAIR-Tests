@@ -27,8 +27,8 @@ module FtF1MMetadataIdUnique
       meta: meta,
     )
 
+    pass = false
     if record && !record.empty?
-      pass = false
       identifiers = find_schema_object_values(record, 'identifier').
         flat_map { |value| value.is_a?(Array) ? value : [value] }.
         select { |value| value.is_a?(Hash) }
@@ -60,16 +60,21 @@ module FtF1MMetadataIdUnique
             end
           end
         end
-
-        if pass
-          response.score = 'pass'
-          response.comments << 'This record contains a globally unique identifier.'
-        else
-          response.score = 'fail'
-          response.comments << 'This record does not contain any globally unique identifiers.'
-        end
       end
+
+      if pass
+        response.score = 'pass'
+        response.comments << 'This record contains a globally unique identifier.'
+      else
+        response.score = 'fail'
+        response.comments << 'This record does not contain any globally unique identifiers.'
+      end
+
+    else
+      response.score = 'indeterminate'
+      response.comments << 'No record matching the provided identifier was found.'
     end
+
 
     response.createEvaluationResponse
 

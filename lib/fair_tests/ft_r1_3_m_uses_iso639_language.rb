@@ -56,6 +56,9 @@ module FtR13MUsesIso639Language
         response.score = 'fail'
         response.comments << 'This record does not contain a language attribute defined by the ISO 639 standard.'
       end
+    else
+      response.score = 'indeterminate'
+      response.comments << 'No record matching the provided identifier was found.'
     end
 
     response.createEvaluationResponse

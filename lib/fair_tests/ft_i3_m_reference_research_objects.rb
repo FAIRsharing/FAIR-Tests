@@ -61,7 +61,12 @@ module FtI3MReferenceResearchObjects
         response.score = 'fail'
         response.comments << 'This record does not contain references to related research objects.'
       end
+
+    else
+      response.score = 'indeterminate'
+      response.comments << 'No record matching the provided identifier was found.'
     end
+
 
     response.createEvaluationResponse
 

@@ -66,6 +66,9 @@ module FtF2MFsDiscoveryFields
         response.score = 'pass'
         response.comments << 'This record contains the required FAIRsharing discovery fields.'
       end
+    else
+      response.score = 'indeterminate'
+      response.comments << 'No record matching the provided identifier was found.'
     end
 
     response.createEvaluationResponse
