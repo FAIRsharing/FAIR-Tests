@@ -38,6 +38,7 @@ module FtR12MCreatorOrcid
     #       "url" => "https://orcid.org/0000-0002-1668-1029"}
     #    ]
 
+    pass = false
     if record && !record.empty?
       creators = find_schema_object_values(record, 'creator')
 
@@ -75,7 +76,13 @@ module FtR12MCreatorOrcid
         response.score = 'fail'
         response.comments << 'This record does not contain a creator with ORCID ID.'
       end
+
+    else
+      response.score = 'indeterminate'
+      response.comments << 'No record matching the provided identifier was found.'
     end
+
+
 
     response.createEvaluationResponse
 

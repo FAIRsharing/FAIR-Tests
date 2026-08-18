@@ -134,4 +134,20 @@ class FtI3MReferenceResearchObjectsTest < Minitest::Test
     body = parsed_response_body(last_response.body)
     assert_equal 'fail', find_prov_value(body)
   end
+
+  def test_indeterminate_when_no_record_found
+    stub_request_jsonld(
+      '',
+      resource_identifier: 'https://example.org/records/abc123'
+    )
+
+    post '/test/ft_i3_m_reference_research_objects',
+         params: { resource_identifier: 'https://example.org/records/abc123' }.to_json,
+         headers: headers
+
+    assert last_response.ok?
+
+    body = parsed_response_body(last_response.body)
+    assert_equal 'indeterminate', find_prov_value(body)
+  end
 end

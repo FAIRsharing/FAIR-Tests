@@ -187,7 +187,7 @@ class FtA1MFsDocumentsCompAccessTest < Minitest::Test
     assert last_response.ok?
 
     body = parsed_response_body(last_response.body)
-    assert_equal 'fail', find_prov_value(body)
+    assert_equal 'indeterminate', find_prov_value(body)
     assert_includes last_response.body, 'No valid FAIRsharing record was found.'
   end
 

@@ -51,7 +51,7 @@ module FtA1MFsDocumentsCompAccess
         end
       end
     else
-      response.score = 'fail'
+      response.score = 'indeterminate'
       response.comments << 'No valid FAIRsharing record was found.'
     end
 
