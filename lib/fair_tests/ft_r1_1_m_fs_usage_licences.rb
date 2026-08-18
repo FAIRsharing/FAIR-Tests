@@ -17,7 +17,7 @@ module FtR11MFsUsageLicences
       keywords: %w[FAIR R.1.1 licences],
       creator: 'https://orcid.org/0000-0001-9572-0972',
       indicators: [],
-      metric: 'https://fairsharing.org/8801/',
+      metric: 'https://fairsharing.org/8801',
       license: 'https://creativecommons.org/licenses/by/4.0/',
       testversion: '1.0.0',
       protocol: 'https',
