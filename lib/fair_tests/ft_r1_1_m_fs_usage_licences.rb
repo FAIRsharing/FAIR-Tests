@@ -11,7 +11,7 @@ module FtR11MFsUsageLicences
     end
 
     meta = {
-      testid: 'FT_R1_1_M_Fs_UsageLicences.ttl',
+      testid: 'FT_R1_1_M_FS_UsageLicences.ttl',
       testname: 'FAIR Test - R1.1 - Metadata - Resource declares a usage licence',
       description: "R1.1 requires that (meta)data are released with a clear and accessible usage licence. This metric uses the structured metadata provided within FAIRsharing records to determine whether the resource declares one or more usage licences. This test evaluates whether the database, standard or policy resource declares a usage licence. In FAIRsharing, this corresponds to the presence of one or more usage licences associated with the resource. Expected input is the DOI or URL of the registry (e.g. FAIRsharing) record under evaluation.",
       keywords: %w[FAIR R.1.1 licences],
