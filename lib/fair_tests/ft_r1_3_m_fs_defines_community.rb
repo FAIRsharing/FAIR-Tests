@@ -28,7 +28,7 @@ module FtR13MFsDefinesCommunity
       host: 'ostrails.github.io',
       basePath: '/assessment-component-metadata-records/test/',
       endpoint_url: 'https://fair-tests.fairsharing.org/test/ft_r1_3_m_fs_defines_community',
-      endpoint_description: 'https://fair-tests.fairsharing.org/ft_r1_3_m_fs_defines_community/api',
+      endpoint_description: 'https://fair-tests.fairsharing.org/test_descriptions/ft_r1_3_m_fs_defines_community/api',
     }
 
     response = FtrRuby::Output.new(
@@ -40,11 +40,9 @@ module FtR13MFsDefinesCommunity
       response.score = 'fail'
       if %w[Database Policy Standard].include? record['registry']
         pass = false
-        unless record['objectTypes'].nil? || record['objectTypes'].empty?
+        if !record['objectTypes'].nil? && !record['objectTypes'].empty? && !record['subjects'].nil? && !record['subjects'].empty?
           record['objectTypes'].each do |ot|
-            # ObjectType with id 13 has the label "object type not found"
-            # Do we need to find the id each time?
-            next if ot['id'] == 13
+            next if ot['label'] == 'object type not found'
 
             pass = true
             response.score = 'pass'

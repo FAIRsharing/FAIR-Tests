@@ -384,6 +384,7 @@ module FairTestUtils
             }
           }
          objectTypes {
+          label
           id
          }
          format

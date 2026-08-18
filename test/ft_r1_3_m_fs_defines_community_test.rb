@@ -10,12 +10,15 @@ class FtR13MFsDefinesCommunityTest < Minitest::Test
 
   def test_passes_when_there_is_valid_record_object_type
     stub_fairsharing_record(record_with_object_types([{
-                                                       'id' => 13
+                                                       'id' => 13,
+                                                       'label' => 'data'
                                                      },
                                                       {
-                                                        'id' => 22
+                                                        'id' => 22,
+                                                        'label' => 'software'
                                                       }
-                                        ]))
+                                        ],
+                                                     [{"id" => 1385, "label" => "Biodiversity"}]))
 
     post '/test/ft_r1_3_m_fs_defines_community',
          params: { resource_identifier: 'https://fairsharing.org/1234' }.to_json,
@@ -30,9 +33,11 @@ class FtR13MFsDefinesCommunityTest < Minitest::Test
 
   def test_fails_when_there_is_not_valid_object_type
     stub_fairsharing_record(record_with_object_types([{
-                                                       'id' => 13
+                                                       'id' => 13,
+                                                       'label' => 'object type not found'
                                                      }
-                                        ]))
+                                        ],
+                                                     [{"id" => 1385, "label" => "Biodiversity"}]           ))
 
     post '/test/ft_r1_3_m_fs_defines_community',
          params: { resource_identifier: 'https://fairsharing.org/1234' }.to_json,
@@ -47,7 +52,7 @@ class FtR13MFsDefinesCommunityTest < Minitest::Test
 
 
   def test_fails_when_no_object_types_are_present
-    stub_fairsharing_record(record_with_object_types([]))
+    stub_fairsharing_record(record_with_object_types([],[]))
 
     post '/test/ft_r1_3_m_fs_defines_community',
          params: { resource_identifier: 'https://fairsharing.org/1234' }.to_json,
@@ -120,11 +125,12 @@ class FtR13MFsDefinesCommunityTest < Minitest::Test
 
   private
 
-  def record_with_object_types(object_types)
+  def record_with_object_types(object_types, subjects)
     {
       'id' => '1234',
       'registry' => 'Database',
-      'objectTypes' => object_types
+      'objectTypes' => object_types,
+      'subjects' => subjects
     }
   end
 
