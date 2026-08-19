@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: "1.0"
+  version: "1.0.0"
   title: "FAIR Test - A1 - Metadata - database open access"
   x-tests_metric: "https://fairsharing.org/8381"
   description: "This testassesses whether the FAIRsharing database record has its Data Access Condition set to Open or Partially Open. Expected input is the FAIRsharing DOI or URL for the FAIRsharing record under evaluation. "

@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: "1.0"
+  version: "1.0.0"
   title: "FAIR Test - I2 - adopts FAIR-supporting terminologies"
   x-tests_metric: "https://fairsharing.org/8403/"
   description: >-

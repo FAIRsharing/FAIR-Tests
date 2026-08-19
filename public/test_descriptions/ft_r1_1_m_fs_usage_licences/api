@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: "1.0"
+  version: "1.0.0"
   title: "FAIR Test - R1.1 - Metadata - Resource declares a usage licence"
   x-tests_metric: "https://fairsharing.org/8801"
   description: >-

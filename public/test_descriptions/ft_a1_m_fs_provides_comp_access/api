@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: "1.0"
+  version: "1.0.0"
   title: "FAIR Test - A1 - Metadata - provides computational access"
   x-tests_metric: "https://fairsharing.org/8379"
   description: "This test assesses whether the FAIRsharing record contains at least one Data Process that uses an access method other than User Interface and whose process type includes Read or Read/Write. Expected input is the FAIRsharing DOI or URL for the FAIRsharing record under evaluation."

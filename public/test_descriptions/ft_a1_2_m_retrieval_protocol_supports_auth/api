@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: "1.0"
+  version: "1.0.0"
   title: "FAIR Test – A1.2 – Metadata - retrieval protocol supports auth"
   x-tests_metric: "https://fairsharing.org/7834"
   description: >-

@@ -1,7 +1,7 @@
 
 openapi: 3.0.0
 info:
-  version: "1.0"
+  version: "1.0.0"
   title: "FAIR Test - ARK T-A2 - Database has a preservation policy"
   x-tests_metric: "https://fairsharing.org/FAIRsharing.lEZbPK"
   description: >-
