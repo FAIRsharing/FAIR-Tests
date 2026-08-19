@@ -17,7 +17,7 @@ module FtR13MFsSubmissionDocs
     meta = {
       testid: 'FT_R1_3_M_FS_SubmissionDocs.ttl',
       testname: 'FAIR Test - R1.3 - Metadata - Resource documents user-facing data submission',
-      description: 'This tests evaluates whether the database, standard or policy resource documents user-facing submission processes. In FAIRsharing, this corresponds to documentation associated with at least one Data Process whose access method is User Interface and whose process type includes Write or Read/Write. This test expects as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation.',
+      description: 'This test evaluates whether the database, standard or policy resource documents user-facing submission processes. In FAIRsharing, this corresponds to documentation associated with at least one Data Process whose access method is User Interface and whose process type includes Write or Read/Write. This test expects as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation.',
       keywords: ['FAIR', 'R1.3', 'FAIRsharing', 'documents user-facing submission processes'],
       creator: 'https://orcid.org/0000-0001-9572-0972',
       indicators: [],
