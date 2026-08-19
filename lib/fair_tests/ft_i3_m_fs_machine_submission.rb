@@ -28,7 +28,7 @@ module FtI3MFsMachineSubmission
       host: 'ostrails.github.io',
       basePath: '/assessment-component-metadata-records/test/',
       endpoint_url: 'https://fair-tests.fairsharing.org/test/ft_i3_m_fs_machine_submission',
-      endpoint_description: 'https://fair-tests.fairsharing.org/ft_i3_m_fs_machine_submission/api',
+      endpoint_description: 'https://fair-tests.fairsharing.org/test_descriptions/ft_i3_m_fs_machine_submission/api',
     }
 
     response = FtrRuby::Output.new(
