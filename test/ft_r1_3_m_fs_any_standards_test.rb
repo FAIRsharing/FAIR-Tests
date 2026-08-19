@@ -23,7 +23,8 @@ class FtR13MFsAnyStandardssTest < Minitest::Test
               {
                 "recordAssocLabel": "shares_data_with",
                 "linkedRecord": {
-                  "registry": "Standard"
+                  "registry": "Standard",
+                  "type": "terminology_artefact"
                 }
               }
             ]
@@ -56,7 +57,8 @@ class FtR13MFsAnyStandardssTest < Minitest::Test
               {
                 "recordAssocLabel": "related_to",
                 "fairsharingRecord": {
-                  "registry": "Standard"
+                  "registry": "Standard",
+                  "type": "reporting_guideline"
                 }
               }
             ]
@@ -89,7 +91,8 @@ class FtR13MFsAnyStandardssTest < Minitest::Test
               {
                 "recordAssocLabel": "implements",
                 "linkedRecord": {
-                  "registry": "Database"
+                  "registry": "Standard",
+                  "type": "identifier_schema"
                 }
               }
             ]
@@ -122,7 +125,8 @@ class FtR13MFsAnyStandardssTest < Minitest::Test
               {
                 "recordAssocLabel": "deprecates",
                 "linkedRecord": {
-                  "registry": "Standard"
+                  "registry": "Standard",
+                  "type": "reporting_guideline"
                 }
               }
             ]

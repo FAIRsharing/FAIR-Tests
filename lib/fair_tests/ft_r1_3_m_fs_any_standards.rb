@@ -41,12 +41,16 @@ module FtR13MFsAnyStandards
         stardards_related = []
         unless record['recordAssociations'].nil? || record['recordAssociations'].empty?
           stardards_related = record['recordAssociations'].collect do |r|
-            r if r['recordAssocLabel'] != 'deprecates' && r['linkedRecord']['registry'] == 'Standard'
+            if r['recordAssocLabel'] != 'deprecates' && %w[terminology_artefact model_and_format reporting_guideline].include?(r['linkedRecord']['type'])
+              r
+            end
           end.compact
         end
         if stardards_related.empty? && !record['reverseRecordAssociations'].nil? && !record['reverseRecordAssociations'].empty?
           stardards_related = record['reverseRecordAssociations'].collect do |r|
-            r if r['recordAssocLabel'] != 'deprecates' && r['fairsharingRecord']['registry'] == 'Standard'
+            if r['recordAssocLabel'] != 'deprecates' && %w[terminology_artefact model_and_format reporting_guideline].include?(r['fairsharingRecord']['type'])
+              r
+            end
           end.compact
         end
         if stardards_related.empty?
