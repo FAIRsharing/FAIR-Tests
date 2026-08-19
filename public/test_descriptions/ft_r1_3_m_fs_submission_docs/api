@@ -4,7 +4,7 @@ info:
   title: "FAIR Test - R1.3 - Metadata - Resource documents user-facing data submission"
   x-tests_metric: "https://fairsharing.org/8849/"
   description: >-
-      "This tests evaluates whether the database, standard or policy resource documents user-facing submission processes. In FAIRsharing, this corresponds to documentation associated with at least one Data Process whose access method is User Interface and whose process type includes Write or Read/Write. This test expects as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation."
+      "This test evaluates whether the database, standard or policy resource documents user-facing submission processes. In FAIRsharing, this corresponds to documentation associated with at least one Data Process whose access method is User Interface and whose process type includes Write or Read/Write. This test expects as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation."
   x-applies_to_principle: "https://doi.org/10.25504/FAIRsharing.87d197"
   contact:
     x-organization: "FAIRsharing, Oxford University"
