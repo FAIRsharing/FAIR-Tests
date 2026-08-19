@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: "1.0"
+  version: "1.0.0"
   title: "FAIR Test - I1 - Metadata - Adopts Syntactic Knowledge Representation Languages"
   x-tests_metric: "https://fairsharing.org/8401/"
   description: >-

@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: "1.0"
+  version: "1.0.0"
   title: "FAIR Test – F1 – Metadata - evaluate identifier persistence"
   x-tests_metric: "https://fairsharing.org/7821"
   description: >-

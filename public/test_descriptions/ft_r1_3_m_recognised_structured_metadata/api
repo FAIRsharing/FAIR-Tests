@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: "1.0"
+  version: "1.0.0"
   title: "FAIR Test – R1.3 - Metadata – use of recognised and structured generic metadata format"
   x-tests_metric: "https://fairsharing.org/8020"
   description: >-

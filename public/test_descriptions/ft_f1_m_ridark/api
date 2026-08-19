@@ -1,7 +1,7 @@
 
 openapi: 3.0.0
 info:
-  version: "1.0"
+  version: "1.0.0"
   title: "FAIR Test - F1 - Metadata - Resolvable identifiers for database content"
   x-tests_metric: "https://doi.org/10.25504/FAIRsharing.6313ad"
   description: >-

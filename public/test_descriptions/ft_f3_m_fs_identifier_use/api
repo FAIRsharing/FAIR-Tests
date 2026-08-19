@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: "1.0"
+  version: "1.0.0"
   title: "FAIR Test - F3 - resource identifiers in FAIRsharing metadata"
   x-tests_metric: "https://fairsharing.org/8372"
   description: >-
