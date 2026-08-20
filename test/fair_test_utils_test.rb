@@ -40,6 +40,48 @@ class FairTestUtilsTest < Minitest::Test
     assert_nil request_jsonld(invalid_json_url)
   end
 
+  def test_request_datacite_accepts_doi_urls_and_bare_dois
+    doi_url = 'https://doi.org/10.1234/example'
+    bare_doi = '10.1234/example'
+    datacite_url = "https://api.datacite.org/dois/#{bare_doi}"
+    response_body = { data: { id: bare_doi } }.to_json
+    request_headers = { 'Accept' => 'application/vnd.datacite.datacite+json' }
+
+    stub_request(:get, doi_url).
+      with(headers: request_headers).
+      to_return(body: response_body)
+    stub_request(:get, datacite_url).
+      with(headers: request_headers).
+      to_return(body: response_body)
+
+    expected = { 'data' => { 'id' => bare_doi } }
+    assert_equal expected, request_datacite(doi_url)
+    assert_equal expected, request_datacite(bare_doi)
+  end
+
+  def test_request_datacite_rejects_non_dois
+    assert_nil request_datacite(nil)
+    assert_nil request_datacite('not a DOI')
+  end
+
+  def test_search_searxng_posts_search_term_and_requests_json
+    url = 'https://search.fairsharing.org/search'
+    response_body = { results: [{ title: 'Linacre School of Defence' }] }.to_json
+
+    stub_request(:post, url).
+      with(
+        body: { q: 'linacre school of defence', format: 'json' },
+        headers: {
+          'Accept' => 'application/json',
+          'Content-Type' => 'application/x-www-form-urlencoded'
+        }
+      ).
+      to_return(body: response_body)
+
+    expected = { 'results' => [{ 'title' => 'Linacre School of Defence' }] }
+    assert_equal expected, search_searxng('linacre school of defence')
+  end
+
   def test_validates_xml
     assert valid_xml?('<resource><title>A title</title></resource>')
 
