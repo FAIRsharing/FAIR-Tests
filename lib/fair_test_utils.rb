@@ -195,6 +195,7 @@ module FairTestUtils
         end
         return body_url if resolved_host == 'doi.org' && !body_url.nil?
         return nil if resolved_host == 'doi.org'
+
         return resolved
       end
 
@@ -333,7 +334,11 @@ module FairTestUtils
         fairsharingRecord(id: "#{id}"){
           name
           id
-          subjects { id label }
+          subjects {
+            id
+            label
+            ancestors {id label}
+          }
           registry
           type
           metadata
@@ -396,7 +401,6 @@ module FairTestUtils
                              body: { query: query_string }.to_json,
                              headers: headers
     )
-
 
     if response.code == 200
       begin
@@ -494,6 +498,37 @@ module FairTestUtils
       valid_ror_id?(uri.path.delete_prefix('/')) &&
       uri.query.nil? &&
       uri.fragment.nil?
+  end
+
+  # Method to check that it has the Life Science subject label or
+  # there is at least one ancestor with that label
+  def subject_has_ls_ancestor(subjects)
+    subjects.each do |s|
+      return true if s['label'] == 'Life Science'
+
+      next unless s.include?('ancestors')
+
+      s['ancestors'].each do |a|
+        return true if a['label'] == 'Life Science'
+      end
+    end
+    false
+  end
+
+  # Given a list of ids with subject ids ref_ids = [a,b,c...]
+  # check if subjects [{'id': x, 'ancestors': [{'id':y},{id:z}]},{'id': w, 'ancestors': [{'id':m}]}....]
+  # has an id or an ancestors that appears in ref_ids
+  def subject_appears_or_descendent(ref_ids, subjects)
+    subjects.each do |s|
+      return true if ref_ids.include?(s['id'])
+
+      next if s['ancestors'].nil? || s['ancestors'].empty?
+
+      s['ancestors'].each do |s_a|
+        return true if ref_ids.include?(s_a['id'])
+      end
+    end
+    false
   end
 
 end
