@@ -45,7 +45,7 @@ module FtR12MFsFundingOrganisation
             if ol['relation'] == 'funds'
               pass = true
               response.score = 'pass'
-              response.comments << 'Using FAIRsharing metadata for the database under evaluation, the resource declares funding organisations.'
+              response.comments << 'Using FAIRsharing metadata for the record under evaluation, the resource declares funding organisations.'
               break
             end
           end

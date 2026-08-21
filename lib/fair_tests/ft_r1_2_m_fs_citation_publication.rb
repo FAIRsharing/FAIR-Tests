@@ -17,7 +17,7 @@ module FtR12MFsCitationPublication
     meta = {
       testid: 'FT_R1_2_M_FS_CitationPublication.ttl',
       testname: 'FAIR Test - R1.2 - Metadata - Resource declares at least one publication for citation',
-      description: 'This test evaluates whether the database, standard or policy resource declares at least one publication for citation. In FAIRsharing, this corresponds to at least one linked publication for which the “Cite record using this publication?” value is set to Yes. This test expects as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation.',
+      description: 'This test evaluates whether the database, standard or policy resource declares at least one publication for citation. In FAIRsharing, this corresponds to at least one linked publication for which the "Cite record using this publication?" value is set to Yes. This test expects as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation.',
       keywords: ['FAIR', 'R1.2', 'FAIRsharing', 'citation publication'],
       creator: 'https://orcid.org/0000-0001-9572-0972',
       indicators: [],
