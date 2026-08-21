@@ -107,6 +107,9 @@ class FairTestUtilsTest < Minitest::Test
   end
 
   def test_search_core_gets_encoded_title_and_returns_json_with_status
+    original_core_api_key = ENV['CORE_API_KEY']
+    ENV['CORE_API_KEY'] = 'test-core-api-key'
+
     title = 'Linacre School of Defence'
     url = 'https://api.core.ac.uk/v3/search/outputs'
     response_body = { results: [{ title: title }] }.to_json
@@ -116,13 +119,19 @@ class FairTestUtilsTest < Minitest::Test
         query: { q: title },
         headers: {
           'Accept' => 'application/json',
-          'Authorization' => "Bearer: #{ENV['CORE_API_KEY']}"
+          'Authorization' => 'Bearer: test-core-api-key'
         }
       ).
       to_return(status: 200, body: response_body)
 
     expected = [{ 'results' => [{ 'title' => title }] }, 200]
     assert_equal expected, search_core(title)
+  ensure
+    if original_core_api_key.nil?
+      ENV.delete('CORE_API_KEY')
+    else
+      ENV['CORE_API_KEY'] = original_core_api_key
+    end
   end
 
   def test_search_core_returns_status_for_empty_and_malformed_responses
