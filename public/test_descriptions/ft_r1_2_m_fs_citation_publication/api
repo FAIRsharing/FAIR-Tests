@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   version: "1.0.0"
-  title: "FAIR Test - R1.3 - Metadata - Resource supports community interaction"
+  title: "FAIR Test - R1.2 - Metadata - Resource declares at least one publication for citation"
   x-tests_metric: "https://fairsharing.org/8843"
   description: >-
         "This test evaluates whether the database, standard or policy resource declares at least one publication for citation. In FAIRsharing, this corresponds to at least one linked publication for which the 'Cite record using this publication?' value is set to Yes. This test expects as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation."
