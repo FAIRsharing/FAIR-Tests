@@ -44,11 +44,11 @@ module FairTestUtils
     )
 
     body = response.body.to_s.strip
-    return nil if body.empty?
+    return [nil, response.code] if body.empty?
 
-    JSON.parse(body)
+    [JSON.parse(body), response.code]
   rescue JSON::ParserError
-    nil
+    [nil, response.code]
   end
 
   # Check api.core.ac.uk for matching titles.
@@ -61,11 +61,11 @@ module FairTestUtils
     url = "https://api.core.ac.uk/v3/search/outputs?q=#{encoded_title}"
     response = HTTParty.get(url, headers: json_headers)
       body = response.body.to_s.strip
-      return nil if body.empty?
+      return [nil, response.code] if body.empty?
 
-      JSON.parse(body)
+      [JSON.parse(body), response.code]
   rescue JSON::ParserError
-    nil
+    [nil, response.code]
   end
 
   # This will get the data held by datacite on any record, if a DOI is provided.

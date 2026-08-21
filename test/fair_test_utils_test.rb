@@ -64,6 +64,16 @@ class FairTestUtilsTest < Minitest::Test
     assert_nil request_datacite('not a DOI')
   end
 
+  def test_request_datacite_returns_nil_for_malformed_json
+    doi = '10.1234/malformed-response'
+
+    stub_request(:get, "https://api.datacite.org/dois/#{doi}").
+      with(headers: { 'Accept' => 'application/vnd.datacite.datacite+json' }).
+      to_return(status: 200, body: 'not json')
+
+    assert_nil request_datacite(doi)
+  end
+
   def test_search_searxng_posts_search_term_and_requests_json
     url = 'https://search.fairsharing.org/search'
     response_body = { results: [{ title: 'Linacre School of Defence' }] }.to_json
@@ -78,8 +88,55 @@ class FairTestUtilsTest < Minitest::Test
       ).
       to_return(body: response_body)
 
-    expected = { 'results' => [{ 'title' => 'Linacre School of Defence' }] }
+    expected = [{ 'results' => [{ 'title' => 'Linacre School of Defence' }]}, 200]
     assert_equal expected, search_searxng('linacre school of defence')
+  end
+
+  def test_search_searxng_returns_status_for_empty_and_malformed_responses
+    url = 'https://search.fairsharing.org/search'
+
+    stub_request(:post, url).
+      with(body: { q: 'empty response', format: 'json' }).
+      to_return(status: 204, body: '')
+    stub_request(:post, url).
+      with(body: { q: 'malformed response', format: 'json' }).
+      to_return(status: 502, body: 'not json')
+
+    assert_equal [nil, 204], search_searxng('empty response')
+    assert_equal [nil, 502], search_searxng('malformed response')
+  end
+
+  def test_search_core_gets_encoded_title_and_returns_json_with_status
+    title = 'Linacre School of Defence'
+    url = 'https://api.core.ac.uk/v3/search/outputs'
+    response_body = { results: [{ title: title }] }.to_json
+
+    stub_request(:get, url).
+      with(
+        query: { q: title },
+        headers: {
+          'Accept' => 'application/json',
+          'Authorization' => "Bearer: #{ENV['CORE_API_KEY']}"
+        }
+      ).
+      to_return(status: 200, body: response_body)
+
+    expected = [{ 'results' => [{ 'title' => title }] }, 200]
+    assert_equal expected, search_core(title)
+  end
+
+  def test_search_core_returns_status_for_empty_and_malformed_responses
+    url = 'https://api.core.ac.uk/v3/search/outputs'
+
+    stub_request(:get, url).
+      with(query: { q: 'empty response' }).
+      to_return(status: 204, body: '')
+    stub_request(:get, url).
+      with(query: { q: 'malformed response' }).
+      to_return(status: 502, body: 'not json')
+
+    assert_equal [nil, 204], search_core('empty response')
+    assert_equal [nil, 502], search_core('malformed response')
   end
 
   def test_validates_xml
@@ -210,6 +267,27 @@ class FairTestUtilsTest < Minitest::Test
     assert_equal 5, matches.length
     assert_equal [1, 2], matches[1, 2]
     assert_equal 'https://doi.org/10.1234/example', matches[4]
+  end
+
+  def test_schema_object_values_covers_supported_property_keys_and_shapes
+    data = {
+      'identifier' => '10.1234/plain',
+      identifier: { '@value' => '10.1234/symbol' },
+      'schema:identifier' => [{ '@id' => 'https://doi.org/10.1234/prefixed' }],
+      :'http://schema.org/identifier' => { '@value' => '10.1234/uri' }
+    }
+
+    assert_equal(
+      [
+        '10.1234/plain',
+        '10.1234/symbol',
+        'https://doi.org/10.1234/prefixed',
+        '10.1234/uri'
+      ],
+      schema_object_values(data, 'identifier')
+    )
+    assert_equal [], schema_object_values([], 'identifier')
+    assert_equal [], schema_object_values(nil, 'identifier')
   end
 
   def test_jsonld_scalar_values_covers_supported_shapes

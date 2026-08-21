@@ -1,0 +1,38 @@
+openapi: 3.0.0
+info:
+  version: "1.0.0"
+  title: "FAIR Test – F4 – Metadata - indexed in a searchable resource"
+  x-tests_metric: "https://fairsharing.org/10.25504/FAIRsharing.fe8b9b"
+  description: >-
+    "This test evaluates whether the provided identifier’s metadata is discoverable by performing public, automated searches with commonly-used search engines. The evaluation assesses whether a search service can successfully locate the metadata record using either the metadata identifier or landing page content such as the record title or keywords - both commonly consumed by search engines - thereby confirming that the resource has been appropriately indexed and is accessible for automated discovery. The expected input is the URL of a resource, and the test will pass if references to that input or identifiers contained within it are found when searching Datacite, core.ac.uk or SearXNG."
+  x-applies_to_principle: "https://fairsharing.org/6278"
+  contact:
+    x-organization: "FAIRsharing, Oxford University"
+    url: "https://fairsharing.org"
+    name: "FAIRsharing Support"
+    email: "contact@fairsharing.org"
+paths:
+  "/ft_f4_m_meta_indexed":
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/schemas"
+        required: true
+      responses:
+        "200":
+          description:  >-
+            The response is "pass", "fail" or "indeterminate"
+servers:
+  - url: "https://fair-tests.fairsharing.org/test"
+components:
+  schemas:
+    schemas:
+      required:
+        - resource_identifier
+      properties:
+      - resource_identifier:
+          type: string
+          description: the GUID being tested
+

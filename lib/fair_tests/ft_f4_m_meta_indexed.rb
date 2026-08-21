@@ -52,7 +52,7 @@ module FtF4MMetaIndexed
         found['titles'].each do |title|
           if title['title'].downcase == record.name.downcase
             response.score = 'pass'
-            response.comments = 'This record was located by checking a DOI with Datacite.'
+            response.comments << 'This record was located by checking a DOI with Datacite.'
           end
         end
       end
@@ -60,19 +60,24 @@ module FtF4MMetaIndexed
       # Check with core.ac.uk/services/api by searching with the title.
       # N.B. https://core.ac.uk/acknowledge - find best way to do this...
       # TODO: An example needs to be found of a record which can be located here.
-      core_check = search_core(record.name)
-      if core_check
+      core_data, core_code = search_core(record.name)
+      if core_code != 200
+        response.comments << "An attempt to search core.ac.uk failed: #{core_code}."
+      elsif core_data
         response.score = 'pass'
-        response.comments = 'This record was located by searching for its title with core.ac.uk.'
+        response.comments << 'This record was located by searching for its title with core.ac.uk.'
       end
 
       # Check by using the URL (and perhaps title?) with SearXNG.
-      searxng_check = search_searxng(record.name)
-      if searxng_check
+      searxng_check, searxng_code = search_searxng(record.name)
+      if searxng_code != 200
+        response.comments << "A search with SearXNG failed: #{searxng_code}."
+      elsif searxng_check
         searxng_check['results'].each do |res|
-          if res.downcase == record.name.downcase
+          if res['title'].downcase == record.name.downcase
             response.score = 'pass'
-            response.comments = 'This record was located by searching for its title via a general web search (SearXNG).'
+            response.comments << 'This record was located by searching for its title via a general web search (SearXNG).'
+            break
           end
         end
       end
@@ -80,7 +85,7 @@ module FtF4MMetaIndexed
       # Default result if no pass scored above
       unless response.score == 'pass'
         response.score = 'fail'
-        response.comments = 'No references to this identifier were found by any search attempted.'
+        response.comments << 'No references to this identifier were found by any search attempted.'
       end
     else
       response.score = 'indeterminate'
