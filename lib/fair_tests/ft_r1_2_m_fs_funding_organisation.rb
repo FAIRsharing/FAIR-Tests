@@ -51,7 +51,7 @@ module FtR12MFsFundingOrganisation
           end
         end
         unless pass
-          response.comments << 'Using FAIRsharing metadata for the record under evaluation, the resource does not declare funding organisations/'
+          response.comments << 'Using FAIRsharing metadata for the record under evaluation, the resource does not declare funding organisations.'
         end
       else
         response.comments << 'The record exists in FAIRsharing but it is not a database, standard or policy.'
