@@ -28,7 +28,7 @@ module FtR12MFsFundingOrganisation
       host: 'ostrails.github.io',
       basePath: '/assessment-component-metadata-records/test/',
       endpoint_url: 'https://fair-tests.fairsharing.org/test/ft_r1_2_m_fs_funding_organisation',
-      endpoint_description: 'https://fair-tests.fairsharing.org/test_descriptions/funding_organisation/api',
+      endpoint_description: 'https://fair-tests.fairsharing.org/test_descriptions/ft_r1_2_m_fs_funding_organisation/api',
     }
 
     response = FtrRuby::Output.new(
