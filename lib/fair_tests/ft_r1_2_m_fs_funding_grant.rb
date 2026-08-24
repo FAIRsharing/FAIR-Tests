@@ -45,7 +45,7 @@ module FtR12MFsFundingGrant
             if ol['relation'] == 'funds' && !ol['grant'].nil? && !ol['grant'].empty?
               pass = true
               response.score = 'pass'
-              response.comments << 'Using FAIRsharing metadata for the database under evaluation, the resource declares grants linked to funding organisations.'
+              response.comments << 'Using FAIRsharing metadata for the record under evaluation, the resource declares grants linked to funding organisations.'
               break
             end
           end
