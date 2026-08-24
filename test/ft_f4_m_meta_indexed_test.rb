@@ -46,7 +46,39 @@ class FtF4MMetaIndexedTest < Minitest::Test
   end
 
   def test_passes_when_record_title_is_found_in_core
-    skip 'TODO: implement test details when core is working again'
+    title = 'GenBank'
+    record = { 'name' => title }
+    record.define_singleton_method(:name) { self['name'] }
+    core_response = {
+      'totalHits' => 69_289,
+      'limit' => 10,
+      'offset' => 0,
+      'results' => [
+        {
+          'id' => 200_711_284,
+          'title' => title,
+          'links' => [
+            {
+              'type' => 'display',
+              'url' => 'https://core.ac.uk/outputs/200711284'
+            }
+          ]
+        }
+      ]
+    }
+
+    define_singleton_method(:request_jsonld) { |_url| record }
+    define_singleton_method(:search_core) do |searched_title|
+      assert_equal title, searched_title
+      [core_response, 200]
+    end
+    define_singleton_method(:search_searxng) { |_title| [nil, 200] }
+
+    response_body = ft_f4_m_meta_indexed('https://example.org/records/genbank')
+
+    body = parsed_response_body(response_body)
+    assert_equal 'pass', find_prov_value(body)
+    assert_includes response_body, 'This record was located by searching for its title with core.ac.uk.'
   end
 
   def test_reports_core_failure_when_search_returns_non_success_status
