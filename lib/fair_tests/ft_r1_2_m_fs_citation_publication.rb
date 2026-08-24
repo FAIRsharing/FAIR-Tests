@@ -45,7 +45,7 @@ module FtR12MFsCitationPublication
             if cit.include?('publication_id') && !cit['publication_id'].to_s.strip.empty?
               pass = true
               response.score = 'pass'
-              response.comments << 'Using FAIRsharing metadata for the database under evaluation, the resource declares at least one publication for citation.'
+              response.comments << 'Using FAIRsharing metadata for the record under evaluation, the resource declares at least one publication for citation.'
               break
             end
           end
