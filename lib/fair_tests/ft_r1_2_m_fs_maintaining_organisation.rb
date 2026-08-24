@@ -45,7 +45,7 @@ module FtR12MFsMaintainingOrganisation
             if ol['relation'] == 'maintains'
               pass = true
               response.score = 'pass'
-              response.comments << 'Using FAIRsharing metadata for the database under evaluation, the resource declares maintaining organisations.'
+              response.comments << 'Using FAIRsharing metadata for the record under evaluation, the resource declares maintaining organisations.'
               break
             end
           end
