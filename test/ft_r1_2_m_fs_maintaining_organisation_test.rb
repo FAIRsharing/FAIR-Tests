@@ -6,7 +6,7 @@ require_relative '../lib/fair_tests/ft_r1_2_m_fs_maintaining_organisation'
 
 class FtR12MFsMaintainingOrganisationTest < Minitest::Test
   include ::TestHelper
-  include ::FtR12MFsCitationPublication
+  include ::FtR12MFsMaintainingOrganisation
 
   def test_pass_ft_related_maintainers
 
