@@ -9,8 +9,8 @@ module FtI2MVocabUrl
 
     meta = {
       testid: 'Ft_I2_M_VocabUrl.ttl',
-      testname: '',
-      description: "",
+      testname: 'FAIR Test - I2 - Metadata - Vocabulary URL',
+      description: "This test evaluates whether the metadata for the digital object includes an inLanguage attribute containing a well-formed vocabulary URL. The expected input is the URL of the resource to be tested.",
       keywords: ['FAIR', 'F2', 'FAIR vocabulary'],
       creator: 'https://orcid.org/0000-0002-6468-9260',
       indicators: [],
@@ -19,7 +19,7 @@ module FtI2MVocabUrl
       testversion: '1.0.0',
       protocol: 'https',
       host: 'ostrails.github.io',
-      basePath: '/assessment-component-metadata-records/test/ft_i2_m_vocab_url',
+      basePath: '/assessment-component-metadata-records/test/',
       endpoint_url: 'https://fair-tests.fairsharing.org/test/ft_i2_m_vocab_url',
       endpoint_description: 'https://fair-tests.fairsharing.org/test_descriptions/ft_i2_m_vocab_url/api',
     }
