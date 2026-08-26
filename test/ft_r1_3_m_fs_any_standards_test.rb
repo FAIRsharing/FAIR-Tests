@@ -4,7 +4,7 @@ require_relative './test_helper'
 require 'webmock/minitest'
 require_relative '../lib/fair_tests/ft_r1_3_m_fs_any_standards'
 
-class FtR13MFsAnyStandardssTest < Minitest::Test
+class FtR13MFsAnyStandardsTest < Minitest::Test
   include ::TestHelper
   include ::FtR13MFsAnyStandards
 

@@ -18,7 +18,7 @@ class FairTestUtilsTest < Minitest::Test
     stub_request(:get, "https://doi.org/10.12346%2Fwibble.ftang").
       with(
         headers: {
-          'Accept'=>'application/vnd.citationstyles.csl+json'
+          'Accept' => 'application/vnd.citationstyles.csl+json'
         }).
       to_return(status: 500, body: "", headers: {})
 
@@ -271,7 +271,7 @@ class FairTestUtilsTest < Minitest::Test
       ]
     }
 
-    matches = find_schema_object_values(data,'@id')
+    matches = find_schema_object_values(data, '@id')
 
     assert_equal 5, matches.length
     assert_equal [1, 2], matches[1, 2]
@@ -352,9 +352,9 @@ class FairTestUtilsTest < Minitest::Test
     stub_request(:get, "https://example.org").
       with(
         headers: {
-          'Accept'=>'*/*',
-          'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-          'User-Agent'=>'Ruby'
+          'Accept' => '*/*',
+          'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'User-Agent' => 'Ruby'
         }).
       to_return(status: 200, body: "", headers: {})
 
@@ -482,7 +482,7 @@ class FairTestUtilsTest < Minitest::Test
       }.to_json
     )
 
-    assert_equal get_fairsharing_record("FAIRsharing.123456"), {:message=>"Error getting record from FAIRsharing API: 404, "}
+    assert_equal get_fairsharing_record("FAIRsharing.123456"), {:message => "Error getting record from FAIRsharing API: 404, "}
   end
 
   def test_handles_malformed_fairsharing_record_response
@@ -502,9 +502,15 @@ class FairTestUtilsTest < Minitest::Test
         "message": "Not Found"
       }.to_json
     )
-    assert_equal find_by_regex("FAIRsharing.123456"), {:message=>"Error getting record from FAIRsharing API: 404, "}
+    assert_equal find_by_regex("FAIRsharing.123456"), {:message => "Error getting record from FAIRsharing API: 404, "}
   end
 
+  def test_validates_subjects_ids
+    assert subject_appears_or_descendent([1, 2, 3], [{'id' => 1}])
+    assert subject_appears_or_descendent([1, 2, 3], [{'id' => 5}, 'ancestors' => [{'id' => 11}, {'id' => 3}]])
+    refute subject_appears_or_descendent([1, 2, 3], [{'id' => 22}])
+    refute subject_appears_or_descendent([1, 2, 3], [{'id' => 5}, 'ancestors' => [{'id' => 11}, {'id' => 33}]])
+  end
 
   private
 
@@ -527,5 +533,7 @@ class FairTestUtilsTest < Minitest::Test
       httparty_singleton.remove_method original_method
     end
   end
+
+
 
 end
