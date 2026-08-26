@@ -50,7 +50,7 @@ module FtF4MMetaIndexed
         next unless found
 
         found['titles'].each do |title|
-          if title['title'].downcase == record.name.downcase
+          if title['title'].downcase == record['name'].downcase
             response.score = 'pass'
             response.comments << 'This record was located by checking a DOI with Datacite.'
           end
@@ -60,7 +60,7 @@ module FtF4MMetaIndexed
       # Check with core.ac.uk/services/api by searching with the title.
       # N.B. https://core.ac.uk/acknowledge - find best way to do this...
       # TODO: An example needs to be found of a record which can be located here.
-      core_data, core_code = search_core(record.name)
+      core_data, core_code = search_core(record['name'])
       if core_code != 200
         response.comments << "An attempt to search core.ac.uk failed: #{core_code}."
       elsif core_data
@@ -69,12 +69,12 @@ module FtF4MMetaIndexed
       end
 
       # Check by using the URL (and perhaps title?) with SearXNG.
-      searxng_check, searxng_code = search_searxng(record.name)
+      searxng_check, searxng_code = search_searxng(record['name'])
       if searxng_code != 200
         response.comments << "A search with SearXNG failed: #{searxng_code}."
       elsif searxng_check
         searxng_check['results'].each do |res|
-          if res['title'].downcase == record.name.downcase
+          if res['title'].downcase.include?(record['name'].downcase)
             response.score = 'pass'
             response.comments << 'This record was located by searching for its title via a general web search (SearXNG).'
             break
@@ -91,6 +91,8 @@ module FtF4MMetaIndexed
       response.score = 'indeterminate'
       response.comments << 'No record was found matching the provided identifier.'
     end
+
+    response.comments.uniq!
 
     response.createEvaluationResponse
   end
