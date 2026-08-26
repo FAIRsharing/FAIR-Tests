@@ -35,9 +35,8 @@ module FairTestUtils
       'Accept' => 'application/json',
       'Content-Type' => 'application/x-www-form-urlencoded'
     }
-    url = 'https://search.fairsharing.org/search'
     response = HTTParty.post(
-      url,
+      ENV['SEARXNG_URL'],
       body: { q: term, format: 'json' },
       headers: json_headers,
       follow_redirects: true
