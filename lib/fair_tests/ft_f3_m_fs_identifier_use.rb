@@ -58,7 +58,7 @@ module FtF3MFsIdentifierUse
             timeout: 10,
             follow_redirects: false
           )
-          if http_response.success? || http_response.redirect?
+          if http_response.success? || http_response.code == 301
             response.score = 'pass'
             response.comments << 'This record contains a resolvable homepage URL.'
           else
