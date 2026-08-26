@@ -80,58 +80,6 @@ module FtF2MFsLsDiscoveryFields
     response.createEvaluationResponse
   end
 
-  private
 
-  def fetch_remote_browse_subjects
-    response = HTTParty.post(
-      ENV['FAIRSHARING_API_URL'],
-      body: { query: '{browseSubjects{ data }}' }.to_json,
-      headers: {
-        'Content-Type' => 'application/json',
-        'Accept' => 'application/json',
-        'X-GraphQL-Key' => ENV['FAIRSHARING_API_KEY']
-      }
-    )
-
-    return [] unless response.code == 200
-
-    JSON.parse(response.body).dig('data', 'browseSubjects', 'data') || []
-  rescue StandardError
-    []
-  end
-
-  def fetch_local_browse_subjects
-    path = File.expand_path('../../subjects.json', __dir__)
-
-    JSON.parse(File.read(path)).dig('data', 'browseSubjects', 'data') || []
-  rescue StandardError
-    []
-  end
-
-  def find_subject_by_id(subjects, subject_id)
-    Array(subjects).each do |subject|
-      next unless subject.is_a?(Hash)
-
-      return subject if subject['id'].to_i == subject_id
-
-      matching_child = find_subject_by_id(subject['children'], subject_id)
-      return matching_child unless matching_child.nil?
-    end
-
-    nil
-  end
-
-  def collect_subject_names(subject)
-    return [] unless subject.is_a?(Hash)
-
-    names = []
-    names << subject['name'].downcase if subject['name'].is_a?(String)
-
-    Array(subject['children']).each do |child|
-      names.concat(collect_subject_names(child))
-    end
-
-    names
-  end
 
 end
