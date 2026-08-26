@@ -44,7 +44,7 @@ module FtR13MFsSubmissionDocs
           record['metadata']['data_processes_and_conditions'].each do |proc|
             next unless proc['type'].downcase.include?('write') &&
                proc['access_method'] == 'User interface'  &&
-               proc.include?('documentation_url') && proc['documentation_url'].strip != ''
+               proc.include?('documentation_url') && proc['documentation_url'].to_s.strip != ''
 
             pass = true
             response.score = 'pass'
