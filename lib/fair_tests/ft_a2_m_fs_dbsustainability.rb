@@ -36,7 +36,7 @@ module FtA2MFsDbsustainability
     # Perform the test
     if record && !record.empty?
       if record['registry'] == 'Database'
-        if record['metadata'].include?('resource_sustainability') && record['metadata']['resource_sustainability'].include?('url') && !record['metadata']['resource_sustainability']['url'].strip.empty?
+        if record['metadata'].include?('resource_sustainability') && record['metadata']['resource_sustainability'].include?('url') && !record['metadata']['resource_sustainability']['url'].to_s.strip.empty?
           response.score = 'pass'
           response.comments << "Using FAIRsharing metadata for the database under evaluation (https://fairsharing.org/#{record['id']}), the database declares a sustainability plan."
         else
