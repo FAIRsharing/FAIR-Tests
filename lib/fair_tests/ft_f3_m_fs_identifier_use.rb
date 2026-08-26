@@ -52,12 +52,19 @@ module FtF3MFsIdentifierUse
         if homepage.empty? || !%w[http https].include?(uri.scheme)
           response.score = 'fail'
           response.comments << 'This record does not contain a valid homepage URL.'
-        elsif HTTParty.head(homepage, timeout: 10, follow_redirects: true).success?
-          response.score = 'pass'
-          response.comments << 'This record contains a resolvable homepage URL.'
         else
-          response.score = 'fail'
-          response.comments << 'This record homepage URL did not resolve.'
+          http_response = HTTParty.head(
+            homepage,
+            timeout: 10,
+            follow_redirects: false
+          )
+          if http_response.success? || http_response.code == 301
+            response.score = 'pass'
+            response.comments << 'This record contains a resolvable homepage URL.'
+          else
+            response.score = 'fail'
+            response.comments << 'This record homepage URL did not resolve.'
+          end
         end
       rescue URI::InvalidURIError, Socket::ResolutionError, Net::OpenTimeout, Net::ReadTimeout
         response.score = 'fail'
