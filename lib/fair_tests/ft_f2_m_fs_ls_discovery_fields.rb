@@ -4,8 +4,6 @@ module FtF2MFsLsDiscoveryFields
   require_relative '../fair_test_utils'
   include FairTestUtils
 
-  LIFE_SCIENCE_SUBJECT_ID = 1337
-
   def ft_f2_m_fs_ls_discovery_fields(url_record)
     record = obtain_record_from_text(url_record)
 
@@ -63,11 +61,7 @@ module FtF2MFsLsDiscoveryFields
         response.score = 'fail'
         response.comments << 'This record does not contain any subjects.'
       else
-        life_science_subjects = get_life_science_subjects
-        record_subjects = record['subjects'].map do |subject|
-          (subject['name'] || subject['label']).to_s.downcase
-        end
-        unless (life_science_subjects & record_subjects).any?
+        unless subject_has_ls_ancestor(record['subjects'])
           pass = false
           response.score = 'fail'
           response.comments << 'This record does not contain any subjects from the Life Sciences hierarchy.'
@@ -86,80 +80,6 @@ module FtF2MFsLsDiscoveryFields
     response.createEvaluationResponse
   end
 
-  private
 
-  def get_life_science_subjects
-    # First, get data from the FAIRsharing GraphQL API.
-    # The query is: {browseSubjects{ data }}
-    # Then, search through the object to find the subject with a given ID.
-    # There is an example file provided to determine the structure: subjects.json
-    # For the subject found, recursively traverse all children and get their names.
-    # Downcase all names and put them in an array.
-    subjects = fetch_browse_subjects
-    life_science_subject = find_subject_by_id(subjects, LIFE_SCIENCE_SUBJECT_ID)
-
-    return [] if life_science_subject.nil?
-
-    collect_subject_names(life_science_subject).uniq
-  end
-
-  def fetch_browse_subjects
-    subjects = fetch_remote_browse_subjects
-    return subjects unless subjects.empty?
-
-    fetch_local_browse_subjects
-  end
-
-  def fetch_remote_browse_subjects
-    response = HTTParty.post(
-      ENV['FAIRSHARING_API_URL'],
-      body: { query: '{browseSubjects{ data }}' }.to_json,
-      headers: {
-        'Content-Type' => 'application/json',
-        'Accept' => 'application/json',
-        'X-GraphQL-Key' => ENV['FAIRSHARING_API_KEY']
-      }
-    )
-
-    return [] unless response.code == 200
-
-    JSON.parse(response.body).dig('data', 'browseSubjects', 'data') || []
-  rescue StandardError
-    []
-  end
-
-  def fetch_local_browse_subjects
-    path = File.expand_path('../../subjects.json', __dir__)
-
-    JSON.parse(File.read(path)).dig('data', 'browseSubjects', 'data') || []
-  rescue StandardError
-    []
-  end
-
-  def find_subject_by_id(subjects, subject_id)
-    Array(subjects).each do |subject|
-      next unless subject.is_a?(Hash)
-
-      return subject if subject['id'].to_i == subject_id
-
-      matching_child = find_subject_by_id(subject['children'], subject_id)
-      return matching_child unless matching_child.nil?
-    end
-
-    nil
-  end
-
-  def collect_subject_names(subject)
-    return [] unless subject.is_a?(Hash)
-
-    names = []
-    names << subject['name'].downcase if subject['name'].is_a?(String)
-
-    Array(subject['children']).each do |child|
-      names.concat(collect_subject_names(child))
-    end
-
-    names
-  end
 
 end
