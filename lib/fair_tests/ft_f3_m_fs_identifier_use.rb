@@ -53,17 +53,28 @@ module FtF3MFsIdentifierUse
           response.score = 'fail'
           response.comments << 'This record does not contain a valid homepage URL.'
         else
-          http_response = HTTParty.head(
-            homepage,
-            timeout: 10,
-            follow_redirects: false
-          )
-          if http_response.success? || http_response.code == 301
-            response.score = 'pass'
-            response.comments << 'This record contains a resolvable homepage URL.'
-          else
+          begin
+            http_response = HTTParty.head(
+              homepage,
+              timeout: 10,
+              follow_redirects: true
+            )
+            if http_response.success?
+              response.score = 'pass'
+              response.comments << 'This record contains a resolvable homepage URL.'
+            else
+              response.score = 'fail'
+              response.comments << "This record homepage URL did not resolve: #{response.code}."
+            end
+          rescue HTTParty::RedirectionTooDeep
             response.score = 'fail'
-            response.comments << 'This record homepage URL did not resolve.'
+            response.comments << 'This record homepage URL has a redirect loop.'
+          rescue OpenSSL::SSL::SSLError
+            response.score = 'fail'
+            response.comments << 'This record homepage URL has misconfigured TLS.'
+          rescue Exception => e
+            response.score = 'fail'
+            response.comments << "This record homepage URL failed to resolve: #{e.message}."
           end
         end
       rescue URI::InvalidURIError, Socket::ResolutionError, Net::OpenTimeout, Net::ReadTimeout
