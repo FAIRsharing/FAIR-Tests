@@ -409,6 +409,7 @@ module FairTestUtils
     temporary_file&.close!
   end
 
+  # A lock is required as there are multiple Puma threads accessing these files.
   def with_fairsharing_cache_lock(cache_path)
     lock_file = begin
       FileUtils.mkdir_p(File.dirname(cache_path))
