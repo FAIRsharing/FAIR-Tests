@@ -15,6 +15,7 @@ module FairTestUtils
   FAIRSHARING_CACHE_TTL = 86_400
   FAIRSHARING_CACHE_DIRECTORY = File.expand_path('../cache', __dir__)
   FAIRSHARING_CACHE_ENABLED_VALUES = %w[1 true yes on].freeze
+  FAIRSHARING_USER_AGENT = 'FAIRsharing FAIR-Tests server'
 
   # Deprecated 29/7/26 due to unreliability.
   #def metadata_harvesting(url)
@@ -443,6 +444,7 @@ module FairTestUtils
     headers = {
       'Content-Type' => 'application/json' ,
       'Accept' => 'application/json',
+      'User-Agent' => FAIRSHARING_USER_AGENT,
       'X-GraphQL-Key' => ENV['FAIRSHARING_API_KEY']
     }
     query_string = %Q{
@@ -538,6 +540,7 @@ module FairTestUtils
     headers = {
       'Content-Type' => 'application/json' ,
       'Accept' => 'application/json',
+      'User-Agent' => FAIRSHARING_USER_AGENT,
       'X-GraphQL-Key' => ENV['FAIRSHARING_API_KEY']
     }
     query_string = %Q{
