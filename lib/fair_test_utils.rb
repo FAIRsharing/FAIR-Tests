@@ -340,37 +340,20 @@ module FairTestUtils
             ancestors {id label}
           }
           registry
-          type
           metadata
-          countries { id name }
-          exhaustiveLicences
-          domains { id label }
-          taxonomies { id label }
-          userDefinedTags { id label }
-          organisations { id name }
+          countries { id }
           organisationLinks {
-            id
             relation
-            fairsharingRecord { id }
-            organisation { id name }
-            grant {id name}
-            isLead
+            grant { id }
           }
-          grants { id name }
-          publications { id title }
-          licences { id name }
+          licences { id }
           licenceLinks {
             relation
-            licence { id name }
           }
           description
-          createdAt
-          updatedAt
           recordAssociations {
             recordAssocLabel
-            recordAssocLabelId
             linkedRecord {
-              name
               id
               registry
               type
@@ -379,18 +362,13 @@ module FairTestUtils
           }
           reverseRecordAssociations {
             recordAssocLabel
-            recordAssocLabelId
             fairsharingRecord {
-              name
               id
-              registry
               type
-              metadata
             }
           }
          objectTypes {
           label
-          id
          }
          format
         }
