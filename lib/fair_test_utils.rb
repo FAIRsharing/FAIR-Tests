@@ -12,9 +12,10 @@ require 'ftr_ruby'
 
 # Utility functions common to all FAIR tests.
 module FairTestUtils
+  CACHE_DIRECTORY = File.expand_path('../cache', __dir__)
+  CACHE_ENABLED_VALUES = %w[1 true yes on].freeze
   FAIRSHARING_CACHE_TTL = 86_400
-  FAIRSHARING_CACHE_DIRECTORY = File.expand_path('../cache', __dir__)
-  FAIRSHARING_CACHE_ENABLED_VALUES = %w[1 true yes on].freeze
+  ORA_CACHE_TTL = 86_400
   FAIRSHARING_USER_AGENT = 'FAIRsharing FAIR-Tests server'
 
   # Deprecated 29/7/26 due to unreliability.
@@ -40,11 +41,29 @@ module FairTestUtils
   # Useful for getting records from ORA when the harvester is known to be unable to parse
   # the fields required.
   def request_jsonld(url)
+    return fetch_jsonld(url) unless ora_record_url?(url) && ora_cache_enabled?
+
+    cache_path = ora_cache_path(url)
+    cached_record = read_ora_cache(cache_path)
+    return cached_record unless cached_record.nil?
+
+    with_ora_cache_lock(cache_path) do
+      cached_record = read_ora_cache(cache_path)
+      return cached_record unless cached_record.nil?
+
+      record = fetch_jsonld(url, require_success: true)
+      write_ora_cache(cache_path, record) if cacheable_ora_record?(record)
+      record
+    end
+  end
+
+  def fetch_jsonld(url, require_success: false)
     json_headers = {
       'Accept' => 'application/ld+json',
       'Content-Type' => 'application/ld+json'
     }
     response = HTTParty.get(url, headers: json_headers)
+    return nil if require_success && !response.success?
 
     body = response.body.to_s.strip
     return nil if body.empty?
@@ -350,12 +369,11 @@ module FairTestUtils
 
   def fairsharing_cache_enabled?
     value = ENV.fetch('FAIRSHARING_CACHE_ENABLED', 'true').to_s.downcase
-    FAIRSHARING_CACHE_ENABLED_VALUES.include?(value)
+    CACHE_ENABLED_VALUES.include?(value)
   end
 
   def fairsharing_cache_directory
-    configured_directory = ENV.fetch('FAIRSHARING_CACHE_DIR', FAIRSHARING_CACHE_DIRECTORY)
-    File.expand_path(configured_directory, File.expand_path('..', __dir__))
+    File.join(cache_directory('FAIRSHARING_CACHE_DIR'), 'fairsharing')
   end
 
   def fairsharing_cache_ttl
@@ -383,17 +401,105 @@ module FairTestUtils
   end
 
   def read_fairsharing_cache(cache_path)
-    return nil unless File.file?(cache_path)
-    return nil unless Time.now - File.mtime(cache_path) < fairsharing_cache_ttl
-
-    record = JSON.parse(File.read(cache_path))
-    cacheable_fairsharing_record?(record) ? record : nil
-  rescue JSON::ParserError, SystemCallError => e
-    warn "Could not read FAIRsharing cache #{cache_path}: #{e.message}"
-    nil
+    read_json_cache(cache_path, fairsharing_cache_ttl, 'FAIRsharing') do |record|
+      cacheable_fairsharing_record?(record)
+    end
   end
 
   def write_fairsharing_cache(cache_path, record)
+    write_json_cache(cache_path, record, 'FAIRsharing')
+  end
+
+  # A lock is required as there are multiple Puma threads accessing these files.
+  def with_fairsharing_cache_lock(cache_path, &block)
+    with_cache_lock(cache_path, 'FAIRsharing', &block)
+  end
+
+  def cacheable_fairsharing_record?(record)
+    record.is_a?(Hash) && !record.empty? && !record.key?(:message) && !record.key?('message')
+  end
+
+  def ora_cache_enabled?
+    value = ENV.fetch('ORA_CACHE_ENABLED', 'true').to_s.downcase
+    CACHE_ENABLED_VALUES.include?(value)
+  end
+
+  def ora_cache_directory
+    File.join(cache_directory('ORA_CACHE_DIR'), 'ora')
+  end
+
+  def ora_cache_ttl
+    configured_ttl = Integer(ENV.fetch('ORA_CACHE_TTL', ORA_CACHE_TTL.to_s), 10)
+    configured_ttl.positive? ? configured_ttl : ORA_CACHE_TTL
+  rescue ArgumentError, TypeError
+    ORA_CACHE_TTL
+  end
+
+  def ora_record_url?(url)
+    !ora_record_identifier(url).nil?
+  end
+
+  def ora_record_identifier(url)
+    uri = URI.parse(url.to_s.strip)
+    return nil unless uri.scheme&.downcase == 'https' && uri.host&.downcase == 'ora.ox.ac.uk'
+
+    match = CGI.unescape(uri.path).match(%r{\A/objects/uuid:([^/]+)/?\z}i)
+    match && match[1]
+  rescue URI::InvalidURIError
+    nil
+  end
+
+  def ora_cache_key(url)
+    identifier = ora_record_identifier(url)
+    if identifier&.match?(/\A[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}\z/i)
+      identifier.downcase
+    else
+      "identifier-#{Digest::SHA256.hexdigest(url.to_s.strip)}"
+    end
+  end
+
+  def ora_cache_path(url)
+    File.join(ora_cache_directory, "#{ora_cache_key(url)}.json")
+  end
+
+  def read_ora_cache(cache_path)
+    read_json_cache(cache_path, ora_cache_ttl, 'ORA') do |record|
+      cacheable_ora_record?(record)
+    end
+  end
+
+  def write_ora_cache(cache_path, record)
+    write_json_cache(cache_path, record, 'ORA')
+  end
+
+  def with_ora_cache_lock(cache_path, &block)
+    with_cache_lock(cache_path, 'ORA', &block)
+  end
+
+  def cacheable_ora_record?(record)
+    (record.is_a?(Hash) || record.is_a?(Array)) && !record.empty?
+  end
+
+  def cache_directory(service_environment_variable)
+    configured_directory = ENV.fetch(
+      service_environment_variable,
+      ENV.fetch('CACHE_DIR', CACHE_DIRECTORY)
+    )
+    File.expand_path(configured_directory, File.expand_path('..', __dir__))
+  end
+
+  def read_json_cache(cache_path, ttl, label)
+    return nil unless File.file?(cache_path)
+    return nil unless Time.now - File.mtime(cache_path) < ttl
+
+    record = JSON.parse(File.read(cache_path))
+    yield(record) ? record : nil
+  rescue JSON::ParserError, SystemCallError => e
+    warn "Could not read #{label} cache #{cache_path}: #{e.message}"
+    nil
+  end
+
+  def write_json_cache(cache_path, record, label)
     FileUtils.mkdir_p(File.dirname(cache_path))
     temporary_file = Tempfile.new(
       [".#{File.basename(cache_path, '.json')}-", '.tmp'],
@@ -405,25 +511,24 @@ module FairTestUtils
     temporary_file.close
     File.rename(temporary_file.path, cache_path)
   rescue JSON::GeneratorError, SystemCallError => e
-    warn "Could not write FAIRsharing cache #{cache_path}: #{e.message}"
+    warn "Could not write #{label} cache #{cache_path}: #{e.message}"
   ensure
     temporary_file&.close!
   end
 
-  # A lock is required as there are multiple Puma threads accessing these files.
-  def with_fairsharing_cache_lock(cache_path)
+  def with_cache_lock(cache_path, label)
     lock_file = begin
       FileUtils.mkdir_p(File.dirname(cache_path))
       File.open("#{cache_path.delete_suffix('.json')}.lock", File::RDWR | File::CREAT, 0o644)
     rescue SystemCallError => e
-      warn "Could not open FAIRsharing cache lock for #{cache_path}: #{e.message}"
+      warn "Could not open #{label} cache lock for #{cache_path}: #{e.message}"
       return yield
     end
 
     begin
       lock_file.flock(File::LOCK_EX)
     rescue SystemCallError => e
-      warn "Could not lock FAIRsharing cache #{cache_path}: #{e.message}"
+      warn "Could not lock #{label} cache #{cache_path}: #{e.message}"
       lock_file.close
       return yield
     end
@@ -434,10 +539,6 @@ module FairTestUtils
       lock_file.flock(File::LOCK_UN)
       lock_file.close
     end
-  end
-
-  def cacheable_fairsharing_record?(record)
-    record.is_a?(Hash) && !record.empty? && !record.key?(:message) && !record.key?('message')
   end
 
   def fetch_fairsharing_record_from_api(id)
