@@ -1,5 +1,6 @@
 ENV['RACK_ENV'] = 'test'
 ENV['FAIRSHARING_CACHE_ENABLED'] = 'false'
+ENV['ORA_CACHE_ENABLED'] = 'false'
 
 require 'simplecov'
 

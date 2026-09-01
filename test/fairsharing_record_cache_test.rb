@@ -37,7 +37,7 @@ class FairsharingRecordCacheTest < Minitest::Test
 
     assert_equal first, second
     assert_equal 'Example record', second['name']
-    assert_path_exists File.join(@cache_directory, 'fairsharing.abc123.json')
+    assert_path_exists File.join(@cache_directory, 'fairsharing', 'fairsharing.abc123.json')
     assert_requested request, times: 1
   end
 
@@ -48,7 +48,7 @@ class FairsharingRecordCacheTest < Minitest::Test
                  File.basename(fairsharing_cache_path('https://doi.org/10.25504%2FFAIRsharing.ABC123'))
 
     unsafe_path = fairsharing_cache_path('../../outside/cache')
-    assert_equal @cache_directory, File.dirname(unsafe_path)
+    assert_equal File.join(@cache_directory, 'fairsharing'), File.dirname(unsafe_path)
     assert_match(/\Aidentifier-[a-f0-9]{64}\.json\z/, File.basename(unsafe_path))
   end
 
@@ -69,6 +69,7 @@ class FairsharingRecordCacheTest < Minitest::Test
 
   def test_corrupt_record_is_replaced
     cache_path = fairsharing_cache_path('FAIRsharing.abc123')
+    FileUtils.mkdir_p(File.dirname(cache_path))
     File.write(cache_path, 'not json')
     request = stub_fairsharing_record('id' => 'abc123', 'name' => 'Replacement')
 
@@ -115,6 +116,7 @@ class FairsharingRecordCacheTest < Minitest::Test
 
   def test_failed_refresh_does_not_overwrite_expired_record
     cache_path = fairsharing_cache_path(123)
+    FileUtils.mkdir_p(File.dirname(cache_path))
     File.write(cache_path, JSON.generate('id' => '123', 'name' => 'Stale record'))
     expired_at = Time.now - FAIRSHARING_CACHE_TTL - 1
     File.utime(expired_at, expired_at, cache_path)
