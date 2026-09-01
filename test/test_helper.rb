@@ -1,4 +1,5 @@
 ENV['RACK_ENV'] = 'test'
+ENV['FAIRSHARING_CACHE_ENABLED'] = 'false'
 
 require 'simplecov'
 

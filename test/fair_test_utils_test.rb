@@ -331,7 +331,8 @@ class FairTestUtilsTest < Minitest::Test
   def test_obtains_record_from_text
     assert_nil obtain_record_from_text("https://example.org")
 
-    stub_request(:post, "#{ENV['FAIRSHARING_API_URL']}").to_return(
+    stub_request(:post, "#{ENV['FAIRSHARING_API_URL']}").
+      with(headers: { 'User-Agent' => FAIRSHARING_USER_AGENT }).to_return(
       status: 200,
       body: {
         "data": {
@@ -346,7 +347,8 @@ class FairTestUtilsTest < Minitest::Test
   end
 
   def test_handles_errors_getting_fairsharing_record
-    stub_request(:post, "#{ENV['FAIRSHARING_API_URL']}").to_return(
+    stub_request(:post, "#{ENV['FAIRSHARING_API_URL']}").
+      with(headers: { 'User-Agent' => FAIRSHARING_USER_AGENT }).to_return(
       status: 404,
       body: {
         "message": "Not Found"
@@ -367,7 +369,8 @@ class FairTestUtilsTest < Minitest::Test
   end
 
   def test_handles_find_by_regex_errors
-    stub_request(:post, "#{ENV['FAIRSHARING_API_URL']}").to_return(
+    stub_request(:post, "#{ENV['FAIRSHARING_API_URL']}").
+      with(headers: { 'User-Agent' => FAIRSHARING_USER_AGENT }).to_return(
       status: 404,
       body: {
         "message": "Not Found"

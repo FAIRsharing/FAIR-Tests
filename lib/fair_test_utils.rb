@@ -4,11 +4,19 @@ require 'json'
 require 'nokogiri'
 require 'dotenv/load'
 require 'cgi'
+require 'digest'
+require 'fileutils'
+require 'tempfile'
 require 'uri'
 require 'ftr_ruby'
 
 # Utility functions common to all FAIR tests.
 module FairTestUtils
+  FAIRSHARING_CACHE_TTL = 86_400
+  FAIRSHARING_CACHE_DIRECTORY = File.expand_path('../cache', __dir__)
+  FAIRSHARING_CACHE_ENABLED_VALUES = %w[1 true yes on].freeze
+  FAIRSHARING_USER_AGENT = 'FAIRsharing FAIR-Tests server'
+
   # Deprecated 29/7/26 due to unreliability.
   #def metadata_harvesting(url)
   #  json_headers = {
@@ -324,9 +332,119 @@ module FairTestUtils
   # This will get a record from the FAIRsharing database via the API.
   # TODO: Currently the data are very extensive, but we may need only metadata and perhaps relations.
   def get_fairsharing_record(id)
+    return fetch_fairsharing_record_from_api(id) unless fairsharing_cache_enabled?
+
+    cache_path = fairsharing_cache_path(id)
+    cached_record = read_fairsharing_cache(cache_path)
+    return cached_record unless cached_record.nil?
+
+    with_fairsharing_cache_lock(cache_path) do
+      cached_record = read_fairsharing_cache(cache_path)
+      return cached_record unless cached_record.nil?
+
+      record = fetch_fairsharing_record_from_api(id)
+      write_fairsharing_cache(cache_path, record) if cacheable_fairsharing_record?(record)
+      record
+    end
+  end
+
+  def fairsharing_cache_enabled?
+    value = ENV.fetch('FAIRSHARING_CACHE_ENABLED', 'true').to_s.downcase
+    FAIRSHARING_CACHE_ENABLED_VALUES.include?(value)
+  end
+
+  def fairsharing_cache_directory
+    configured_directory = ENV.fetch('FAIRSHARING_CACHE_DIR', FAIRSHARING_CACHE_DIRECTORY)
+    File.expand_path(configured_directory, File.expand_path('..', __dir__))
+  end
+
+  def fairsharing_cache_ttl
+    configured_ttl = Integer(ENV.fetch('FAIRSHARING_CACHE_TTL', FAIRSHARING_CACHE_TTL.to_s), 10)
+    configured_ttl.positive? ? configured_ttl : FAIRSHARING_CACHE_TTL
+  rescue ArgumentError, TypeError
+    FAIRSHARING_CACHE_TTL
+  end
+
+  def fairsharing_cache_key(id)
+    identifier = CGI.unescape(id.to_s.strip).sub(%r{/+\z}, '')
+    fairsharing_id = identifier.match(
+      %r{(?:\A|/)(?:10\.25504/)?fairsharing\.([a-z0-9_-]+)\z}i
+    )
+    return "fairsharing.#{fairsharing_id[1].downcase}" if fairsharing_id
+
+    numeric_id = identifier.match(%r{(?:\A|fairsharing\.org/)(\d+)\z}i)
+    return numeric_id[1] if numeric_id
+
+    "identifier-#{Digest::SHA256.hexdigest(identifier)}"
+  end
+
+  def fairsharing_cache_path(id)
+    File.join(fairsharing_cache_directory, "#{fairsharing_cache_key(id)}.json")
+  end
+
+  def read_fairsharing_cache(cache_path)
+    return nil unless File.file?(cache_path)
+    return nil unless Time.now - File.mtime(cache_path) < fairsharing_cache_ttl
+
+    record = JSON.parse(File.read(cache_path))
+    cacheable_fairsharing_record?(record) ? record : nil
+  rescue JSON::ParserError, SystemCallError => e
+    warn "Could not read FAIRsharing cache #{cache_path}: #{e.message}"
+    nil
+  end
+
+  def write_fairsharing_cache(cache_path, record)
+    FileUtils.mkdir_p(File.dirname(cache_path))
+    temporary_file = Tempfile.new(
+      [".#{File.basename(cache_path, '.json')}-", '.tmp'],
+      File.dirname(cache_path)
+    )
+    temporary_file.write(JSON.generate(record))
+    temporary_file.flush
+    temporary_file.fsync
+    temporary_file.close
+    File.rename(temporary_file.path, cache_path)
+  rescue JSON::GeneratorError, SystemCallError => e
+    warn "Could not write FAIRsharing cache #{cache_path}: #{e.message}"
+  ensure
+    temporary_file&.close!
+  end
+
+  # A lock is required as there are multiple Puma threads accessing these files.
+  def with_fairsharing_cache_lock(cache_path)
+    lock_file = begin
+      FileUtils.mkdir_p(File.dirname(cache_path))
+      File.open("#{cache_path.delete_suffix('.json')}.lock", File::RDWR | File::CREAT, 0o644)
+    rescue SystemCallError => e
+      warn "Could not open FAIRsharing cache lock for #{cache_path}: #{e.message}"
+      return yield
+    end
+
+    begin
+      lock_file.flock(File::LOCK_EX)
+    rescue SystemCallError => e
+      warn "Could not lock FAIRsharing cache #{cache_path}: #{e.message}"
+      lock_file.close
+      return yield
+    end
+
+    begin
+      yield
+    ensure
+      lock_file.flock(File::LOCK_UN)
+      lock_file.close
+    end
+  end
+
+  def cacheable_fairsharing_record?(record)
+    record.is_a?(Hash) && !record.empty? && !record.key?(:message) && !record.key?('message')
+  end
+
+  def fetch_fairsharing_record_from_api(id)
     headers = {
       'Content-Type' => 'application/json' ,
       'Accept' => 'application/json',
+      'User-Agent' => FAIRSHARING_USER_AGENT,
       'X-GraphQL-Key' => ENV['FAIRSHARING_API_KEY']
     }
     query_string = %Q{
@@ -405,7 +523,7 @@ module FairTestUtils
     if response.code == 200
       begin
         JSON.parse(response.body)['data']['fairsharingRecord']
-      rescue
+      rescue StandardError
         {}
       end
     else
@@ -422,6 +540,7 @@ module FairTestUtils
     headers = {
       'Content-Type' => 'application/json' ,
       'Accept' => 'application/json',
+      'User-Agent' => FAIRSHARING_USER_AGENT,
       'X-GraphQL-Key' => ENV['FAIRSHARING_API_KEY']
     }
     query_string = %Q{
