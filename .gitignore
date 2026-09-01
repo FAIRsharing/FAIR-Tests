@@ -1,3 +1,4 @@
 out
 .idea
 .env
+/logs/test_failures.log
