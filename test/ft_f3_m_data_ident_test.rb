@@ -14,7 +14,9 @@ class FtF3MDataIdentTest < Minitest::Test
         distribution: [
           {
             '@type': 'DataDownload',
-            identifier: 'https://www.this_is_a_web.etc'
+            identifier: {
+              url: 'https://www.this_is_a_web.etc'
+            }
           }
         ]
       }
@@ -38,7 +40,9 @@ class FtF3MDataIdentTest < Minitest::Test
         distribution: [
           {
             '@type': 'OtherType',
-            identifier: 'https://www.this_is_a_web.etc'
+            identifier: {
+              url: 'https://www.this_is_a_web.etc'
+            }
           }
         ]
       }
@@ -53,7 +57,9 @@ class FtF3MDataIdentTest < Minitest::Test
         distribution: [
           {
             '@type': 'DataDownload',
-            identifier: '323232'
+            identifier: {
+              id: 'id_1'
+            }
           }
         ]
       }
