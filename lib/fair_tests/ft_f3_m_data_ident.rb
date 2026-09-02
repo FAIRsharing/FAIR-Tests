@@ -7,7 +7,7 @@ module FtF3MDataIdent
     record = request_jsonld(url_record)
 
     meta = {
-      testid: 'FT_F3_M_MetaIdent.ttl',
+      testid: 'FT_F3_M_DataIdent.ttl',
       testname: 'FAIR Test - F3 - Metadata -  include the identifier of the data it describes',
       description: 'This test evaluates whether the metadata record explicitly includes the identifier of the research object(s) it describes. If the record contains a distribution object of type DataDownload and it contains an identifier, this test will pass; otherwise, the test will fail.',
       keywords: ['FAIR', 'F3', 'data identifier'],
