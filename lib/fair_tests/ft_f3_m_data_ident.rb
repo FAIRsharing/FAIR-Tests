@@ -31,13 +31,16 @@ module FtF3MDataIdent
 
     if record && !record.empty?
       distributions = find_schema_object_values(record, 'distribution')
-      pass = distributions.any? do |distribution|
-        next false unless distribution.is_a?(Hash)
-        next false unless schema_object_values(distribution, '@type').include?('DataDownload')
+      pass = false
+      distributions.each do |distribution|
+        next unless distribution.is_a?(Hash)
+        next unless schema_object_values(distribution, '@type').include?('DataDownload')
 
-        valid_url?(find_schema_object_values(distribution, 'identifier'))
+        if distribution.include?('identifier') && valid_url?(distribution['identifier'])
+          pass = true
+          break
+        end
       end
-
       if pass
         response.score = 'pass'
         response.comments << 'This record includes an identifier of the data it describes.'
