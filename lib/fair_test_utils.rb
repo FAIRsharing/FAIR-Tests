@@ -38,6 +38,71 @@ module FairTestUtils
   #  nil
   #end
 
+  # Send a search term to the FAIRsharing searxng instance.
+  def search_searxng(term)
+    json_headers = {
+      'Accept' => 'application/json',
+      'Content-Type' => 'application/x-www-form-urlencoded'
+    }
+    response = HTTParty.post(
+      ENV['SEARXNG_URL'],
+      body: { q: term, format: 'json' },
+      headers: json_headers,
+      follow_redirects: true
+    )
+
+    body = response.body.to_s.strip
+    return [nil, response.code] if body.empty?
+
+    [JSON.parse(body), response.code]
+  rescue JSON::ParserError
+    [nil, response.code]
+  end
+
+  # Check api.core.ac.uk for matching titles.
+  def search_core(title)
+    json_headers = {
+      'Accept' => 'application/json',
+      'Authorization' => "Bearer: #{ENV['CORE_API_KEY']}"
+    }
+    encoded_title = URI.encode_www_form_component(title.to_s)
+    url = "https://api.core.ac.uk/v3/search/outputs?q=#{encoded_title}"
+    response = HTTParty.get(url, headers: json_headers)
+      body = response.body.to_s.strip
+      return [nil, response.code] if body.empty?
+
+      [JSON.parse(body), response.code]
+  rescue JSON::ParserError
+    [nil, response.code]
+  end
+
+  # This will get the data held by datacite on any record, if a DOI is provided.
+  def request_datacite(identifier)
+    identifier = identifier.to_s.strip
+    return nil if identifier.empty?
+
+    if valid_url?(identifier) && is_doi?(identifier.dup)
+      url = identifier
+    elsif is_doi?(identifier.dup)
+      url = "https://api.datacite.org/dois/#{identifier}"
+    else
+      return nil
+    end
+    json_headers = {
+      'Accept' => 'application/vnd.datacite.datacite+json'
+    }
+    response = HTTParty.get(url, headers: json_headers)
+
+    body = response.body.to_s.strip
+    return nil if body.empty?
+
+    JSON.parse(body)
+  rescue JSON::ParserError
+    nil
+  end
+
+
+
   # Useful for getting records from ORA when the harvester is known to be unable to parse
   # the fields required.
   def request_jsonld(url)

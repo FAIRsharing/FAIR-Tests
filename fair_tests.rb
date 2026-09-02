@@ -23,9 +23,9 @@ class FairTests < Sinatra::Base
   end
 
   configure :production do
-    #:nocov:
+    # :nocov:
     set :host_authorization, permitted_hosts: %w[fair-tests.fairsharing.org localhost]
-    #:nocov:
+    # :nocov:
   end
 
   # Modules containing the FAIR Tests:
