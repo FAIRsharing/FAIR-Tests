@@ -26,13 +26,13 @@ paths:
             The response is "pass", "fail" or "indeterminate"
 servers:
   - url: "https://fair-tests.fairsharing.org/test"
-components:
-  schemas:
+  components:
     schemas:
-      required:
-        - resource_identifier
-      properties:
-      - resource_identifier:
-          type: string
-          description: the GUID being tested
-
+      schemas:
+        type: object
+        required:
+          - resource_identifier
+        properties:
+          resource_identifier:
+            type: string
+            description: the GUID being tested

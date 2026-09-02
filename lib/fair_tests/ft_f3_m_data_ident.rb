@@ -35,7 +35,7 @@ module FtF3MDataIdent
         next false unless distribution.is_a?(Hash)
         next false unless schema_object_values(distribution, '@type').include?('DataDownload')
 
-        !find_schema_object_values(distribution, 'identifier').empty?
+        valid_url?(find_schema_object_values(distribution, 'identifier'))
       end
 
       if pass

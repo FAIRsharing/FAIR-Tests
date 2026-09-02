@@ -14,7 +14,7 @@ class FtF3MDataIdentTest < Minitest::Test
         distribution: [
           {
             '@type': 'DataDownload',
-            identifier: '323232'
+            identifier: 'https://www.this_is_a_web.etc'
           }
         ]
       }
@@ -38,6 +38,21 @@ class FtF3MDataIdentTest < Minitest::Test
         distribution: [
           {
             '@type': 'OtherType',
+            identifier: 'https://www.this_is_a_web.etc'
+          }
+        ]
+      }
+    )
+
+    assert_equal 'fail', run_test
+  end
+
+  def test_fails_when_record_has_identifier_not_url
+    stub_request_jsonld(
+      {
+        distribution: [
+          {
+            '@type': 'DataDownload',
             identifier: '323232'
           }
         ]
