@@ -43,7 +43,7 @@ module FtI3MVersionedRecords
 
       if pass
         response.score = 'pass'
-        response.comments << 'This record contains a qualified references to versioned records.'
+        response.comments << 'This record contains a qualified reference to versioned records.'
       else
         response.score = 'fail'
         response.comments << 'This record does not contain a qualified references to versioned records.'
