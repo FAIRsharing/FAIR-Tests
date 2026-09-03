@@ -41,7 +41,6 @@ module FtR13MFsLsCommunityStandards
 
       if %w[Database Policy Standard].include? record['registry']
         pass = false
-        pass = false
 
         if !record['subjects'].nil? && !record['subjects'].empty? && subject_has_ls_ancestor(record['subjects'])
           subject_ids = record['subjects'].collect do |s|
