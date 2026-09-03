@@ -19,7 +19,7 @@ module FtR12MOriginalSource
     keywords: ['FAIR', 'R1.2', 'original source'],
     creator: 'https://orcid.org/0000-0002-6468-9260',
     indicators: [],
-    metric: 'https://fairsharing.org/7991', # principle: https://fairsharing.org/6313
+    metric: 'https://doi.org/10.25504/FAIRsharing.4264f7', # principle: https://fairsharing.org/6313
     license: 'https://creativecommons.org/licenses/by/4.0/',
     testversion: '1.0.0',
     protocol: 'https',
