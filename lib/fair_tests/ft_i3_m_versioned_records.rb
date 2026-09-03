@@ -8,7 +8,7 @@ module FtI3MVersionedRecords
     record = request_jsonld(url_record)
 
     meta = {
-      testid: 'Ft_I3_M_VersionedRecords.ttl',
+      testid: 'FT_I3_M_VersionedRecords.ttl',
       testname: 'FAIR Test - I3 - Metadata - Qualified References to Versioned Records',
       description: "This test evaluates whether the metadata retrieved upon identifier resolution contains at least one qualified, semantically defined link to another version of the repository record. This test search for a qualified (labelled) relationship indicating another version of the repository record (e.g. previous version, newer version, or alternative DOI version), expressed using defined relationship type(s). A repository record will pass this test if at least one item in a vector labelled 'isBasedOn' with type 'Dataset' is present in the metadata, else the test will fail. The expected input is the URL of the resource to be tested.",
       keywords: ['FAIR', 'I3', 'Versioned records'],
