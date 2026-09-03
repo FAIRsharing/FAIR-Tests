@@ -46,7 +46,7 @@ module FtI3MVersionedRecords
         response.comments << 'This record contains a qualified reference to versioned records.'
       else
         response.score = 'fail'
-        response.comments << 'This record does not contain a qualified references to versioned records.'
+        response.comments << 'This record does not contain a qualified reference to versioned records.'
       end
     else
       response.score = 'indeterminate'
