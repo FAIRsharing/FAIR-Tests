@@ -75,7 +75,7 @@ class FairTestUtilsTest < Minitest::Test
   end
 
   def test_search_searxng_posts_search_term_and_requests_json
-    url = 'https://search.fairsharing.org/search'
+    url = 'https://searxng.fairsharing.org/search'
     response_body = { results: [{ title: 'Linacre School of Defence' }] }.to_json
 
     stub_request(:post, url).
@@ -93,7 +93,7 @@ class FairTestUtilsTest < Minitest::Test
   end
 
   def test_search_searxng_returns_status_for_empty_and_malformed_responses
-    url = 'https://search.fairsharing.org/search'
+    url = 'https://searxng.fairsharing.org/search'
 
     stub_request(:post, url).
       with(body: { q: 'empty response', format: 'json' }).
