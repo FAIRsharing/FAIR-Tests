@@ -5,7 +5,7 @@ info:
   x-tests_metric: "https://doi.org/10.25504/FAIRsharing.4264f7"
   description: >-
     "This test checks for at least one qualified reference to the original source content. Where applicable, metadata may describe the original source of the record (e.g., OpenAlex ingestion, direct deposit, or other methodologies). A qualified reference here is a metadata field for the original source of the object. Expected input is an identifier such as a DOI or URL."
-  x-applies_to_principle: "https://fairsharing.org/6313"
+  x-applies_to_principle: "https://doi.org/10.25504/FAIRsharing.3e9860"
   contact:
     x-organization: "FAIRsharing, Oxford University"
     url: "https://fairsharing.org"
