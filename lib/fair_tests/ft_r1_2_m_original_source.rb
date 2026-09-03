@@ -16,7 +16,7 @@ module FtR12MOriginalSource
     testid: 'FT_R1_2_M_OriginalSource.ttl',
     testname: 'FAIR Test - R1.2 - Metadata - Original Source',
     description: TEST_DESCRIPTION,
-    keywords: ['ARK', 'FAIR', 'R1.2', 'original source'],
+    keywords: ['FAIR', 'R1.2', 'original source'],
     creator: 'https://orcid.org/0000-0002-6468-9260',
     indicators: [],
     metric: 'https://fairsharing.org/7991', # principle: https://fairsharing.org/6313
