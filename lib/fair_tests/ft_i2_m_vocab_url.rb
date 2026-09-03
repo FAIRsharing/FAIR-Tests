@@ -11,7 +11,7 @@ module FtI2MVocabUrl
       testid: 'Ft_I2_M_VocabUrl.ttl',
       testname: 'FAIR Test - I2 - Metadata - Vocabulary URL',
       description: "This test evaluates whether the metadata for the digital object includes an inLanguage attribute containing a well-formed vocabulary URL. The expected input is the URL of the resource to be tested.",
-      keywords: ['FAIR', 'F2', 'FAIR vocabulary'],
+      keywords: ['FAIR', 'I2', 'FAIR vocabulary'],
       creator: 'https://orcid.org/0000-0002-6468-9260',
       indicators: [],
       metric: 'https://fairsharing.org/10.25504/FAIRsharing.0273a2',
