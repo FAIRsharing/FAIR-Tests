@@ -160,6 +160,31 @@ class FtF4MMetaIndexedTest < Minitest::Test
     assert_includes response_body, 'No references to this identifier were found by any search attempted.'
   end
 
+  def test_continues_when_datacite_lookup_raises_an_error
+    title = 'A metadata record with an unavailable DOI'
+    doi = '10.1234/unavailable-record'
+    record = {
+      'name' => title,
+      'identifier' => doi
+    }
+    record.define_singleton_method(:name) { self['name'] }
+
+    define_singleton_method(:request_jsonld) { |_url| record }
+    define_singleton_method(:request_datacite) { |_identifier| raise 'DataCite unavailable' }
+    define_singleton_method(:search_core) { |_title| [nil, 200] }
+    define_singleton_method(:search_searxng) { |_title| [nil, 200] }
+
+    output, = capture_io do
+      @response_body = ft_f4_m_meta_indexed('https://example.org/records/datacite-unavailable')
+    end
+
+    body = parsed_response_body(@response_body)
+    assert_equal 'fail', find_prov_value(body)
+    assert_includes output, 'Error: DataCite unavailable'
+    assert_includes output, "Identifier: #{doi}"
+    assert_includes @response_body, 'No references to this identifier were found by any search attempted.'
+  end
+
   def test_is_indeterminate_when_no_metadata_record_is_found
     define_singleton_method(:request_jsonld) { |_url| nil }
     define_singleton_method(:search_core) { |_title| flunk 'CORE should not be searched' }

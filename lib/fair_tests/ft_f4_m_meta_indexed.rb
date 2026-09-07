@@ -39,21 +39,27 @@ module FtF4MMetaIndexed
         else
           identifier
         end
-      end.uniq
+      end.uniq.compact
       dois, non_dois = identifiers.partition do |identifier|
         is_doi?(identifier.to_s.dup)
       end
 
       # If any identifiers are DOIs look them up with Datacite to see if a matching entity is found (check name/title).
       dois.each do |identifier|
-        found = request_datacite(identifier)
-        next unless found
+        begin
+          found = request_datacite(identifier)
+          next unless found
+          next if found['errors']
 
-        found['titles'].each do |title|
-          if title['title'].downcase == record['name'].downcase
-            response.score = 'pass'
-            response.comments << 'This record was located by checking a DOI with Datacite.'
+          found['titles'].each do |title|
+            if title['title'].downcase == record['name'].downcase
+              response.score = 'pass'
+              response.comments << 'This record was located by checking a DOI with Datacite.'
+            end
           end
+        rescue => e
+          puts "Error: #{e}"
+          puts "Identifier: #{identifier}"
         end
       end
 
