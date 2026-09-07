@@ -43,14 +43,10 @@ class FairTestUtilsTest < Minitest::Test
   def test_request_datacite_accepts_doi_urls_and_bare_dois
     doi_url = 'https://doi.org/10.1234/example'
     bare_doi = '10.1234/example'
-    datacite_url = "https://api.datacite.org/dois/#{bare_doi}"
     response_body = { data: { id: bare_doi } }.to_json
     request_headers = { 'Accept' => 'application/vnd.datacite.datacite+json' }
 
     stub_request(:get, doi_url).
-      with(headers: request_headers).
-      to_return(body: response_body)
-    stub_request(:get, datacite_url).
       with(headers: request_headers).
       to_return(body: response_body)
 
@@ -67,7 +63,7 @@ class FairTestUtilsTest < Minitest::Test
   def test_request_datacite_returns_nil_for_malformed_json
     doi = '10.1234/malformed-response'
 
-    stub_request(:get, "https://api.datacite.org/dois/#{doi}").
+    stub_request(:get, "https://doi.org/#{doi}").
       with(headers: { 'Accept' => 'application/vnd.datacite.datacite+json' }).
       to_return(status: 200, body: 'not json')
 

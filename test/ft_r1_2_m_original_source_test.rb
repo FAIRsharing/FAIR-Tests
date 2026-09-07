@@ -10,7 +10,7 @@ class FtR12MOriginalSourceTest < Minitest::Test
 
   JSONLD_IDENTIFIER = 'https://example.org/records/abc123'
   DOI_IDENTIFIER = '10.1234/original-source-test'
-  DATACITE_URL = "https://api.datacite.org/dois/#{DOI_IDENTIFIER}".freeze
+  DATACITE_URL = "https://doi.org/#{DOI_IDENTIFIER}".freeze
 
   def test_passes_for_an_ora_deposit_in_jsonld
     stub_jsonld_source('ORA Deposit')

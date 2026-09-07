@@ -21,7 +21,7 @@ class FtF4MMetaIndexedTest < Minitest::Test
     }
     record.define_singleton_method(:name) { self['name'] }
 
-    stub_request(:get, "https://api.datacite.org/dois/#{doi}").
+    stub_request(:get, "https://doi.org/#{doi}").
       with(headers: { 'Accept' => 'application/vnd.datacite.datacite+json' }).
       to_return(
         status: 200,
@@ -141,7 +141,7 @@ class FtF4MMetaIndexedTest < Minitest::Test
     }
     record.define_singleton_method(:name) { self['name'] }
 
-    stub_request(:get, "https://api.datacite.org/dois/#{doi}").
+    stub_request(:get, "https://doi.org/#{doi}").
       with(headers: { 'Accept' => 'application/vnd.datacite.datacite+json' }).
       to_return(
         status: 200,
@@ -154,6 +154,30 @@ class FtF4MMetaIndexedTest < Minitest::Test
     define_singleton_method(:search_searxng) { |_title| nil }
 
     response_body = ft_f4_m_meta_indexed('https://example.org/records/unindexed')
+
+    body = parsed_response_body(response_body)
+    assert_equal 'fail', find_prov_value(body)
+    assert_includes response_body, 'No references to this identifier were found by any search attempted.'
+  end
+
+  def test_continues_when_datacite_lookup_raises_an_error
+    title = 'A metadata record with an unavailable DOI'
+    doi = '10.1234/unavailable-record'
+    record = {
+      'name' => title,
+      'identifier' => doi
+    }
+    record.define_singleton_method(:name) { self['name'] }
+
+    define_singleton_method(:request_jsonld) { |_url| record }
+    define_singleton_method(:request_datacite) { |_identifier| raise 'DataCite unavailable' }
+    define_singleton_method(:search_core) { |_title| [nil, 200] }
+    define_singleton_method(:search_searxng) { |_title| [nil, 200] }
+
+    response_body = nil
+    assert_silent do
+      response_body = ft_f4_m_meta_indexed('https://example.org/records/datacite-unavailable')
+    end
 
     body = parsed_response_body(response_body)
     assert_equal 'fail', find_prov_value(body)
