@@ -21,7 +21,7 @@ class FtF4MMetaIndexedTest < Minitest::Test
     }
     record.define_singleton_method(:name) { self['name'] }
 
-    stub_request(:get, "https://api.datacite.org/dois/#{doi}").
+    stub_request(:get, "https://doi.org/#{doi}").
       with(headers: { 'Accept' => 'application/vnd.datacite.datacite+json' }).
       to_return(
         status: 200,
@@ -141,7 +141,7 @@ class FtF4MMetaIndexedTest < Minitest::Test
     }
     record.define_singleton_method(:name) { self['name'] }
 
-    stub_request(:get, "https://api.datacite.org/dois/#{doi}").
+    stub_request(:get, "https://doi.org/#{doi}").
       with(headers: { 'Accept' => 'application/vnd.datacite.datacite+json' }).
       to_return(
         status: 200,
@@ -174,15 +174,14 @@ class FtF4MMetaIndexedTest < Minitest::Test
     define_singleton_method(:search_core) { |_title| [nil, 200] }
     define_singleton_method(:search_searxng) { |_title| [nil, 200] }
 
-    output, = capture_io do
-      @response_body = ft_f4_m_meta_indexed('https://example.org/records/datacite-unavailable')
+    response_body = nil
+    assert_silent do
+      response_body = ft_f4_m_meta_indexed('https://example.org/records/datacite-unavailable')
     end
 
-    body = parsed_response_body(@response_body)
+    body = parsed_response_body(response_body)
     assert_equal 'fail', find_prov_value(body)
-    assert_includes output, 'Error: DataCite unavailable'
-    assert_includes output, "Identifier: #{doi}"
-    assert_includes @response_body, 'No references to this identifier were found by any search attempted.'
+    assert_includes response_body, 'No references to this identifier were found by any search attempted.'
   end
 
   def test_is_indeterminate_when_no_metadata_record_is_found

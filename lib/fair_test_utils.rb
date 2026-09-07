@@ -80,23 +80,17 @@ module FairTestUtils
   def request_datacite(identifier)
     identifier = identifier.to_s.strip
     return nil if identifier.empty?
-
+    json_headers = {
+      'Accept' => 'application/vnd.datacite.datacite+json'
+    }
     if valid_url?(identifier) && is_doi?(identifier.dup)
       url = identifier
-      json_headers = {
-        'Accept' => 'application/vnd.datacite.datacite+json'
-      }
+
     elsif is_doi?(identifier.dup)
-      url = "https://api.datacite.org/dois/#{identifier}"
-      json_headers = {
-        'Accept' => 'application/vnd.api+json'
-      }
+      url = "https://doi.org/#{identifier}"
     else
       return nil
     end
-
-    puts "URL: #{url}"
-    puts "Headers: #{json_headers}"
 
     response = HTTParty.get(url, headers: json_headers)
 

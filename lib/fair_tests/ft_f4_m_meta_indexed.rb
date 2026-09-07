@@ -57,9 +57,8 @@ module FtF4MMetaIndexed
               response.comments << 'This record was located by checking a DOI with Datacite.'
             end
           end
-        rescue => e
-          puts "Error: #{e}"
-          puts "Identifier: #{identifier}"
+        rescue StandardError
+          # Continue with the remaining search providers if DataCite is unavailable.
         end
       end
 
