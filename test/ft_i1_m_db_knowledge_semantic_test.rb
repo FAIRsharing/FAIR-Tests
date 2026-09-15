@@ -17,7 +17,7 @@ class FtI1MDbKnowledgeSemanticTest < Minitest::Test
       body: {
         "data": {
           "fairsharingRecord": {
-            "id": "123456",
+            "id": "1234",
             "registry": "Database",
             "format": "semantic"
           }

@@ -1,0 +1,38 @@
+openapi: 3.0.0
+info:
+  version: "1.0.0"
+  title: "FAIR Test - R1.2 - Metadata - Original Source"
+  x-tests_metric: "https://doi.org/10.25504/FAIRsharing.4264f7"
+  description: >-
+    "This test checks for at least one qualified reference to the original source content. Where applicable, metadata may describe the original source of the record (e.g., OpenAlex ingestion, direct deposit, or other methodologies). A qualified reference here is a metadata field for the original source of the object. Expected input is an identifier such as a DOI or URL."
+  x-applies_to_principle: "https://doi.org/10.25504/FAIRsharing.3e9860"
+  contact:
+    x-organization: "FAIRsharing, Oxford University"
+    url: "https://fairsharing.org"
+    name: "FAIRsharing Support"
+    email: "contact@fairsharing.org"
+paths:
+  "/ft_r1_2_m_original_source":
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/schemas"
+        required: true
+      responses:
+        "200":
+          description: >-
+            The response is "pass", "fail" or "indeterminate"
+servers:
+  - url: "https://fair-tests.fairsharing.org/test"
+components:
+  schemas:
+    schemas:
+      type: object
+      required:
+        - resource_identifier
+      properties:
+        resource_identifier:
+          type: string
+          description: the GUID being tested

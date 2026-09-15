@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: "1.0"
+  version: "1.0.0"
   title: "FAIR Test - I3 - allows content submission by machines"
   x-tests_metric: "https://fairsharing.org/8411/"
   description: >-
@@ -29,10 +29,10 @@ servers:
 components:
   schemas:
     schemas:
+      type: object
       required:
         - resource_identifier
       properties:
-      - resource_identifier:
+        resource_identifier:
           type: string
           description: the GUID being tested
-

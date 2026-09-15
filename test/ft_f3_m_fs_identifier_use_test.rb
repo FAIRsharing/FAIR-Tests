@@ -122,6 +122,43 @@ class FtF3MFsIdentifierUseTest < Minitest::Test
     assert_equal 'fail', find_prov_value(body)
   end
 
+  def test_fails_when_homepage_has_redirect_loop
+    stub_fairsharing_record(record_with_metadata(
+                              'doi' => '10.25504/FAIRsharing.123456',
+                              'homepage' => 'https://example.org'
+                            ))
+    redirect_response = Net::HTTPMovedPermanently.new('1.1', '301', 'Moved Permanently')
+    stub_homepage(error: HTTParty::RedirectionTooDeep.new(redirect_response))
+
+    post '/test/ft_f3_m_fs_identifier_use',
+         params: { resource_identifier: 'https://fairsharing.org/1234' }.to_json,
+         headers: headers
+
+    assert last_response.ok?
+
+    body = parsed_response_body(last_response.body)
+    assert_equal 'fail', find_prov_value(body)
+    assert_includes last_response.body, 'This record homepage URL has a redirect loop.'
+  end
+
+  def test_fails_when_homepage_has_misconfigured_tls
+    stub_fairsharing_record(record_with_metadata(
+                              'doi' => '10.25504/FAIRsharing.123456',
+                              'homepage' => 'https://example.org'
+                            ))
+    stub_homepage(error: OpenSSL::SSL::SSLError.new)
+
+    post '/test/ft_f3_m_fs_identifier_use',
+         params: { resource_identifier: 'https://fairsharing.org/1234' }.to_json,
+         headers: headers
+
+    assert last_response.ok?
+
+    body = parsed_response_body(last_response.body)
+    assert_equal 'fail', find_prov_value(body)
+    assert_includes last_response.body, 'This record homepage URL has misconfigured TLS.'
+  end
+
   def test_is_indeterminate_when_record_cannot_be_obtained
     post '/test/ft_f3_m_fs_identifier_use',
          params: { resource_identifier: 'https://example.org/not-a-fairsharing-record' }.to_json,

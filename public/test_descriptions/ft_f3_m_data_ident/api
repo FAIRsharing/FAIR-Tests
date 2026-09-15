@@ -1,0 +1,38 @@
+openapi: 3.0.0
+info:
+  version: "1.0"
+  title: "FAIR Test - F3 - Metadata -  include the identifier of the data it describes"
+  x-tests_metric: "https://fairsharing.org/10.25504/FAIRsharing.0a2061/"
+  description: >-
+      "This test evaluates whether the metadata record explicitly includes the identifier of the research object(s) it describes. If the record contains a distribution object of type DataDownload and it contains an identifier, this test will pass; otherwise, the test will fail."
+  x-applies_to_principle: "https://doi.org/10.25504/FAIRsharing.820324"
+  contact:
+    x-organization: "FAIRsharing, Oxford University"
+    url: "https://fairsharing.org"
+    name: "FAIRsharing Support"
+    email: "contact@fairsharing.org"
+paths:
+  "/ft_f3_m_data_ident":
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/schemas"
+        required: true
+      responses:
+        "200":
+          description:  >-
+            The response is "pass", "fail" or "indeterminate"
+servers:
+  - url: "https://fair-tests.fairsharing.org/test"
+  components:
+    schemas:
+      schemas:
+        type: object
+        required:
+          - resource_identifier
+        properties:
+          resource_identifier:
+            type: string
+            description: the GUID being tested

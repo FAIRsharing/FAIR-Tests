@@ -46,7 +46,7 @@ module FtA11MHttpsRetrievalProtocol
       response.score = 'fail'
       response.comments << "The record is not accessible via HTTPS. The error message on attempted retrieval is: #{e.message}."
     rescue Socket::ResolutionError
-      response.score = 'fail'
+      response.score = 'indeterminate'
       response.comments << 'The record could not be found.'
     end
 

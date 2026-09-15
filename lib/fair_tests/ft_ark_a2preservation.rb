@@ -29,7 +29,7 @@ module FtArkA2preservation
 
     if record && !record.empty?
       if record['registry'] == 'Database'
-        if record['metadata'].include?('data_preservation_policy') && record['metadata']['data_preservation_policy'].include?('url') && !record['metadata']['data_preservation_policy']['url'].strip.empty?
+        if record['metadata'].include?('data_preservation_policy') && record['metadata']['data_preservation_policy'].include?('url') && !record['metadata']['data_preservation_policy']['url'].to_s.strip.empty?
           response.score = 'pass'
           response.comments << 'Using FAIRsharing metadata for the database under evaluation, the database has a data preservation policy.'
         else

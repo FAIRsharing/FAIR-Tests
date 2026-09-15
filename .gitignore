@@ -1,3 +1,10 @@
 out
 .idea
 .env
+/logs/test_failures.log
+/cache/**/*.json
+/cache/**/*.lock
+/cache/**/*.tmp
+coverage/
+logs/
+out*

@@ -1,0 +1,38 @@
+openapi: 3.0.0
+info:
+  version: "1.0.0"
+  title: "FAIR Test - I3 - Metadata - Qualified References to Versioned Records"
+  x-tests_metric: "https://doi.org/10.25504/FAIRsharing.e10b26"
+  description: >-
+      "This test evaluates whether the metadata retrieved upon identifier resolution contains at least one qualified, semantically defined link to another version of the repository record. This test search for a qualified (labelled) relationship indicating another version of the repository record (e.g. previous version, newer version, or alternative DOI version), expressed using defined relationship type(s). A repository record will pass this test if at least one item in a vector labelled 'isBasedOn' with type 'Dataset' is present in the metadata, else the test will fail. The expected input is the URL of the resource to be tested."
+  x-applies_to_principle: "https://doi.org/10.25504/FAIRsharing.ae22b8"
+  contact:
+    x-organization: "FAIRsharing, Oxford University"
+    url: "https://fairsharing.org"
+    name: "FAIRsharing Support"
+    email: "contact@fairsharing.org"
+paths:
+  "/ft_i3_m_versioned_records":
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/schemas"
+        required: true
+      responses:
+        "200":
+          description:  >-
+            The response is "pass", "fail" or "indeterminate"
+servers:
+  - url: "https://fair-tests.fairsharing.org/test"
+components:
+  schemas:
+    schemas:
+      type: object
+      required:
+        - resource_identifier
+      properties:
+        resource_identifier:
+          type: string
+          description: the GUID being tested
