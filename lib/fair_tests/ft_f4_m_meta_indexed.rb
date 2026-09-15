@@ -9,7 +9,7 @@ module FtF4MMetaIndexed
 
     meta = {
       testid: 'FtF4MMetaIndexed.ttl',
-      testname: 'FAIR Test – F4 – Metadata - indexed in a searchable resource',
+      testname: 'FAIR Test - F4 - Metadata - indexed in a searchable resource',
       description: 'This test evaluates whether the provided identifier’s metadata is discoverable by performing public, automated searches with commonly-used search engines. The evaluation assesses whether a search service can successfully locate the metadata record using either the metadata identifier or landing page content such as the record title or keywords - both commonly consumed by search engines - thereby confirming that the resource has been appropriately indexed and is accessible for automated discovery. The expected input is the URL of a resource, and the test will pass if references to that input or identifiers contained within it are found when searching Datacite, core.ac.uk or SearXNG.',
       keywords: ['FAIR', 'F4', 'FAIRsharing', 'searchable', 'indexed'],
       creator: 'https://orcid.org/0000-0002-6468-9260',
