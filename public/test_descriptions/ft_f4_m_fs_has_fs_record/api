@@ -4,7 +4,7 @@ info:
   title: "FAIR Test - F4 - has FAIRsharing record"
   x-tests_metric: "https://fairsharing.org/8375"
   description: >-
-    "This test assesses whether the identifier being evaluated corresponds to a valid FAIRsharing record. This test expects as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation."
+    "This test assesses whether the identifier being evaluated corresponds to a valid FAIRsharing record. Expected input is the FAIRsharing DOI or URL for the FAIRsharing record under evaluation."
   x-applies_to_principle: "https://fairsharing.org/6278"
   contact:
     x-organization: "FAIRsharing, Oxford University"

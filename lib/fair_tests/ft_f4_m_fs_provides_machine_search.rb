@@ -10,7 +10,7 @@ module FtF4MFsProvidesMachineSearch
     meta = {
       testid: 'FT_F4_M_FS_providesMachineSearch.ttl',
       testname: 'FAIR Test - F4 - provides machine search',
-      description: 'This test assesses whether the FAIRsharing record contains at least one Data Process that includes a Search or Browse function (as identified by “Search” or “Browse” within the Name field of Data Processes), uses a non-User Interface access method, and supports Read or Read/Write operations. The test expects as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation.',
+      description: 'This test assesses whether the FAIRsharing record contains at least one Data Process that includes a Search or Browse function (as identified by “Search” or “Browse” within the Name field of Data Processes), uses a non-User Interface access method, and supports Read or Read/Write operations. Expected input is the FAIRsharing DOI or URL for the FAIRsharing record under evaluation.',
       keywords: ['ARK', 'FAIR', 'F4', 'FAIRsharing', 'machine search'],
       creator: 'https://orcid.org/0000-0002-6468-9260',
       indicators: [],

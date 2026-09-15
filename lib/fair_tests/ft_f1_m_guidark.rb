@@ -9,7 +9,7 @@ module FtF1MGuidark
     meta = {
       testid: 'FT_F1_M_GUID-ARK.ttl',
       testname: 'FAIR Test - F1 - Metadata - Globally unique identifiers for database content',
-      description: 'This test checks that the database requires the minting of community-relevant, publicly available globally unique identifiers for at least some of the content within the database being evaluated.',
+      description: 'This test checks that the database requires the minting of community-relevant, publicly available globally unique identifiers for at least some of the content within the database being evaluated. Expected input is the FAIRsharing DOI or URL for the FAIRsharing record under evaluation.',
       keywords: ['ARK', 'FAIR', 'F1', 'GUID', 'globally unique identifiers'],
       creator: 'https://orcid.org/0000-0001-9572-0972',
       indicators: [],

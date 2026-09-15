@@ -10,7 +10,7 @@ module FtF2MFsDiscoveryFields
     meta = {
       testid: 'Ft_F2_M_FsDiscoveryFields.ttl',
       testname: 'FAIR Test - F2 - FAIRsharing metadata fields for resource discovery',
-      description: 'This test assesses whether the FAIRsharing record contains values for the following fields: resource name, description, country, at least one subject, and at least one object type.',
+      description: 'This test assesses whether the FAIRsharing record contains values for the following fields: resource name, description, country, at least one subject, and at least one object type. Expected input is the FAIRsharing DOI or URL for the FAIRsharing record under evaluation.',
       keywords: ['ARK', 'FAIR', 'F2'],
       creator: '0000-0002-6468-9260',
       indicators: [],
