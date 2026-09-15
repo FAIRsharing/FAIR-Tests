@@ -12,16 +12,34 @@ class FtR12MOriginalSourceTest < Minitest::Test
   DOI_IDENTIFIER = '10.1234/original-source-test'
   DATACITE_URL = "https://doi.org/#{DOI_IDENTIFIER}".freeze
 
-  def test_passes_for_an_ora_deposit_in_jsonld
-    stub_jsonld_source('ORA Deposit')
+  def test_passes_for_a_website_source_in_jsonld
+    stub_jsonld_source('WebSite')
 
     assert_metric_score 'pass', JSONLD_IDENTIFIER
   end
 
-  def test_fails_when_jsonld_does_not_name_an_ora_deposit
-    stub_jsonld_source('A different source')
+  def test_fails_when_jsonld_source_is_not_a_website
+    stub_jsonld_source('Dataset')
 
     assert_metric_score 'fail', JSONLD_IDENTIFIER
+  end
+
+  def test_passes_when_any_nested_jsonld_source_is_a_website
+    stub_request_jsonld(
+      {
+        '@graph' => [
+          {
+            'schema:isBasedOn' => [
+              { '@type' => 'Dataset' },
+              { '@type' => ['CreativeWork', 'https://schema.org/WebSite'] }
+            ]
+          }
+        ]
+      },
+      resource_identifier: JSONLD_IDENTIFIER
+    )
+
+    assert_metric_score 'pass', JSONLD_IDENTIFIER
   end
 
   def test_passes_for_a_datacite_is_version_of_doi
@@ -32,6 +50,24 @@ class FtR12MOriginalSourceTest < Minitest::Test
 
   def test_passes_for_a_datacite_is_version_of_url
     stub_datacite_identifier(identifier: 'https://example.org/original-source', identifier_type: 'URL')
+
+    assert_metric_score 'pass', DOI_IDENTIFIER
+  end
+
+  def test_passes_for_nested_datacite_metadata
+    stub_datacite(
+      'data' => {
+        'attributes' => {
+          'relatedIdentifiers' => [
+            {
+              'relationType' => 'isVersionOf',
+              'relatedIdentifier' => '10.5287/ora-6raddkrg9',
+              'relatedIdentifierType' => 'doi'
+            }
+          ]
+        }
+      }
+    )
 
     assert_metric_score 'pass', DOI_IDENTIFIER
   end
@@ -72,9 +108,9 @@ class FtR12MOriginalSourceTest < Minitest::Test
 
   private
 
-  def stub_jsonld_source(name)
+  def stub_jsonld_source(type)
     stub_request_jsonld(
-      { 'isBasedOn' => { '@type' => 'Dataset', 'name' => name, 'url' => 'https://example.org/source' } },
+      { 'isBasedOn' => { '@type' => type, 'name' => 'ORA Deposit', 'url' => 'https://example.org/source' } },
       resource_identifier: JSONLD_IDENTIFIER
     )
   end
