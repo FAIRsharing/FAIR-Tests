@@ -5,7 +5,7 @@ module FtA11MHttpsRetrievalProtocol
   def ft_a1_1_m_https_retrieval_protocol(url_record)
     meta = {
       testid: 'FT_A1.1_M_HTTPSRetrievalProtocol.ttl',
-      testname: 'FAIR Metric – A1.1 – Metadata - HTTP(S) retrieval protocol',
+      testname: 'FAIR Metric - A1.1 - Metadata - HTTP(S) retrieval protocol',
       description: "This metric evaluates whether the protocol used to retrieve metadata referenced by the provided identifier is either HTTP or HTTPS and therefore openly specified, free to implement, and universally implementable. Expected input is a resolvable URL or identifier for the metadata record of the digital research object under evaluation.",
       keywords: ['FAIR', 'A1.1', 'https'],
       creator: 'https://orcid.org/0000-0002-6468-9260',
