@@ -453,22 +453,13 @@ class FairTestUtilsTest < Minitest::Test
                  normalize_doi_url("10.25504/FAIRsharing.123456")
   end
 
-  def test_obtains_record_from_text
-    assert_nil obtain_record_from_text("https://example.org")
-
-    stub_request(:post, "#{ENV['FAIRSHARING_API_URL']}").
-      with(headers: { 'User-Agent' => FAIRSHARING_USER_AGENT }).to_return(
-      status: 200,
-      body: {
-        "data": {
-          "fairsharingRecord": {
-            "id": "123456"
-          }
-        }
-      }.to_json,
-      headers: headers
-    )
-    assert_equal obtain_record_from_text("https://fairsharing.org/FAIRsharing.123456"), {"id" => "123456"}
+  def test_obtains_id_from_text
+    assert_nil obtain_id_from_text("https://example.org")
+    assert_equal "10.25504/FAIRsharing.123456",
+                 obtain_id_from_text("https://fairsharing.org/FAIRsharing.123456")
+    assert_equal "10.25504/FAIRsharing.123456",
+                 obtain_id_from_text("10.25504/FAIRsharing.123456")
+    assert_equal "FAIRsharing.123456", obtain_id_from_text("FAIRsharing.123456")
   end
 
   def test_handles_errors_getting_fairsharing_record

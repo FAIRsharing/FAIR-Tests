@@ -5,7 +5,7 @@ module FtA1MFsProvidesCompAccess
   include FairTestUtils
 
   def ft_a1_m_fs_provides_comp_access(url_record)
-    record = obtain_record_from_text(url_record)
+    record = get_fairsharing_record(url_record)
 
     meta = {
       testid: 'FT_A1_M_FS_providesCompAccess.ttl',

@@ -7,11 +7,7 @@ module FtA1MFsDbOpenAccess
   OPEN_ACCESS_CONDITIONS = ['open', 'partially open'].freeze
 
   def ft_a1_m_fs_db_open_access(url_record)
-    if url_record.include? 'doi.org'
-      record = get_fairsharing_record(resolve_doi(url_record))
-    else
-      record = get_fairsharing_record(url_record)
-    end
+    record = get_fairsharing_record(url_record)
 
     meta = {
       testid: 'FT_A1_M_FS_dbOpenAccess.ttl',

@@ -5,7 +5,7 @@ module FtF3MFsIdentifierUse
   include FairTestUtils
 
   def ft_f3_m_fs_identifier_use(url_record)
-    record = obtain_record_from_text(url_record)
+    record = get_fairsharing_record(url_record)
 
     meta = {
       testid: 'FT_F3_M_FsIdentifierUse.ttl',
