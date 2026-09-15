@@ -129,11 +129,6 @@ class FtI3MFsHumanSubmissionTest < Minitest::Test
 
 
   def test_fail_not_database
-    stub_request(:get, 'https://doi.org/10.1234%2F5678').to_return(
-      status: 200,
-      body: "https://fairsharing.org/5678".to_json,
-      headers: headers
-    )
     stub_request(:post, "#{ENV['FAIRSHARING_API_URL']}").
       with(headers: headers).to_return(
       status: 200,
@@ -149,7 +144,7 @@ class FtI3MFsHumanSubmissionTest < Minitest::Test
     )
 
     post '/test/ft_i3_m_fs_human_submission',
-         params: { resource_identifier: 'https://doi.org/10.1234/5678' }.to_json,
+         params: { resource_identifier: 'https://doi.org/10.25504/FAIRsharing.5678' }.to_json,
          headers: headers
 
     assert last_response.ok?

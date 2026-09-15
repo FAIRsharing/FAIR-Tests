@@ -5,7 +5,7 @@ module FtF4MFsProvidesUserSearch
   include FairTestUtils
 
   def ft_f4_m_fs_provides_user_search(url_record)
-    record = obtain_record_from_text(url_record)
+    record = get_fairsharing_record(url_record)
 
     meta = {
       testid: 'FT_F4_M_FS_providesUserSearch.ttl',

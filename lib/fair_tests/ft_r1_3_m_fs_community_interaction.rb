@@ -6,11 +6,7 @@ module FtR13MFsCommunityInteraction
 
 
   def ft_r1_3_m_fs_community_interaction(url_record)
-    if url_record.include? 'doi.org'
-      record = get_fairsharing_record(resolve_doi(url_record))
-    else
-      record = get_fairsharing_record(url_record)
-    end
+    record = get_fairsharing_record(url_record)
 
 
 

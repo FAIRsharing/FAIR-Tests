@@ -4,11 +4,7 @@ module FtI3MFsRelatedDbs
 
 
   def ft_i3_m_fs_related_dbs(url_record)
-    if url_record.include? 'doi.org'
-      record = get_fairsharing_record(resolve_doi(url_record))
-    else
-      record = get_fairsharing_record(url_record)
-    end
+    record = get_fairsharing_record(url_record)
 
 
 

@@ -3,11 +3,7 @@ module FtI1MDbKnowledgeSemantic
   include FairTestUtils
 
   def ft_i1_m_db_knowledge_semantic(url_record)
-    if url_record.include? 'doi.org'
-      record = get_fairsharing_record(resolve_doi(url_record))
-    else
-      record = get_fairsharing_record(url_record)
-    end
+    record = get_fairsharing_record(url_record)
 
     meta = {
       testid: 'FT_I1_M_DbKnowledgeSemantic.ttl',

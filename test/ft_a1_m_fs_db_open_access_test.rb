@@ -70,15 +70,10 @@ class FtA1MFsDbOpenAccessTest < Minitest::Test
   end
 
   def test_resolves_doi_before_fairsharing_lookup
-    stub_request(:get, 'https://doi.org/10.1234%2F5678').to_return(
-      status: 200,
-      body: 'https://fairsharing.org/5678'.to_json,
-      headers: headers
-    )
     stub_fairsharing_record(database_record('data_access_condition' => { 'type' => 'open' }))
 
     post '/test/ft_a1_m_fs_db_open_access',
-         params: { resource_identifier: 'https://doi.org/10.1234/5678' }.to_json,
+         params: { resource_identifier: 'https://doi.org/10.25504/FAIRsharing.5678' }.to_json,
          headers: headers
 
     assert last_response.ok?

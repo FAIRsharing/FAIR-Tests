@@ -5,11 +5,7 @@ module FtA2MDbpersistencepolicy
   def ft_a2_m_dbpersistencepolicy(url_record)
     # This test expects a URL to be sent, and so if the url_record field is passed directly to get_fairsharing_record
     # it should be evaluated as a URL and passed to FairsharingRecord.find_by_identifier.
-    if url_record.include? 'doi.org'
-      record = get_fairsharing_record(resolve_doi(url_record))
-    else
-      record = get_fairsharing_record(url_record)
-    end
+    record = get_fairsharing_record(url_record)
 
     meta = {
       testid: 'FTA2MDbPersistencepolicy.ttl',

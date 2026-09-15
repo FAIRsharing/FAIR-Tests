@@ -5,11 +5,7 @@ module FtR13MFsDbTrustRecognition
   include FairTestUtils
 
   def ft_r1_3_m_fs_db_trust_recognition(url_record)
-    if url_record.include? 'doi.org'
-      record = get_fairsharing_record(resolve_doi(url_record))
-    else
-      record = get_fairsharing_record(url_record)
-    end
+    record = get_fairsharing_record(url_record)
 
     meta = {
       testid: 'FT_R1_3_M_FS_DBTrustRecognition.ttl',

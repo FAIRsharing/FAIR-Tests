@@ -3,7 +3,7 @@ module FtF1MPidark
   include FairTestUtils
 
   def ft_f1_m_pidark(url_record)
-    record = obtain_record_from_text(url_record)
+    record = get_fairsharing_record(url_record)
 
 
     meta = {

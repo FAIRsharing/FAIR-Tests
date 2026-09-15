@@ -5,11 +5,7 @@ module FtR11MDatabaseLevelLicenses
   include FairTestUtils
 
   def ft_r1_1_m_database_level_licenses(url_record)
-    if url_record.include? 'doi.org'
-      record = get_fairsharing_record(resolve_doi(url_record))
-    else
-      record = get_fairsharing_record(url_record)
-    end
+    record = get_fairsharing_record(url_record)
 
     meta = {
       testid: 'FT_R1_1_M_DatabaseLevelLicenses.ttl',

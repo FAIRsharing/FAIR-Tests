@@ -5,7 +5,7 @@ module FtF2MFsLsDiscoveryFields
   include FairTestUtils
 
   def ft_f2_m_fs_ls_discovery_fields(url_record)
-    record = obtain_record_from_text(url_record)
+    record = get_fairsharing_record(url_record)
 
     meta = {
       testid: 'Ft_F2_M_FsLsDiscoveryFields.ttl',

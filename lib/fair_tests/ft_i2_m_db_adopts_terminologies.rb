@@ -3,11 +3,7 @@ module FtI2MDbAdoptsTerminologies
   include FairTestUtils
 
   def ft_i2_m_db_adopts_terminologies(url_record)
-    if url_record.include? 'doi.org'
-      record = get_fairsharing_record(resolve_doi(url_record))
-    else
-      record = get_fairsharing_record(url_record)
-    end
+    record = get_fairsharing_record(url_record)
 
     meta = {
       testid: 'FT_I2_M_DB_adoptsTerminologies.ttl',

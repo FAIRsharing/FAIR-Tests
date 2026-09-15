@@ -3,7 +3,7 @@ module FtArkA2preservation
   include FairTestUtils
 
   def ft_ark_a2preservation(url_record)
-    record = obtain_record_from_text(url_record)
+    record = get_fairsharing_record(url_record)
 
     meta = {
       testid: 'FTARKTA2Preservation.ttl',

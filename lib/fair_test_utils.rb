@@ -391,32 +391,38 @@ module FairTestUtils
   end
 
 
-  # This method will prepare a text string for getting a record from FAIRsharing, then fetch the record.
-  def obtain_record_from_text(text_record)
-    # Only accept FAIRsharing URLs
-    if text_record.nil? || text_record.empty? ||
-       !(text_record.include?('https://doi.org/10.25504') ||
-         text_record.include?('https://fairsharing.org/10.25504') ||
-         text_record.include?('fairsharing.org'))
-      return nil
-    end
+  # This method will prepare a text string for getting a record from FAIRsharing.
+  def obtain_id_from_text(text_record)
+    return nil if text_record.nil? || text_record.empty?
 
-    record = nil
-    text_record = text_record.chop if text_record.end_with?('/')
+    text_record = text_record.chomp('/')
+    bare_identifier = text_record.match?(%r{\A(?:10\.25504/)?FAIRsharing\.[a-z0-9_-]+\z}i)
+    url_identifier = text_record.include?('https://doi.org/10.25504') ||
+                     text_record.include?('https://fairsharing.org/10.25504') ||
+                     text_record.include?('fairsharing.org')
+
+    # Only accept FAIRsharing identifiers and URLs.
+    return nil unless bare_identifier || url_identifier
 
     if text_record.include?('10.25504') || text_record.include?('//fairsharing.org/FAIRsharing')
-      v = text_record.split('/')
-      record = get_fairsharing_record("10.25504/#{v[-1]}")
+      value = "10.25504/#{text_record.split('/').last}"
     elsif text_record.include?('https://fairsharing.org') || text_record.include?('https://preview.fairsharing.org')
-      v = text_record.split('/')
-      record = get_fairsharing_record(v[-1].to_i)
+      value = text_record.split('/').last.to_i
+    elsif bare_identifier
+      value = text_record
     end
-    record
+    value
   end
 
   # This will get a record from the FAIRsharing database via the API.
-  # TODO: Currently the data are very extensive, but we may need only metadata and perhaps relations.
+  # id should be an integer but it could be a DOI, so obtain_id_from_text is used to obtain it.
   def get_fairsharing_record(id)
+    # It may be a DOI....
+    unless id.is_a?(Integer)
+      id = obtain_id_from_text(id)
+    end
+    return {} unless id
+
     return fetch_fairsharing_record_from_api(id) unless fairsharing_cache_enabled?
 
     cache_path = fairsharing_cache_path(id)

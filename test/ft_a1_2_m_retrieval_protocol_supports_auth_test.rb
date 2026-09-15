@@ -66,11 +66,6 @@ class FtA12MRetrievalProtocolSupportsAuthTest < Minitest::Test
   end
 
   def test_is_not_a_database_via_doi
-    stub_request(:get, 'https://doi.org/10.1234%2F5678').to_return(
-      status: 200,
-      body: "https://fairsharing.org/5678".to_json,
-      headers: headers
-    )
     stub_request(:post, "#{ENV['FAIRSHARING_API_URL']}").to_return(
       status: 200,
       body: {
@@ -86,7 +81,7 @@ class FtA12MRetrievalProtocolSupportsAuthTest < Minitest::Test
     )
 
     post '/test/ft_a1_2_m_retrieval_protocol_supports_auth',
-         params: { resource_identifier: 'https://doi.org/10.1234/5678' }.to_json,
+         params: { resource_identifier: 'https://doi.org/10.25504/FAIRsharing.5678' }.to_json,
          headers: headers
 
     assert last_response.ok?
