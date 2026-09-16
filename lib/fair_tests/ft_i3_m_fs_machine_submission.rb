@@ -4,11 +4,8 @@ module FtI3MFsMachineSubmission
   include FairTestUtils
 
 
-
   def ft_i3_m_fs_machine_submission(url_record)
     record = get_fairsharing_record(url_record)
-
-
 
     meta = {
       testid: 'FT_I3_M_FS_MachineSubmission.ttl',

@@ -2,11 +2,8 @@ module FtI3MFsRelatedDbs
   require_relative '../fair_test_utils'
   include FairTestUtils
 
-
   def ft_i3_m_fs_related_dbs(url_record)
     record = get_fairsharing_record(url_record)
-
-
 
     meta = {
       testid: 'FT_I3_M_FS_relatedDBs.ttl',

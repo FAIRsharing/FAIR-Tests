@@ -8,7 +8,6 @@ module FtA12MRetrievalProtocolSupportsAuth
     # In this case we're looking up the record in FAIRsharing via its homepage.
     record = get_fairsharing_record(url_record)
 
-
     meta = {
       testid: 'FT_A1-2_M_Auth.ttl',
       testname: 'FAIR Test - A1.2 - Metadata - retrieval protocol supports auth',

@@ -30,10 +30,15 @@ class FairsharingRecordCacheTest < Minitest::Test
   end
 
   def test_first_request_caches_record_and_equivalent_identifier_uses_it
+    doi_url = 'https://doi.org/10.25504%2FFAIRsharing.ABC123'
+    fairsharing_url = 'https://fairsharing.org/FAIRsharing.abc123'
+    stub_request(:get, doi_url).
+      to_return(status: 302, headers: { 'Location' => fairsharing_url })
+    stub_request(:get, fairsharing_url).to_return(status: 200)
     request = stub_fairsharing_record('id' => 'abc123', 'name' => 'Example record')
 
     first = get_fairsharing_record('10.25504/FAIRsharing.ABC123')
-    second = get_fairsharing_record('https://fairsharing.org/FAIRsharing.abc123')
+    second = get_fairsharing_record(fairsharing_url)
 
     assert_equal first, second
     assert_equal 'Example record', second['name']

@@ -8,8 +8,6 @@ module FtR13MFsCommunitySupport
   def ft_r1_3_m_fs_community_support(url_record)
     record = get_fairsharing_record(url_record)
 
-
-
     meta = {
       testid: 'FT_R1_3_M_FS_CommunitySupport.ttl',
       testname: 'FAIR Test - R1.3 - Metadata - Resource provides community support channels',
