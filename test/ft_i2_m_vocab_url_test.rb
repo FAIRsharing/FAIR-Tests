@@ -88,7 +88,7 @@ class FtI2MVocabUrlTest < Minitest::Test
 
     assert last_response.ok?
     assert_includes last_response.body,
-                    'x-tests_metric: "https://fairsharing.org/10.25504/FAIRsharing.0273a2"'
+                    'x-tests_metric: "https://doi.org/10.25504/FAIRsharing.0273a2"'
     assert_includes last_response.body,
                     'x-applies_to_principle: "https://fairsharing.org/FAIRsharing.96d4af"'
     assert_includes last_response.body, 'FAIR Test - I2 - Metadata - Vocabulary URL'
