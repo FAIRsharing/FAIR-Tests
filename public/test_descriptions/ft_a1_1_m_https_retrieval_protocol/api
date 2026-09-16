@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   version: "1.0.0"
-  title: "FAIR Metric - A1.1 - Metadata - HTTP(S) retrieval protocol"
+  title: "FAIR Test - A1.1 - Metadata - HTTP(S) retrieval protocol"
   x-tests_metric: "https://fairsharing.org/10.25504/FAIRsharing.79aee0"
   description: >-
       "This metric evaluates whether the protocol used to retrieve metadata referenced by the provided identifier is either HTTP or HTTPS and therefore openly specified, free to implement, and universally implementable. Expected input is a resolvable URL or identifier for the metadata record of the digital research object under evaluation."
