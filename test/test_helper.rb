@@ -18,8 +18,32 @@ require_relative '../fair_tests'
 module TestHelper
   include Rack::Test::Methods
 
+  def setup
+    super
+    stub_default_fairsharing_identifier_requests
+  end
+
   def app
     FairTests
+  end
+
+  def stub_default_fairsharing_identifier_requests
+    doi_url = 'https://doi.org/10.25504%2FFAIRsharing.5678'
+    fairsharing_url = 'https://fairsharing.org/FAIRsharing.5678'
+    stub_request(:get, doi_url).
+      to_return(status: 302, headers: { 'Location' => fairsharing_url })
+    stub_request(:get, fairsharing_url).to_return(status: 200)
+
+    stub_request(:post, ENV.fetch('FAIRSHARING_API_URL')).
+      with do |request|
+        JSON.parse(request.body)['query'].
+          include?('fairsharingRecord(id: "https://example.org/not-a-fairsharing-record")')
+      end.
+      to_return(
+        status: 200,
+        body: { 'data' => { 'fairsharingRecord' => nil } }.to_json,
+        headers: { 'Content-Type' => 'application/json' }
+      )
   end
 
   CHAMPION_URL = "https://tools.ostrails.eu/champion/harvest_only"

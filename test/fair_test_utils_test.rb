@@ -453,13 +453,54 @@ class FairTestUtilsTest < Minitest::Test
                  normalize_doi_url("10.25504/FAIRsharing.123456")
   end
 
-  def test_obtains_id_from_text
-    assert_nil obtain_id_from_text("https://example.org")
-    assert_equal "10.25504/FAIRsharing.123456",
-                 obtain_id_from_text("https://fairsharing.org/FAIRsharing.123456")
-    assert_equal "10.25504/FAIRsharing.123456",
-                 obtain_id_from_text("10.25504/FAIRsharing.123456")
-    assert_equal "FAIRsharing.123456", obtain_id_from_text("FAIRsharing.123456")
+  def test_get_fairsharing_record_passes_non_doi_identifiers_to_the_api
+    identifiers = [123, 'FAIRsharing.123456', 'https://example.org/records/abc123']
+
+    identifiers.each do |identifier|
+      request = stub_request(:post, ENV.fetch('FAIRSHARING_API_URL')).
+        with { |req| JSON.parse(req.body)['query'].include?(%Q{fairsharingRecord(id: "#{identifier}")}) }.
+        to_return(
+          status: 200,
+          body: { 'data' => { 'fairsharingRecord' => { 'id' => identifier } } }.to_json,
+          headers: headers
+        )
+
+      assert_equal({ 'id' => identifier }, get_fairsharing_record(identifier))
+      assert_requested request, times: 1
+    end
+  end
+
+  def test_get_fairsharing_record_resolves_dois_before_calling_the_api
+    doi = 'https://doi.org/10.25504/FAIRsharing.123456'
+    resolved_url = 'https://fairsharing.org/123456'
+    fake_request = Object.new
+    fake_request.define_singleton_method(:last_uri) { URI(resolved_url) }
+    fake_response = Object.new
+    fake_response.define_singleton_method(:success?) { true }
+    fake_response.define_singleton_method(:body) { '' }
+    fake_response.define_singleton_method(:request) { fake_request }
+    request = stub_request(:post, ENV.fetch('FAIRSHARING_API_URL')).
+      with { |req| JSON.parse(req.body)['query'].include?(%Q{fairsharingRecord(id: "#{resolved_url}")}) }.
+      to_return(
+        status: 200,
+        body: { 'data' => { 'fairsharingRecord' => { 'id' => resolved_url } } }.to_json,
+        headers: headers
+      )
+
+    with_stubbed_httparty_get(response: fake_response) do
+      assert_equal({ 'id' => resolved_url }, get_fairsharing_record(doi))
+    end
+    assert_requested request, times: 1
+  end
+
+  def test_get_fairsharing_record_does_not_query_the_api_when_doi_resolution_fails
+    fake_response = Object.new
+    fake_response.define_singleton_method(:success?) { false }
+
+    with_stubbed_httparty_get(response: fake_response) do
+      assert_equal({}, get_fairsharing_record('https://doi.org/10.25504/FAIRsharing.123456'))
+    end
+    assert_not_requested :post, ENV.fetch('FAIRSHARING_API_URL')
   end
 
   def test_handles_errors_getting_fairsharing_record
