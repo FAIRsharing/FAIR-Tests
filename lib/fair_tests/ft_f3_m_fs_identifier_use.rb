@@ -14,7 +14,7 @@ module FtF3MFsIdentifierUse
       keywords: ['ARK', 'FAIR', 'F3', 'FAIRsharing', 'identifier'],
       creator: 'https://orcid.org/0000-0002-6468-9260',
       indicators: [],
-      metric: 'https://fairsharing.org/8372',
+      metric: 'https://doi.org/10.25504/FAIRsharing.04e81e',
       license: 'https://creativecommons.org/licenses/by/4.0/',
       testversion: '1.0.0',
       protocol: 'https',

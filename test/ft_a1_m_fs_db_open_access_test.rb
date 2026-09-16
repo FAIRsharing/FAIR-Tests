@@ -100,10 +100,11 @@ class FtA1MFsDbOpenAccessTest < Minitest::Test
     get '/test_descriptions/ft_a1_m_fs_db_open_access/api'
 
     assert last_response.ok?
-    assert_includes last_response.body, 'x-tests_metric: "https://fairsharing.org/8381"'
-    assert_includes last_response.body, 'x-applies_to_principle: "https://fairsharing.org/6293"'
-    assert_includes last_response.body, 'This testassesses whether the FAIRsharing database record'
+    assert_includes last_response.body, 'x-tests_metric: "https://doi.org/10.25504/FAIRsharing.2244b1"'
+    assert_includes last_response.body, 'x-applies_to_principle: "https://doi.org/10.25504/FAIRsharing.7014eb"'
+    assert_includes last_response.body, 'This test assesses whether the FAIRsharing databas'
   end
+
 
   private
 

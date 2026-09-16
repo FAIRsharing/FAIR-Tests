@@ -195,8 +195,8 @@ class FtA1MFsDocumentsCompAccessTest < Minitest::Test
     get '/test_descriptions/ft_a1_m_fs_documents_comp_access/api'
 
     assert last_response.ok?
-    assert_includes last_response.body, 'x-tests_metric: "https://fairsharing.org/8380"'
-    assert_includes last_response.body, 'x-applies_to_principle: "https://fairsharing.org/6293"'
+    assert_includes last_response.body, 'x-tests_metric: "https://doi.org/10.25504/FAIRsharing.924db2"'
+    assert_includes last_response.body, 'x-applies_to_principle: "https://doi.org/10.25504/FAIRsharing.7014eb"'
     assert_includes last_response.body, 'documents computational access'
   end
 

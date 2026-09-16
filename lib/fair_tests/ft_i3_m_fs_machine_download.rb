@@ -17,7 +17,7 @@ module FtI3MFsMachineDownload
       keywords: ['FAIR', 'I3', 'FAIRsharing', 'machine content download'],
       creator: 'https://orcid.org/0000-0001-9572-0972',
       indicators: [],
-      metric: 'https://fairsharing.org/8413/',
+      metric: 'https://doi.org/10.25504/FAIRsharing.a66105',
       license: 'https://creativecommons.org/licenses/by/4.0/',
       testversion: '1.0.0',
       protocol: 'https',

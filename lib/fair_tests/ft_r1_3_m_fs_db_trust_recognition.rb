@@ -14,7 +14,7 @@ module FtR13MFsDbTrustRecognition
       keywords: ['FAIR', 'R1.3', 'FAIRsharing', 'external trust or recognition'],
       creator: 'https://orcid.org/0000-0001-9572-0972',
       indicators: [],
-      metric: 'https://fairsharing.org/8864',
+      metric: 'https://doi.org/10.25504/FAIRsharing.6e89d8',
       license: 'https://creativecommons.org/licenses/by/4.0/',
       testversion: '1.0.0',
       protocol: 'https',

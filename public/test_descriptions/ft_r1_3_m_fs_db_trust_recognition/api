@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   version: "1.0.0"
   title: "FAIR Test - R1.3 - Metadata - Database demonstrates external trust or recognition"
-  x-tests_metric: "https://fairsharing.org/8864"
+  x-tests_metric: "https://doi.org/10.25504/FAIRsharing.6e89d8"
   description: >-
             "This test evaluates whether the database demonstrates external trust or recognition. In FAIRsharing, this corresponds to the presence of one or more certifications or community badges. This test expects as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation."
   x-applies_to_principle: "https://doi.org/10.25504/FAIRsharing.87d197"

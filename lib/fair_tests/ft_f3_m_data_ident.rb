@@ -13,7 +13,7 @@ module FtF3MDataIdent
       keywords: ['FAIR', 'F3', 'data identifier'],
       creator: 'https://orcid.org/0000-0001-9572-0972',
       indicators: [],
-      metric: 'https://fairsharing.org/10.25504/FAIRsharing.0a2061/',
+      metric: 'https://doi.org/10.25504/FAIRsharing.0a2061',
       license: 'https://creativecommons.org/licenses/by/4.0/',
       testversion: '1.0.0',
       protocol: 'https',

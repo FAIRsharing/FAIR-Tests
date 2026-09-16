@@ -12,7 +12,7 @@ module FtArkA2preservation
       keywords: ['ARK', 'FAIR', 'A2', 'preservation policy'],
       creator: 'https://orcid.org/0000-0001-9572-0972',
       indicators: [],
-      metric: 'https://fairsharing.org/FAIRsharing.lEZbPK',
+      metric: 'https://doi.org/10.25504/FAIRsharing.lEZbPK',
       license: 'https://creativecommons.org/licenses/by/4.0/',
       testversion: '1.0.0',
       protocol: 'https',

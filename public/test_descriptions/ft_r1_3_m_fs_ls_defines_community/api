@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   version: "1.0.0"
   title: "FAIR Test - R1.3 - Metadata - Resource defines its Life Science community"
-  x-tests_metric: "https://fairsharing.org/8847"
+  x-tests_metric: "https://doi.org/10.25504/FAIRsharing.2c7f94"
   description: >-
             "This test evaluates whether the database, standard or policy resource defines its Life Science community through its assigned disciplines and research object types. To satisfy this test, the resource must have at least one assigned subject within the Life Science hierarchy of the FAIRsharing Subject Resource Application Ontology (SRAO) and at least one assigned research object type from the OSTrails Digital Object Commons, excluding Object type not found. In FAIRsharing, this corresponds to the presence of at least one subject and at least one object type. This test expects as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation."
   x-applies_to_principle: "https://doi.org/10.25504/FAIRsharing.87d197"

@@ -17,7 +17,7 @@ module FtR12MFsRecordContact
       keywords: ['FAIR', 'R1.2', 'FAIRsharing', 'record contact'],
       creator: 'https://orcid.org/0000-0001-9572-0972',
       indicators: [],
-      metric: 'https://fairsharing.org/8838',
+      metric: 'https://doi.org/10.25504/FAIRsharing.40ffdb',
       license: 'https://creativecommons.org/licenses/by/4.0/',
       testversion: '1.0.0',
       protocol: 'https',

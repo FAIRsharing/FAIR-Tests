@@ -14,7 +14,7 @@ module FtI1MDbSemFormats
       keywords: ['FAIR', 'I1', 'Semantic knowledge representation languages'],
       creator: 'https://orcid.org/0000-0001-9572-0972',
       indicators: [],
-      metric: 'https://fairsharing.org/8402/',
+      metric: 'https://doi.org/10.25504/FAIRsharing.1bb0dd',
       license: 'https://creativecommons.org/licenses/by/4.0/',
       testversion: '1.0.0',
       protocol: 'https',

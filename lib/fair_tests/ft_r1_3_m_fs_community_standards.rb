@@ -15,7 +15,7 @@ module FtR13MFsCommunityStandards
       keywords: ['FAIR', 'R1.3', 'FAIRsharing', 'community standards'],
       creator: 'https://orcid.org/0000-0001-9572-0972',
       indicators: [],
-      metric: 'https://fairsharing.org/8855',
+      metric: 'https://doi.org/10.25504/FAIRsharing.caf078',
       license: 'https://creativecommons.org/licenses/by/4.0/',
       testversion: '1.0.0',
       protocol: 'https',
