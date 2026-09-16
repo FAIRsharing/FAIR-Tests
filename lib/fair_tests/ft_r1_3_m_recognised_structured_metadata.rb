@@ -13,7 +13,7 @@ module FtR13MRecognisedStructuredMetadata
       keywords: ['FAIR', 'R1.3', 'recognised structured metadata'],
       creator: 'https://orcid.org/0000-0002-6468-9260',
       indicators: [],
-      metric: 'https://fairsharing.org/8020',
+      metric: 'https://doi.org/10.25504/FAIRsharing.389fad',
       license: 'https://creativecommons.org/licenses/by/4.0/',
       testversion: '1.0.0',
       protocol: 'https',

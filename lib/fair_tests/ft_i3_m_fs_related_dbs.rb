@@ -11,11 +11,11 @@ module FtI3MFsRelatedDbs
     meta = {
       testid: 'FT_I3_M_FS_relatedDBs.ttl',
       testname: 'FAIR Test - I3 - Metadata - I3 - references related databases',
-      description: 'This test assesses whether the FAIRsharing database record contains at least one shares_data_with or related_to relationship linking it to another FAIRsharing database record. Tests implementing this metric should expect as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation. To pass, a relationship with shares_data_with or related_to label with other database should exist, else the test will fail. This test expects as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation.',
+      description: 'This test assesses whether the FAIRsharing database record contains at least one shares_data_with or related_to relationship linking it to another FAIRsharing database record. Tests implementing this test should expect as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation. To pass, a relationship with shares_data_with or related_to label with other database should exist, else the test will fail. This test expects as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation.',
       keywords: ['FAIR', 'I3', 'FAIRsharing', 'references related databases'],
       creator: 'https://orcid.org/0000-0001-9572-0972',
       indicators: [],
-      metric: 'https://fairsharing.org/8408/',
+      metric: 'https://doi.org/10.25504/FAIRsharing.19c48f',
       license: 'https://creativecommons.org/licenses/by/4.0/',
       testversion: '1.0.0',
       protocol: 'https',

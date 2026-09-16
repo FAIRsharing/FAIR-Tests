@@ -17,7 +17,7 @@ module FtR12MFsFundingOrganisation
       keywords: ['FAIR', 'R1.2', 'FAIRsharing', 'funding organisation'],
       creator: 'https://orcid.org/0000-0001-9572-0972',
       indicators: [],
-      metric: 'https://fairsharing.org/8840',
+      metric: 'https://doi.org/10.25504/FAIRsharing.2cef86',
       license: 'https://creativecommons.org/licenses/by/4.0/',
       testversion: '1.0.0',
       protocol: 'https',

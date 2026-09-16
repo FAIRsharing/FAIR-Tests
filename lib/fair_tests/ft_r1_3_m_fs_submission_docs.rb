@@ -17,7 +17,7 @@ module FtR13MFsSubmissionDocs
       keywords: ['FAIR', 'R1.3', 'FAIRsharing', 'documents user-facing submission processes'],
       creator: 'https://orcid.org/0000-0001-9572-0972',
       indicators: [],
-      metric: 'https://fairsharing.org/8849/',
+      metric: 'https://doi.org/10.25504/FAIRsharing.ffe9ee',
       license: 'https://creativecommons.org/licenses/by/4.0/',
       testversion: '1.0.0',
       protocol: 'https',

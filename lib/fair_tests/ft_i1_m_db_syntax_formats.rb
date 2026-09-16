@@ -14,7 +14,7 @@ module FtI1MDbSyntaxFormats
       keywords: ['FAIR', 'I1', 'syntactic knowledge representation languages'],
       creator: 'https://orcid.org/0000-0001-9572-0972',
       indicators: [],
-      metric: 'https://fairsharing.org/8401/',
+      metric: 'https://doi.org/10.25504/FAIRsharing.b9179e',
       license: 'https://creativecommons.org/licenses/by/4.0/',
       testversion: '1.0.0',
       protocol: 'https',

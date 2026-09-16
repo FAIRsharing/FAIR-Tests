@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   version: "1.0.0"
   title: "FAIR Test - R1.3 - Metadata - Resource follows community-relevant best practices (Life Science)"
-  x-tests_metric: "https://fairsharing.org/8858"
+  x-tests_metric: "https://doi.org/10.25504/FAIRsharing.e95e62"
   description: >-
              "This test evaluates whether the database, standard or policy follows community-relevant best practices for the Life Science community. To satisfy this test, at least one assigned subject must be within the Life Science hierarchy of the FAIRsharing Subject Resource Application Ontology (SRAO), and at least one related reporting guideline (via any relationship other than deprecates) must have a subject that is identical to or a child of at least one assigned subject within the record under evaluation. In FAIRsharing, this corresponds to reporting guideline records related via any non-deprecates relationship and curated using the Life Science subject criteria outlined above. This test expects as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation."
   x-applies_to_principle: "https://doi.org/10.25504/FAIRsharing.87d197"

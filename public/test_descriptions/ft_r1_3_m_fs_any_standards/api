@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   version: "1.0.0"
   title: "FAIR Test - R1.3 - Metadata - Resource adopts one or more community or general standards"
-  x-tests_metric: "https://fairsharing.org/8859"
+  x-tests_metric: "https://doi.org/10.25504/FAIRsharing.a4d33e"
   description: >-
              "This test evaluates whether the database, standard or policy adopts one or more community or general standards. In FAIRsharing, this corresponds to the presence of at least one related terminology artefact, model/format or reporting guideline record via any non-deprecates relationship. This test expects as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation."
   x-applies_to_principle: "https://doi.org/10.25504/FAIRsharing.87d197"

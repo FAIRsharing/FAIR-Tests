@@ -14,7 +14,7 @@ module FtA2MFsDbsustainability
       keywords: ['FAIR', 'A2', 'sustainability plan'],
       creator: 'https://orcid.org/0000-0001-9572-0972',
       indicators: [],
-      metric: 'https://fairsharing.org/8387',
+      metric: 'https://doi.org/10.25504/FAIRsharing.24a75e',
       license: 'https://creativecommons.org/licenses/by/4.0/',
       testversion: '1.0.0',
       protocol: 'https',

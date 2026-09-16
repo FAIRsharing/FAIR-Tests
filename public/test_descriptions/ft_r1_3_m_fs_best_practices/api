@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   version: "1.0.0"
   title: "FAIR Test - R1.3 - Metadata - Resource follows community-relevant best practices"
-  x-tests_metric: "https://fairsharing.org/8856"
+  x-tests_metric: "https://doi.org/10.25504/FAIRsharing.8c1739"
   description: >-
       "This test evaluates whether the database, standard or policy follows community-relevant best practices. To satisfy this test, at least one related reporting guideline must have a subject that is identical to or a child of at least one assigned subject within the resource record. In FAIRsharing, this corresponds to reporting guideline records related via any non-deprecates relationship and curated using the subject tags outlined above. This test expects as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation."
   x-applies_to_principle: "https://doi.org/10.25504/FAIRsharing.87d197"

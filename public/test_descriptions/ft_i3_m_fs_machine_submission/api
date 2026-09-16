@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   version: "1.0.0"
   title: "FAIR Test - I3 - allows content submission by machines"
-  x-tests_metric: "https://fairsharing.org/8411/"
+  x-tests_metric: "https://doi.org/10.25504/FAIRsharing.df8d5f"
   description: >-
       "This test uses the structured metadata provided by FAIRsharing records to determine whether machines can submit content through computational interfaces. Machine-mediated content submission is an important FAIR-enabling characteristic because it supports the automated exchange of information between resources and external systems. This test assesses whether the FAIRsharing record contains at least one Data Process with a type of Write or Read/Write that uses a non-User Interface access method. This test expects as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation."
   x-applies_to_principle: "https://doi.org/10.25504/FAIRsharing.ae22b8"

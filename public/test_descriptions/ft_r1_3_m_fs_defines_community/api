@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   version: "1.0.0"
   title: "FAIR Test - R1.3 - Metadata - Resource defines its community"
-  x-tests_metric: "https://fairsharing.org/8845"
+  x-tests_metric: "https://doi.org/10.25504/FAIRsharing.fc15d2"
   description: >-
             "This test evaluates whether the database, standard or policy resource defines its community through its assigned disciplines and research object types. To satisfy this test, the resource must have at least one assigned subject and at least one assigned research object type from the OSTrails Digital Object Commons, excluding Object type not found. In FAIRsharing, this corresponds to the presence of at least one subject and at least one object type. Expected input is the DOI or URL of the registry (e.g. FAIRsharing) record under evaluation. This test expects as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation."
   x-applies_to_principle: "https://doi.org/10.25504/FAIRsharing.87d197"

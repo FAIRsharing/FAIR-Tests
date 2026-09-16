@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   version: "1.0.0"
   title: "FAIR Test - R1.2 - Metadata - Resource provides contact information"
-  x-tests_metric: "https://fairsharing.org/8839"
+  x-tests_metric: "https://doi.org/10.25504/FAIRsharing.33553a"
   description: >-
       "This test evaluates whether the database, standard or policy resource provides contact information for the resource itself. In FAIRsharing, this corresponds to at least one of: Contact Information and/or Support Links fields (mailing list, support email or contact form only). This test expects as input the FAIRsharing DOI or URL for the FAIRsharing record under evaluation."
   x-applies_to_principle: "https://doi.org/10.25504/FAIRsharing.3e9860"
