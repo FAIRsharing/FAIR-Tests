@@ -13,7 +13,7 @@ module FtR12MAuthorAffiliationInMetadata
       keywords: ['FAIR', 'R1.2', 'creator affiliation'],
       creator: 'https://orcid.org/0000-0001-9572-0972',
       indicators: [],
-      metric: 'https://fairsharing.org/FAIRsharing.99349b',
+      metric: 'https://doi.org/10.25504/FAIRsharing.99349b',
       license: 'https://creativecommons.org/licenses/by/4.0/',
       testversion: '1.0.0',
       protocol: 'https',

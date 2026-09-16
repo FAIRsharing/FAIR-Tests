@@ -14,7 +14,7 @@ module FtF4MMetaIndexed
       keywords: ['FAIR', 'F4', 'FAIRsharing', 'searchable', 'indexed'],
       creator: 'https://orcid.org/0000-0002-6468-9260',
       indicators: [],
-      metric: 'https://fairsharing.org/10.25504/FAIRsharing.fe8b9b', # Principle: https://fairsharing.org/6278
+      metric: 'https://doi.org/10.25504/FAIRsharing.fe8b9b', # Principle: https://fairsharing.org/6278
       license: 'https://creativecommons.org/licenses/by/4.0/',
       testversion: '1.0.0',
       protocol: 'https',

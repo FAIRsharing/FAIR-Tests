@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   version: "1.0.0"
   title: "FAIR Test - R1.2 - Metadata - Author affiliation is defined in metadata"
-  x-tests_metric: "https://fairsharing.org/FAIRsharing.99349b"
+  x-tests_metric: "https://doi.org/10.25504/FAIRsharing.99349b"
   description: >-
     "This test evaluates whether the metadata includes at least one qualified reference to an organisation for a contributor with a creator role. If the record contains a creator with a named organisational affiliation it will pass; otherwise, the test will fail."
   x-applies_to_principle: "https://doi.org/10.25504/FAIRsharing.3e9860"

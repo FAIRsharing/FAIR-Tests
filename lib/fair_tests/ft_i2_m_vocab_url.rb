@@ -14,7 +14,7 @@ module FtI2MVocabUrl
       keywords: ['FAIR', 'I2', 'FAIR vocabulary'],
       creator: 'https://orcid.org/0000-0002-6468-9260',
       indicators: [],
-      metric: 'https://fairsharing.org/10.25504/FAIRsharing.0273a2',
+      metric: 'https://doi.org/10.25504/FAIRsharing.0273a2',
       license: 'https://creativecommons.org/licenses/by/4.0/',
       testversion: '1.0.0',
       protocol: 'https',
