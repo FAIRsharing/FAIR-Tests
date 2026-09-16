@@ -258,7 +258,9 @@ module FairTestUtils
   # Check if a string is actually a DOI.
   def is_doi?(url)
     begin
-      SimpleDOI::DOI.new(url)
+      # simple_doi normalizes its argument in place, so give it a mutable
+      # string rather than allowing it to modify callers' values.
+      SimpleDOI::DOI.new(url.to_s.dup)
     rescue ArgumentError
       return false
     end
@@ -391,35 +393,14 @@ module FairTestUtils
   end
 
 
-  # This method will prepare a text string for getting a record from FAIRsharing.
-  def obtain_id_from_text(text_record)
-    return nil if text_record.nil? || text_record.empty?
-
-    text_record = text_record.chomp('/')
-    bare_identifier = text_record.match?(%r{\A(?:10\.25504/)?FAIRsharing\.[a-z0-9_-]+\z}i)
-    url_identifier = text_record.include?('https://doi.org/10.25504') ||
-                     text_record.include?('https://fairsharing.org/10.25504') ||
-                     text_record.include?('fairsharing.org')
-
-    # Only accept FAIRsharing identifiers and URLs.
-    return nil unless bare_identifier || url_identifier
-
-    if text_record.include?('10.25504') || text_record.include?('//fairsharing.org/FAIRsharing')
-      value = "10.25504/#{text_record.split('/').last}"
-    elsif text_record.include?('https://fairsharing.org') || text_record.include?('https://preview.fairsharing.org')
-      value = text_record.split('/').last.to_i
-    elsif bare_identifier
-      value = text_record
-    end
-    value
-  end
-
   # This will get a record from the FAIRsharing database via the API.
-  # id should be an integer but it could be a DOI, so obtain_id_from_text is used to obtain it.
-  def get_fairsharing_record(id)
-    # It may be a DOI....
-    unless id.is_a?(Integer)
-      id = obtain_id_from_text(id)
+  # DOI inputs are resolved first; all other identifiers are handled by the API.
+  def get_fairsharing_record(initial_id)
+    return {} unless initial_id
+    if is_doi?(initial_id)
+      id = resolve_doi(initial_id)
+    else
+      id = initial_id
     end
     return {} unless id
 
