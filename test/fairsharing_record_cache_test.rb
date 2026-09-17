@@ -9,8 +9,8 @@ class FairsharingRecordCacheTest < Minitest::Test
   include FairTestUtils
 
   CACHE_ENVIRONMENT_VARIABLES = %w[
+    CACHE_DIR
     FAIRSHARING_CACHE_ENABLED
-    FAIRSHARING_CACHE_DIR
     FAIRSHARING_CACHE_TTL
   ].freeze
 
@@ -19,7 +19,7 @@ class FairsharingRecordCacheTest < Minitest::Test
     @original_environment = CACHE_ENVIRONMENT_VARIABLES.to_h { |name| [name, ENV[name]] }
     @cache_directory = Dir.mktmpdir('fairsharing-record-cache-test')
     ENV['FAIRSHARING_CACHE_ENABLED'] = 'true'
-    ENV['FAIRSHARING_CACHE_DIR'] = @cache_directory
+    ENV['CACHE_DIR'] = @cache_directory
     ENV['FAIRSHARING_CACHE_TTL'] = '86400'
   end
 
@@ -157,7 +157,7 @@ class FairsharingRecordCacheTest < Minitest::Test
   def test_cache_filesystem_failures_fall_back_to_api
     unusable_path = File.join(@cache_directory, 'not-a-directory')
     File.write(unusable_path, 'file')
-    ENV['FAIRSHARING_CACHE_DIR'] = File.join(unusable_path, 'cache')
+    ENV['CACHE_DIR'] = File.join(unusable_path, 'cache')
     request = stub_fairsharing_record('id' => '123')
 
     assert_equal '123', get_fairsharing_record(123)['id']
