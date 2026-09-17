@@ -12,7 +12,6 @@ class OraRecordCacheTest < Minitest::Test
   CACHE_ENVIRONMENT_VARIABLES = %w[
     CACHE_DIR
     ORA_CACHE_ENABLED
-    ORA_CACHE_DIR
     ORA_CACHE_TTL
   ].freeze
 
@@ -20,9 +19,8 @@ class OraRecordCacheTest < Minitest::Test
     super
     @original_environment = CACHE_ENVIRONMENT_VARIABLES.to_h { |name| [name, ENV[name]] }
     @cache_directory = Dir.mktmpdir('ora-record-cache-test')
-    ENV.delete('CACHE_DIR')
+    ENV['CACHE_DIR'] = @cache_directory
     ENV['ORA_CACHE_ENABLED'] = 'true'
-    ENV['ORA_CACHE_DIR'] = @cache_directory
     ENV['ORA_CACHE_TTL'] = '86400'
   end
 
@@ -49,12 +47,8 @@ class OraRecordCacheTest < Minitest::Test
   end
 
   def test_cache_paths_use_separate_service_subdirectories
-    ENV['FAIRSHARING_CACHE_DIR'] = @cache_directory
-
     assert_equal File.join(@cache_directory, 'ora'), ora_cache_directory
     assert_equal File.join(@cache_directory, 'fairsharing'), fairsharing_cache_directory
-  ensure
-    ENV.delete('FAIRSHARING_CACHE_DIR')
   end
 
   def test_non_ora_urls_are_not_cached

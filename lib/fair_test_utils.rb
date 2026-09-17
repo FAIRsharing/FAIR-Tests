@@ -426,7 +426,7 @@ module FairTestUtils
   end
 
   def fairsharing_cache_directory
-    File.join(cache_directory('FAIRSHARING_CACHE_DIR'), 'fairsharing')
+    File.join(cache_directory, 'fairsharing')
   end
 
   def fairsharing_cache_ttl
@@ -478,7 +478,7 @@ module FairTestUtils
   end
 
   def ora_cache_directory
-    File.join(cache_directory('ORA_CACHE_DIR'), 'ora')
+    File.join(cache_directory, 'ora')
   end
 
   def ora_cache_ttl
@@ -533,11 +533,8 @@ module FairTestUtils
     (record.is_a?(Hash) || record.is_a?(Array)) && !record.empty?
   end
 
-  def cache_directory(service_environment_variable)
-    configured_directory = ENV.fetch(
-      service_environment_variable,
-      ENV.fetch('CACHE_DIR', CACHE_DIRECTORY)
-    )
+  def cache_directory
+    configured_directory = ENV.fetch('CACHE_DIR', CACHE_DIRECTORY)
     File.expand_path(configured_directory, File.expand_path('..', __dir__))
   end
 
