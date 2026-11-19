@@ -1,7 +1,7 @@
 source 'https://gem.coop'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.4.2'
+ruby '3.4.13'
 
 gem 'rubocop', group: 'development', require: false
 gem 'sinatra'
